@@ -74,3 +74,6 @@ Thumbs.db
 .tmp/
 *.tmp
 *.temp
+
+# Local development files
+.cursor/
