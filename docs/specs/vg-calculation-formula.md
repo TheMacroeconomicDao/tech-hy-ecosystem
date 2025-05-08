@@ -35,26 +35,6 @@ VG = LP * C * (1 + B * log10(LP/LP_min))
 
 Минимальное количество LP токенов для получения бонуса (`LP_min`) установлено равным 1, что означает, что бонус начинает действовать практически сразу.
 
-## Реализация в коде
-
-```rust
-pub fn calculate_vg_amount(lp_amount: u64) -> Result<u64> {
-    let base_conversion_rate: f64 = 10.0;
-    let bonus_coefficient: f64 = 0.2;
-    let min_lp_amount: f64 = 1.0;
-    
-    let lp_amount_f64 = lp_amount as f64;
-    
-    // Расчет бонуса на основе логарифма от количества LP токенов
-    let bonus = 1.0 + bonus_coefficient * (lp_amount_f64 / min_lp_amount).log10().max(0.0);
-    
-    // Расчет итогового количества VG токенов
-    let vg_amount = (lp_amount_f64 * base_conversion_rate * bonus).round() as u64;
-    
-    Ok(vg_amount)
-}
-```
-
 ## Примеры расчета
 
 ### Пример 1: Небольшая блокировка LP токенов
@@ -133,48 +113,6 @@ VG = 2,000,000
 ## Управление параметрами формулы через DAO
 
 Параметры формулы (базовый коэффициент конверсии и бонусный коэффициент) могут быть изменены через DAO. Это позволяет сообществу настраивать экономику токенов в зависимости от рыночных условий и целей развития экосистемы.
-
-```rust
-// Структура для хранения параметров формулы
-#[account]
-pub struct VgCalculationParameters {
-    pub base_conversion_rate: u64,
-    pub bonus_coefficient: u64,
-    pub min_lp_amount: u64,
-    pub authority: Pubkey,
-    pub bump: u8,
-}
-
-// Функция для обновления параметров через DAO
-pub fn update_vg_calculation_parameters(
-    ctx: Context<UpdateVgCalculationParameters>,
-    new_base_rate: Option<u64>,
-    new_bonus_coefficient: Option<u64>,
-    new_min_lp_amount: Option<u64>,
-) -> Result<()> {
-    // Проверка, что инструкция вызвана из предложения DAO
-    require!(
-        ctx.accounts.instruction_program.key() == spl_governance::ID,
-        ErrorCode::NotAuthorized
-    );
-    
-    let parameters = &mut ctx.accounts.vg_calculation_parameters;
-    
-    if let Some(base_rate) = new_base_rate {
-        parameters.base_conversion_rate = base_rate;
-    }
-    
-    if let Some(bonus_coefficient) = new_bonus_coefficient {
-        parameters.bonus_coefficient = bonus_coefficient;
-    }
-    
-    if let Some(min_lp_amount) = new_min_lp_amount {
-        parameters.min_lp_amount = min_lp_amount;
-    }
-    
-    Ok(())
-}
-```
 
 ## Соображения по безопасности и эффективности
 

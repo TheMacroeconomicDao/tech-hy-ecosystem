@@ -61,7 +61,7 @@ share_percentage = (user_locked_lp * tier_multiplier) / total_weighted_locked_lp
 
 Держатели NFT Fee Key могут собирать накопленное вознаграждение в любое время, выполнив следующие шаги:
 
-1. Вызов функции `claimFeeRewards()`
+1. Вызов функции сбора вознаграждения
 2. Проверка владения NFT Fee Key
 3. Расчет накопленного вознаграждения на основе доли в пуле комиссий
 4. Перевод вознаграждения в SOL на кошелек пользователя
@@ -71,192 +71,51 @@ share_percentage = (user_locked_lp * tier_multiplier) / total_weighted_locked_lp
 
 ### Структуры данных
 
-```rust
-#[account]
-pub struct FeeKeyAccount {
-    pub owner: Pubkey,
-    pub locked_lp_amount: u64,
-    pub lock_timestamp: i64,
-    pub fee_share_percentage: f64,
-    pub tier: u8,  // 1 - Common, 2 - Rare, 3 - Epic, 4 - Legendary
-    pub last_claim_timestamp: i64,
-    pub total_claimed_amount: u64,
-    pub bump: u8,
-}
+В системе используются следующие основные структуры данных:
 
-#[account]
-pub struct FeeDistributionVault {
-    pub authority: Pubkey,
-    pub token_account: Pubkey,
-    pub total_fees_collected: u64,
-    pub total_fees_distributed: u64,
-    pub last_distribution_timestamp: i64,
-    pub bump: u8,
-}
-```
+#### Аккаунт NFT Fee Key
+Хранит информацию о конкретном NFT Fee Key, включая:
+- Владелец
+- Количество заблокированных LP токенов
+- Временная метка блокировки
+- Процент доли в пуле комиссий
+- Уровень NFT (1 - Common, 2 - Rare, 3 - Epic, 4 - Legendary)
+- Временная метка последнего сбора вознаграждения
+- Общая сумма собранного вознаграждения
+- Бамп для PDA
+
+#### Хранилище распределения комиссий
+Содержит информацию о хранилище комиссий:
+- Адрес управляющего
+- Адрес токен-аккаунта
+- Общая сумма собранных комиссий
+- Общая сумма распределенных комиссий
+- Временная метка последнего распределения
+- Бамп для PDA
 
 ### Создание NFT Fee Key
 
-```rust
-pub fn create_fee_key(
-    ctx: Context<CreateFeeKey>,
-    locked_lp_amount: u64,
-) -> Result<()> {
-    let fee_key_account = &mut ctx.accounts.fee_key_account;
-    let owner = ctx.accounts.owner.key();
-    let current_timestamp = Clock::get()?.unix_timestamp;
-    
-    // Определение уровня NFT
-    let tier = if locked_lp_amount < 1_000 {
-        1 // Common
-    } else if locked_lp_amount < 10_000 {
-        2 // Rare
-    } else if locked_lp_amount < 100_000 {
-        3 // Epic
-    } else {
-        4 // Legendary
-    };
-    
-    // Расчет множителя в зависимости от уровня
-    let tier_multiplier = match tier {
-        1 => 1.0,
-        2 => 1.2,
-        3 => 1.5,
-        4 => 2.0,
-        _ => 1.0,
-    };
-    
-    // Получение общего количества взвешенных LP токенов
-    let total_weighted_locked_lp = get_total_weighted_locked_lp(ctx.accounts.fee_distribution_state.to_account_info())?;
-    
-    // Расчет доли в пуле комиссий
-    let weighted_amount = locked_lp_amount as f64 * tier_multiplier;
-    let fee_share_percentage = weighted_amount / total_weighted_locked_lp * 100.0;
-    
-    // Инициализация аккаунта NFT Fee Key
-    fee_key_account.owner = owner;
-    fee_key_account.locked_lp_amount = locked_lp_amount;
-    fee_key_account.lock_timestamp = current_timestamp;
-    fee_key_account.fee_share_percentage = fee_share_percentage;
-    fee_key_account.tier = tier;
-    fee_key_account.last_claim_timestamp = current_timestamp;
-    fee_key_account.total_claimed_amount = 0;
-    
-    // Создание NFT с использованием Metaplex
-    create_nft(
-        ctx.accounts.metaplex_program.to_account_info(),
-        ctx.accounts.mint.to_account_info(),
-        ctx.accounts.token_account.to_account_info(),
-        ctx.accounts.mint_authority.to_account_info(),
-        ctx.accounts.rent.to_account_info(),
-        ctx.accounts.system_program.to_account_info(),
-        ctx.accounts.token_program.to_account_info(),
-        ctx.accounts.metadata_account.to_account_info(),
-        ctx.accounts.edition_account.to_account_info(),
-        format!("VC/VG Fee Key #{}", fee_key_account.key()),
-        "VCFK",
-        format!("Этот NFT дает право на получение {}% комиссий, генерируемых в экосистеме VC/VG.", fee_share_percentage),
-        generate_nft_uri(locked_lp_amount, tier),
-        vec![
-            ("locked_lp_amount".to_string(), locked_lp_amount.to_string()),
-            ("lock_timestamp".to_string(), current_timestamp.to_string()),
-            ("fee_share_percentage".to_string(), fee_share_percentage.to_string()),
-            ("tier".to_string(), get_tier_name(tier)),
-        ],
-    )?
-    
-    Ok(())
-}
-```
+Процесс создания NFT Fee Key включает:
+- Определение уровня NFT в зависимости от количества заблокированных LP токенов
+- Расчет множителя в зависимости от уровня
+- Определение доли в пуле комиссий
+- Инициализацию аккаунта NFT Fee Key
+- Создание NFT с использованием Metaplex с указанием соответствующих метаданных
 
 ### Сбор вознаграждения
 
-```rust
-pub fn claim_fee_rewards(
-    ctx: Context<ClaimFeeRewards>,
-) -> Result<()> {
-    let fee_key_account = &mut ctx.accounts.fee_key_account;
-    let fee_distribution_state = &mut ctx.accounts.fee_distribution_state;
-    let current_timestamp = Clock::get()?.unix_timestamp;
-    
-    // Проверка владельца NFT
-    require_keys_eq!(
-        fee_key_account.owner,
-        ctx.accounts.owner.key(),
-        ErrorCode::NotAuthorized
-    );
-    
-    // Расчет накопленного вознаграждения
-    let accumulated_fees = fee_distribution_state.total_fees_collected_since_last_distribution;
-    let user_share = accumulated_fees as f64 * fee_key_account.fee_share_percentage / 100.0;
-    let reward_amount = user_share as u64;
-    
-    // Перевод вознаграждения пользователю
-    let seeds = &[
-        b"fee_distribution".as_ref(),
-        &[fee_distribution_state.bump],
-    ];
-    let signer = &[&seeds[..]]; 
-    
-    let cpi_accounts = Transfer {
-        from: ctx.accounts.fee_vault.to_account_info(),
-        to: ctx.accounts.user_sol_account.to_account_info(),
-        authority: ctx.accounts.fee_distribution_state.to_account_info(),
-    };
-    
-    let cpi_program = ctx.accounts.system_program.to_account_info();
-    let cpi_ctx = CpiContext::new_with_signer(cpi_program, cpi_accounts, signer);
-    
-    transfer(cpi_ctx, reward_amount)?;
-    
-    // Обновление состояния
-    fee_key_account.last_claim_timestamp = current_timestamp;
-    fee_key_account.total_claimed_amount += reward_amount;
-    fee_distribution_state.total_fees_distributed += reward_amount;
-    
-    Ok(())
-}
-```
+Процесс сбора вознаграждения включает:
+- Проверку владения NFT Fee Key
+- Расчет накопленного вознаграждения на основе доли в пуле комиссий
+- Перевод вознаграждения на кошелек пользователя
+- Обновление состояния аккаунта NFT Fee Key и хранилища распределения комиссий
 
 ### Обновление доли в пуле комиссий
 
-При изменении общего количества заблокированных LP токенов (например, когда кто-то блокирует новые LP токены), необходимо пересчитать доли всех держателей NFT Fee Key. Это делается через механизм периодического обновления.
-
-```rust
-pub fn update_fee_shares(
-    ctx: Context<UpdateFeeShares>,
-) -> Result<()> {
-    let fee_distribution_state = &mut ctx.accounts.fee_distribution_state;
-    let current_timestamp = Clock::get()?.unix_timestamp;
-    
-    // Вычисление общего количества взвешенных LP токенов
-    let total_weighted_locked_lp = calculate_total_weighted_locked_lp(ctx.accounts.fee_keys_iterator.to_account_info())?;
-    
-    // Обновление общего количества взвешенных LP токенов
-    fee_distribution_state.total_weighted_locked_lp = total_weighted_locked_lp;
-    fee_distribution_state.last_update_timestamp = current_timestamp;
-    
-    // Обновление долей для каждого NFT Fee Key
-    let fee_keys = get_all_fee_keys(ctx.accounts.fee_keys_iterator.to_account_info())?;
-    
-    for fee_key in fee_keys {
-        let tier_multiplier = match fee_key.tier {
-            1 => 1.0,
-            2 => 1.2,
-            3 => 1.5,
-            4 => 2.0,
-            _ => 1.0,
-        };
-        
-        let weighted_amount = fee_key.locked_lp_amount as f64 * tier_multiplier;
-        let fee_share_percentage = weighted_amount / total_weighted_locked_lp * 100.0;
-        
-        update_fee_key_share(fee_key.key(), fee_share_percentage)?;
-    }
-    
-    Ok(())
-}
-```
+При изменении общего количества заблокированных LP токенов (например, когда кто-то блокирует новые LP токены), необходимо пересчитать доли всех держателей NFT Fee Key. Это делается через механизм периодического обновления, который включает:
+- Вычисление общего количества взвешенных LP токенов
+- Обновление общего количества взвешенных LP токенов в хранилище
+- Пересчет долей для каждого NFT Fee Key на основе нового общего количества
 
 ## Экономический механизм
 

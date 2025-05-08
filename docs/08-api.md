@@ -8,15 +8,6 @@
 
 ### VC Token API
 
-```rust
-pub fn initialize(ctx: Context<Initialize>, name: String, symbol: String, decimals: u8) -> Result<()>
-pub fn mint_to(ctx: Context<MintTo>, amount: u64) -> Result<()>
-pub fn transfer(ctx: Context<Transfer>, amount: u64) -> Result<()>
-pub fn burn(ctx: Context<Burn>, amount: u64) -> Result<()>
-pub fn approve(ctx: Context<Approve>, amount: u64) -> Result<()>
-pub fn revoke(ctx: Context<Revoke>) -> Result<()>
-```
-
 #### Инструкции
 
 | Функция | Описание | Параметры |
@@ -30,14 +21,6 @@ pub fn revoke(ctx: Context<Revoke>) -> Result<()>
 
 ### VG Token API
 
-```rust
-pub fn initialize(ctx: Context<Initialize>, name: String, symbol: String, decimals: u8, tax_rate: u8) -> Result<()>
-pub fn mint_to(ctx: Context<MintTo>, amount: u64) -> Result<()>
-pub fn transfer(ctx: Context<Transfer>, amount: u64) -> Result<()>
-pub fn update_tax_parameters(ctx: Context<UpdateTaxParameters>, new_parameters: TaxParametersArgs) -> Result<()>
-pub fn distribute_tax(ctx: Context<DistributeTax>, tax_amount: u64) -> Result<()>
-```
-
 #### Инструкции
 
 | Функция | Описание | Параметры |
@@ -50,11 +33,6 @@ pub fn distribute_tax(ctx: Context<DistributeTax>, tax_amount: u64) -> Result<()
 
 ### Burn and Earn API
 
-```rust
-pub fn convert_vc_to_lp_and_lock(ctx: Context<ConvertVcToLpAndLock>, vc_amount: u64) -> Result<()>
-pub fn calculate_expected_vg(ctx: Context<CalculateVG>, vc_amount: u64) -> Result<u64>
-```
-
 #### Инструкции
 
 | Функция | Описание | Параметры |
@@ -63,12 +41,6 @@ pub fn calculate_expected_vg(ctx: Context<CalculateVG>, vc_amount: u64) -> Resul
 | `calculate_expected_vg` | Расчет ожидаемого количества VG токенов | `vc_amount`: Количество VC токенов |
 
 ### VC Staking API
-
-```rust
-pub fn stake_vc(ctx: Context<StakeVC>) -> Result<()>
-pub fn unstake_vc(ctx: Context<UnstakeVC>) -> Result<()>
-pub fn get_nft_booster_info(ctx: Context<GetNFTBoosterInfo>, nft_mint: Pubkey) -> Result<NFTBoosterInfo>
-```
 
 #### Инструкции
 
@@ -79,13 +51,6 @@ pub fn get_nft_booster_info(ctx: Context<GetNFTBoosterInfo>, nft_mint: Pubkey) -
 | `get_nft_booster_info` | Получение информации о NFT-бустере | `nft_mint`: Адрес NFT |
 
 ### VG Staking API
-
-```rust
-pub fn stake_vg(ctx: Context<StakeVG>, amount: u64, nft_booster: Option<Pubkey>) -> Result<()>
-pub fn unstake_vg(ctx: Context<UnstakeVG>) -> Result<()>
-pub fn calculate_staking_period(ctx: Context<CalculateStakingPeriod>, amount: u64, has_nft_booster: bool) -> Result<u64>
-pub fn apply_nft_booster(ctx: Context<ApplyNftBooster>, vg_staking_account: Pubkey) -> Result<()>
-```
 
 #### Инструкции
 
@@ -98,12 +63,6 @@ pub fn apply_nft_booster(ctx: Context<ApplyNftBooster>, vg_staking_account: Pubk
 
 ### NFT Fee Key API
 
-```rust
-pub fn create_fee_key(ctx: Context<CreateFeeKey>, locked_lp_amount: u64) -> Result<()>
-pub fn claim_fee_rewards(ctx: Context<ClaimFeeRewards>) -> Result<()>
-pub fn update_fee_shares(ctx: Context<UpdateFeeShares>) -> Result<()>
-```
-
 #### Инструкции
 
 | Функция | Описание | Параметры |
@@ -113,15 +72,6 @@ pub fn update_fee_shares(ctx: Context<UpdateFeeShares>) -> Result<()>
 | `update_fee_shares` | Обновление долей в пуле комиссий | - |
 
 ### DAO API
-
-```rust
-pub fn create_dao_realm(ctx: Context<CreateDaoRealm>, name: String, min_voting_tokens: u64, min_proposal_tokens: u64) -> Result<()>
-pub fn create_proposal(ctx: Context<CreateProposal>, name: String, description: String, proposal_type: u8, parameters: Vec<ProposalParameter>) -> Result<()>
-pub fn cast_vote(ctx: Context<CastVote>, vote: u8) -> Result<()>
-pub fn execute_proposal(ctx: Context<ExecuteProposal>) -> Result<()>
-pub fn fund_treasury(ctx: Context<FundTreasury>, amount: u64) -> Result<()>
-pub fn spend_treasury_funds(ctx: Context<SpendTreasuryFunds>, amount: u64, recipient: Pubkey, purpose: String) -> Result<()>
-```
 
 #### Инструкции
 
@@ -138,398 +88,52 @@ pub fn spend_treasury_funds(ctx: Context<SpendTreasuryFunds>, amount: u64, recip
 
 ### Основные типы
 
-```rust
-#[derive(AnchorSerialize, AnchorDeserialize, Clone, Copy, Debug)]
-pub enum ProposalStatus {
-    Draft,
-    Voting,
-    Succeeded,
-    Failed,
-    Executing,
-    Executed,
-    Cancelled,
-}
-
-#[derive(AnchorSerialize, AnchorDeserialize, Clone, Debug)]
-pub struct ProposalParameter {
-    pub name: String,
-    pub value_type: u8,  // 1 - u64, 2 - String, 3 - bool, 4 - Pubkey
-    pub value: Vec<u8>,  // Serialized value
-}
-
-#[derive(AnchorSerialize, AnchorDeserialize, Clone, Debug)]
-pub struct NFTBoosterInfo {
-    pub owner: Pubkey,
-    pub boost_multiplier: f64,
-    pub status: u8,       // 1 - Active, 2 - Used, 3 - Expired
-    pub vg_staking_account: Option<Pubkey>,
-}
-
-#[derive(AnchorSerialize, AnchorDeserialize, Clone, Debug)]
-pub struct TaxParametersArgs {
-    pub tax_rate: Option<u8>,
-    pub fee_distribution_percentage: Option<u8>,
-    pub buyback_percentage: Option<u8>,
-    pub dao_percentage: Option<u8>,
-}
-
-#[derive(AnchorSerialize, AnchorDeserialize, Clone, Debug)]
-pub struct EmergencyActionParameter {
-    pub name: String,
-    pub value_type: u8,
-    pub value: Vec<u8>,
-}
-```
+- **ProposalStatus**: Статус предложения (Draft, Voting, Succeeded, Failed, Executing, Executed, Cancelled)
+- **ProposalParameter**: Параметр предложения (name, value_type, value)
+- **NFTBoosterInfo**: Информация о NFT-бустере (owner, boost_multiplier, status, vg_staking_account)
+- **TaxParametersArgs**: Параметры налогообложения (tax_rate, fee_distribution_percentage, buyback_percentage, dao_percentage)
+- **EmergencyActionParameter**: Параметр экстренного действия (name, value_type, value)
 
 ## API для клиентов (JavaScript/TypeScript)
 
 ### Инициализация клиента
 
-```typescript
-import { Connection, PublicKey } from '@solana/web3.js';
-import { AnchorProvider, Program } from '@project-serum/anchor';
-import { VcVgEcosystem } from './types/vc_vg_ecosystem';
-
-// Инициализация соединения с Solana
-const connection = new Connection('https://api.mainnet-beta.solana.com');
-
-// Инициализация провайдера
-const provider = new AnchorProvider(connection, wallet, {});
-
-// Инициализация программ
-const vcTokenProgram = new Program<VcVgEcosystem>(
-  idl, 
-  new PublicKey('VC_TOKEN_PROGRAM_ID'),
-  provider
-);
-
-const vgTokenProgram = new Program<VcVgEcosystem>(
-  idl, 
-  new PublicKey('VG_TOKEN_PROGRAM_ID'),
-  provider
-);
-
-const burnAndEarnProgram = new Program<VcVgEcosystem>(
-  idl, 
-  new PublicKey('BURN_AND_EARN_PROGRAM_ID'),
-  provider
-);
-
-const vcStakingProgram = new Program<VcVgEcosystem>(
-  idl, 
-  new PublicKey('VC_STAKING_PROGRAM_ID'),
-  provider
-);
-
-const vgStakingProgram = new Program<VcVgEcosystem>(
-  idl, 
-  new PublicKey('VG_STAKING_PROGRAM_ID'),
-  provider
-);
-
-const nftFeeKeyProgram = new Program<VcVgEcosystem>(
-  idl, 
-  new PublicKey('NFT_FEE_KEY_PROGRAM_ID'),
-  provider
-);
-
-const daoProgram = new Program<VcVgEcosystem>(
-  idl, 
-  new PublicKey('DAO_PROGRAM_ID'),
-  provider
-);
-```
-
-### Примеры использования API
-
-#### Конвертация VC в LP токены
-
-```typescript
-// Конвертация VC в LP токены с постоянной блокировкой
-async function convertVcToLpAndLock(vcAmount: number) {
-  const tx = await burnAndEarnProgram.methods
-    .convertVcToLpAndLock(new BN(vcAmount))
-    .accounts({
-      user: provider.wallet.publicKey,
-      userVcTokenAccount: userVcTokenAccountAddress,
-      userVgTokenAccount: userVgTokenAccountAddress,
-      userLpTokenAccount: userLpTokenAccountAddress,
-      swapVcTokenAccount: swapVcTokenAccountAddress,
-      liquidityVcTokenAccount: liquidityVcTokenAccountAddress,
-      permanentLockVault: permanentLockVaultAddress,
-      vgMint: vgMintAddress,
-      vgMintAuthority: vgMintAuthorityAddress,
-      burnAndEarnStats: burnAndEarnStatsAddress,
-      feeKeyMint: feeKeyMintAddress,
-      feeKeyAccount: feeKeyAccountAddress,
-      tokenProgram: TOKEN_PROGRAM_ID,
-      systemProgram: anchor.web3.SystemProgram.programId,
-      rent: anchor.web3.SYSVAR_RENT_PUBKEY,
-      clock: anchor.web3.SYSVAR_CLOCK_PUBKEY,
-      // ... другие необходимые аккаунты
-    })
-    .rpc();
-    
-  console.log(`Транзакция выполнена: ${tx}`);
-  return tx;
-}
-
-// Расчет ожидаемого количества VG токенов
-async function calculateExpectedVG(vcAmount: number) {
-  const result = await burnAndEarnProgram.methods
-    .calculateExpectedVg(new BN(vcAmount))
-    .accounts({
-      // ... необходимые аккаунты
-    })
-    .view();
-    
-  console.log(`Ожидаемое количество VG токенов: ${result.toString()}`);
-  return result;
-}
-```
-
-#### Стейкинг VC токенов
-
-```typescript
-// Стейкинг VC токенов и создание NFT-бустера
-async function stakeVC() {
-  const tx = await vcStakingProgram.methods
-    .stakeVc()
-    .accounts({
-      owner: provider.wallet.publicKey,
-      userVcTokenAccount: userVcTokenAccountAddress,
-      vcVault: vcVaultAddress,
-      vcStakingAccount: vcStakingAccountAddress,
-      nftBoosterAccount: nftBoosterAccountAddress,
-      nftMint: nftMintAddress,
-      nftTokenAccount: nftTokenAccountAddress,
-      mintAuthority: mintAuthorityAddress,
-      metadataAccount: metadataAccountAddress,
-      editionAccount: editionAccountAddress,
-      metaplexProgram: METAPLEX_PROGRAM_ID,
-      tokenProgram: TOKEN_PROGRAM_ID,
-      systemProgram: anchor.web3.SystemProgram.programId,
-      rent: anchor.web3.SYSVAR_RENT_PUBKEY,
-      clock: anchor.web3.SYSVAR_CLOCK_PUBKEY,
-    })
-    .rpc();
-    
-  console.log(`Транзакция выполнена: ${tx}`);
-  return tx;
-}
-
-// Вывод VC токенов после окончания периода стейкинга
-async function unstakeVC() {
-  const tx = await vcStakingProgram.methods
-    .unstakeVc()
-    .accounts({
-      owner: provider.wallet.publicKey,
-      userVcTokenAccount: userVcTokenAccountAddress,
-      vcVault: vcVaultAddress,
-      vcStakingAccount: vcStakingAccountAddress,
-      nftBoosterAccount: nftBoosterAccountAddress,
-      vcVaultState: vcVaultStateAddress,
-      tokenProgram: TOKEN_PROGRAM_ID,
-      clock: anchor.web3.SYSVAR_CLOCK_PUBKEY,
-    })
-    .rpc();
-    
-  console.log(`Транзакция выполнена: ${tx}`);
-  return tx;
-}
-```
-
-#### Стейкинг VG токенов
-
-```typescript
-// Стейкинг VG токенов с NFT-бустером
-async function stakeVG(amount: number, nftBooster?: PublicKey) {
-  const tx = await vgStakingProgram.methods
-    .stakeVg(new BN(amount), nftBooster || null)
-    .accounts({
-      owner: provider.wallet.publicKey,
-      userVgTokenAccount: userVgTokenAccountAddress,
-      vgVault: vgVaultAddress,
-      taxVault: taxVaultAddress,
-      vgStakingAccount: vgStakingAccountAddress,
-      vgStakingState: vgStakingStateAddress,
-      nftBoosterAccount: nftBooster ? nftBoosterAccountAddress : null,
-      tokenProgram: TOKEN_PROGRAM_ID,
-      systemProgram: anchor.web3.SystemProgram.programId,
-      rent: anchor.web3.SYSVAR_RENT_PUBKEY,
-      clock: anchor.web3.SYSVAR_CLOCK_PUBKEY,
-      // ... другие необходимые аккаунты
-    })
-    .rpc();
-    
-  console.log(`Транзакция выполнена: ${tx}`);
-  return tx;
-}
-
-// Расчет периода стейкинга
-async function calculateStakingPeriod(amount: number, hasNftBooster: boolean) {
-  const result = await vgStakingProgram.methods
-    .calculateStakingPeriod(new BN(amount), hasNftBooster)
-    .view();
-    
-  console.log(`Период стейкинга: ${result.toString()} дней`);
-  return result;
-}
-```
+Для работы с контрактами экосистемы VC/VG токенов клиенты могут использовать JavaScript/TypeScript API, который взаимодействует с соответствующими программами на Solana. Клиентский API включает инициализацию соединения с Solana, инициализацию провайдера и программ для каждого компонента экосистемы.
 
 ## Обработка ошибок
 
 ### Коды ошибок
 
-```rust
-#[error_code]
-pub enum ErrorCode {
-    #[msg("Insufficient VC balance")]
-    InsufficientVcBalance,
-    
-    #[msg("Insufficient VG balance")]
-    InsufficientVgBalance,
-    
-    #[msg("Staking period not ended")]
-    StakingPeriodNotEnded,
-    
-    #[msg("Already unstaked")]
-    AlreadyUnstaked,
-    
-    #[msg("Not authorized")]
-    NotAuthorized,
-    
-    #[msg("Booster not active")]
-    BoosterNotActive,
-    
-    #[msg("Booster already used")]
-    BoosterAlreadyUsed,
-    
-    #[msg("Booster account not provided")]
-    BoosterAccountNotProvided,
-    
-    #[msg("Invalid booster account")]
-    InvalidBoosterAccount,
-    
-    #[msg("Proposal not succeeded")]
-    ProposalNotSucceeded,
-    
-    #[msg("Proposal already executed")]
-    ProposalAlreadyExecuted,
-    
-    #[msg("Unknown proposal type")]
-    UnknownProposalType,
-    
-    #[msg("Unknown action type")]
-    UnknownActionType,
-    
-    #[msg("Insufficient signatures")]
-    InsufficientSignatures,
-    
-    #[msg("Tax rate too high")]
-    TaxRateTooHigh,
-}
-```
-
-### Обработка ошибок в клиентском коде
-
-```typescript
-try {
-  await stakeVG(1000);
-  console.log('Стейкинг успешно выполнен');
-} catch (error) {
-  if (error.message.includes('InsufficientVgBalance')) {
-    console.error('Недостаточно VG токенов для стейкинга');
-  } else if (error.message.includes('BoosterNotActive')) {
-    console.error('NFT-бустер не активен');
-  } else {
-    console.error(`Произошла ошибка: ${error.message}`);
-  }
-}
-```
+- **InsufficientVcBalance**: Недостаточный баланс VC токенов
+- **InsufficientVgBalance**: Недостаточный баланс VG токенов
+- **StakingPeriodNotEnded**: Период стейкинга не закончился
+- **AlreadyUnstaked**: Уже выведены токены
+- **NotAuthorized**: Не авторизован
+- **BoosterNotActive**: Бустер не активен
+- **BoosterAlreadyUsed**: Бустер уже использован
+- **BoosterAccountNotProvided**: Аккаунт бустера не предоставлен
+- **InvalidBoosterAccount**: Недействительный аккаунт бустера
+- **ProposalNotSucceeded**: Предложение не принято
+- **ProposalAlreadyExecuted**: Предложение уже выполнено
+- **UnknownProposalType**: Неизвестный тип предложения
+- **UnknownActionType**: Неизвестный тип действия
+- **InsufficientSignatures**: Недостаточно подписей
+- **TaxRateTooHigh**: Слишком высокая налоговая ставка
 
 ## События (Events)
 
-```rust
-#[event]
-pub struct VcTokenTransferred {
-    pub from: Pubkey,
-    pub to: Pubkey,
-    pub amount: u64,
-}
-
-#[event]
-pub struct VgTokenTransferred {
-    pub from: Pubkey,
-    pub to: Pubkey,
-    pub amount: u64,
-    pub tax_amount: u64,
-}
-
-#[event]
-pub struct LpTokensLocked {
-    pub user: Pubkey,
-    pub lp_amount: u64,
-    pub vg_amount: u64,
-    pub fee_key_mint: Pubkey,
-}
-
-#[event]
-pub struct VcStaked {
-    pub user: Pubkey,
-    pub amount: u64,
-    pub nft_mint: Pubkey,
-    pub unlock_timestamp: i64,
-}
-
-#[event]
-pub struct VgStaked {
-    pub user: Pubkey,
-    pub amount: u64,
-    pub has_nft_booster: bool,
-    pub unlock_timestamp: i64,
-    pub is_auto_reinvestment: bool,
-}
-
-#[event]
-pub struct FeeRewardsClaimed {
-    pub user: Pubkey,
-    pub fee_key_mint: Pubkey,
-    pub amount: u64,
-}
-
-#[event]
-pub struct ProposalCreated {
-    pub proposer: Pubkey,
-    pub proposal: Pubkey,
-    pub name: String,
-    pub proposal_type: u8,
-}
-
-#[event]
-pub struct ProposalExecuted {
-    pub proposal: Pubkey,
-    pub executor: Pubkey,
-    pub executed_at: i64,
-}
-```
+- **VcTokenTransferred**: Перевод VC токенов (from, to, amount)
+- **VgTokenTransferred**: Перевод VG токенов (from, to, amount, tax_amount)
+- **LpTokensLocked**: Блокировка LP токенов (user, lp_amount, vg_amount, fee_key_mint)
+- **VcStaked**: Стейкинг VC токенов (user, amount, nft_mint, unlock_timestamp)
+- **VgStaked**: Стейкинг VG токенов (user, amount, has_nft_booster, unlock_timestamp, is_auto_reinvestment)
+- **FeeRewardsClaimed**: Сбор вознаграждений за комиссии (user, fee_key_mint, amount)
+- **ProposalCreated**: Создание предложения (proposer, proposal, name, proposal_type)
+- **ProposalExecuted**: Выполнение предложения (proposal, executor, executed_at)
 
 ## Мониторинг событий
 
-```typescript
-// Подписка на события
-const eventListener = vgStakingProgram.addEventListener('VgStaked', (event) => {
-  console.log('Новый стейкинг VG токенов:');
-  console.log(`Пользователь: ${event.user.toString()}`);
-  console.log(`Количество: ${event.amount.toString()}`);
-  console.log(`NFT-бустер: ${event.has_nft_booster ? 'Да' : 'Нет'}`);
-  console.log(`Дата разблокировки: ${new Date(event.unlock_timestamp * 1000).toLocaleString()}`);
-  console.log(`Автореинвестирование: ${event.is_auto_reinvestment ? 'Да' : 'Нет'}`);
-});
-
-// Отписка от событий
-await vgStakingProgram.removeEventListener(eventListener);
-```
+Клиенты могут подписываться на события, которые эмитируются смарт-контрактами экосистемы, для получения уведомлений о различных действиях, происходящих в системе. Это позволяет реагировать на изменения в реальном времени и обновлять пользовательский интерфейс соответствующим образом.
 
 ## Заключение
 

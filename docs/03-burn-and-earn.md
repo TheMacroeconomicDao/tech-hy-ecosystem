@@ -61,29 +61,7 @@ VG = LP * C * (1 + B * log10(LP/LP_min))
 
 ### Реализация постоянной блокировки
 
-Постоянная блокировка LP токенов реализуется через специальный аккаунт PermanentLockVault:
-
-```rust
-#[account]
-pub struct PermanentLockVault {
-    pub authority: Pubkey,
-    pub lp_mint: Pubkey,
-    pub lp_token_account: Pubkey,
-    pub total_locked_amount: u64,
-    pub lock_count: u64,
-    pub bump: u8,
-}
-
-#[account]
-pub struct UserLockInfo {
-    pub user: Pubkey,
-    pub locked_amount: u64,
-    pub lock_timestamp: i64,
-    pub vg_received: u64,
-    pub fee_key_mint: Pubkey,
-    pub bump: u8,
-}
-```
+Постоянная блокировка LP токенов реализуется через специальный аккаунт PermanentLockVault и аккаунты для отслеживания информации о блокировках пользователей (UserLockInfo).
 
 Аккаунт PermanentLockVault создается как PDA (Program Derived Address) с известными seed-значениями и без возможности подписи транзакций на вывод токенов. Это обеспечивает невозможность вывода LP токенов из аккаунта.
 
@@ -116,60 +94,10 @@ pub struct UserLockInfo {
 
 ### Использование Raydium SDK
 
-Для интеграции с Raydium используется официальный Raydium SDK, который предоставляет функции для взаимодействия с пулами ликвидности и AMM:
+Для интеграции с Raydium используется официальный Raydium SDK, который предоставляет функции для взаимодействия с пулами ликвидности и AMM. Основные функции включают:
 
-```rust
-use raydium_sdk::{amm, liquidity_pool};
-
-// Функция для обмена VC на SOL через Raydium AMM
-pub fn swap_vc_to_sol(
-    ctx: Context<SwapVcToSol>,
-    amount_in: u64,
-) -> Result<u64> {
-    // Расчет минимального количества SOL, которое должно быть получено
-    // Защита от проскальзывания цены
-    let minimum_amount_out = calculate_minimum_amount_out(amount_in, 0.005)?; // 0.5% slippage
-    
-    // Выполнение свопа через Raydium AMM
-    let swap_instruction = amm::swap_instruction(
-        // Параметры инструкции
-    );
-    
-    // Выполнение инструкции
-    solana_program::program::invoke(
-        &swap_instruction,
-        &account_infos,
-    )?;
-    
-    // Получение фактического количества SOL после свопа
-    let sol_amount = ctx.accounts.user_destination_token_account.amount;
-    
-    Ok(sol_amount)
-}
-
-// Функция для создания LP токена через Raydium
-pub fn add_liquidity(
-    ctx: Context<AddLiquidity>,
-    vc_amount: u64,
-    sol_amount: u64,
-) -> Result<u64> {
-    // Создание инструкции для добавления ликвидности
-    let add_liquidity_instruction = liquidity_pool::add_liquidity_instruction(
-        // Параметры инструкции
-    );
-    
-    // Выполнение инструкции
-    solana_program::program::invoke(
-        &add_liquidity_instruction,
-        &account_infos,
-    )?;
-    
-    // Получение фактического количества LP токенов после добавления ликвидности
-    let lp_amount = ctx.accounts.user_lp_token_account.amount;
-    
-    Ok(lp_amount)
-}
-```
+- Обмен VC токенов на SOL через Raydium AMM с расчетом минимального выхода для защиты от проскальзывания цены
+- Создание LP токенов путем добавления ликвидности в пул VC/SOL
 
 ### Атомарная транзакция
 
@@ -177,100 +105,15 @@ pub fn add_liquidity(
 
 ## Полная реализация механизма "Burn and Earn"
 
-```rust
-pub fn convert_vc_to_lp_and_lock(
-    ctx: Context<ConvertVcToLpAndLock>,
-    vc_amount: u64,
-) -> Result<()> {
-    // Проверка баланса VC токенов
-    require!(
-        ctx.accounts.user_vc_token_account.amount >= vc_amount,
-        ErrorCode::InsufficientVcBalance
-    );
-    
-    // Разделение VC токенов на две равные части
-    let half_vc_amount = vc_amount / 2;
-    
-    // Перевод первой половины VC токенов на аккаунт для свопа
-    let transfer_to_swap_ctx = CpiContext::new(
-        ctx.accounts.token_program.to_account_info(),
-        Transfer {
-            from: ctx.accounts.user_vc_token_account.to_account_info(),
-            to: ctx.accounts.swap_vc_token_account.to_account_info(),
-            authority: ctx.accounts.user_authority.to_account_info(),
-        },
-    );
-    token::transfer(transfer_to_swap_ctx, half_vc_amount)?;
-    
-    // Обмен VC на SOL через Raydium
-    let sol_amount = swap_vc_to_sol(
-        ctx.accounts.swap_context.clone(),
-        half_vc_amount,
-    )?;
-    
-    // Перевод второй половины VC токенов на аккаунт для добавления ликвидности
-    let transfer_to_liquidity_ctx = CpiContext::new(
-        ctx.accounts.token_program.to_account_info(),
-        Transfer {
-            from: ctx.accounts.user_vc_token_account.to_account_info(),
-            to: ctx.accounts.liquidity_vc_token_account.to_account_info(),
-            authority: ctx.accounts.user_authority.to_account_info(),
-        },
-    );
-    token::transfer(transfer_to_liquidity_ctx, half_vc_amount)?;
-    
-    // Добавление ликвидности и получение LP токенов
-    let lp_amount = add_liquidity(
-        ctx.accounts.liquidity_context.clone(),
-        half_vc_amount,
-        sol_amount,
-    )?;
-    
-    // Перевод LP токенов на аккаунт с постоянной блокировкой
-    let transfer_to_lock_ctx = CpiContext::new(
-        ctx.accounts.token_program.to_account_info(),
-        Transfer {
-            from: ctx.accounts.user_lp_token_account.to_account_info(),
-            to: ctx.accounts.permanent_lock_vault.to_account_info(),
-            authority: ctx.accounts.user_authority.to_account_info(),
-        },
-    );
-    token::transfer(transfer_to_lock_ctx, lp_amount)?;
-    
-    // Расчет количества VG токенов для выдачи
-    let vg_amount = calculate_vg_amount(lp_amount)?;
-    
-    // Минтинг VG токенов пользователю
-    let mint_vg_ctx = CpiContext::new_with_signer(
-        ctx.accounts.token_program.to_account_info(),
-        MintTo {
-            mint: ctx.accounts.vg_mint.to_account_info(),
-            to: ctx.accounts.user_vg_token_account.to_account_info(),
-            authority: ctx.accounts.vg_mint_authority.to_account_info(),
-        },
-        &[&[
-            b"vg_mint_authority".as_ref(),
-            &[ctx.accounts.vg_mint_authority_bump],
-        ]],
-    );
-    token::mint_to(mint_vg_ctx, vg_amount)?;
-    
-    // Создание NFT Fee Key
-    create_fee_key(
-        ctx.accounts.fee_key_context.clone(),
-        lp_amount,
-    )?;
-    
-    // Обновление статистики
-    let stats = &mut ctx.accounts.burn_and_earn_stats;
-    stats.total_vc_converted += vc_amount;
-    stats.total_lp_locked += lp_amount;
-    stats.total_vg_minted += vg_amount;
-    stats.total_transactions += 1;
-    
-    Ok(())
-}
-```
+Полная реализация включает следующие ключевые этапы:
+- Проверка баланса VC токенов пользователя
+- Разделение VC токенов на две равные части
+- Обмен первой половины на SOL через Raydium
+- Добавление второй половины VC и полученного SOL в пул ликвидности
+- Блокировка полученных LP токенов в специальном хранилище
+- Расчет и минтинг VG токенов пользователю
+- Создание NFT Fee Key для пользователя
+- Обновление статистики механизма "Burn and Earn"
 
 ## Обработка ошибок и граничных случаев
 
