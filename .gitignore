@@ -1,0 +1,76 @@
+# Build artifacts
+/target/
+/dist/
+/build/
+/node_modules/
+lib/
+lib.target/
+
+# Rust
+**/*.rs.bk
+*.so
+*.o
+*.a
+*.rlib
+*.dylib
+*.dll
+*.lib
+Cargo.lock
+
+# Solana
+solana-program/target/
+
+# IDEs and editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+*.code-workspace
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Keys and secrets
+*.keypair
+*.json
+!package*.json
+!tsconfig*.json
+!solana-*.json
+!anchor.json
+!Cargo.toml
+
+# Test coverage
+/coverage/
+.nyc_output/
+
+# Temporary files
+.tmp/
+*.tmp
+*.temp
