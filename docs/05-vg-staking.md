@@ -2,7 +2,7 @@
 
 ## Обзор стейкинга VG токенов
 
-Стейкинг VG токенов - это ключевой механизм участия в управлении экосистемой TECH HY, обеспечивающий доступ к различным уровням DAO. Период и условия стейкинга зависят от количества VG токенов и наличия NFT-бустеров.
+Стейкинг VG токенов - это ключевой механизм участия в управлении экосистемой TECH HY, обеспечивающий доступ к различным уровням DAO. Период и условия стейкинга зависят от количества VG токенов и наличия NFT-бустеров из коллекции "Investor's Hand".
 
 ## Уровни стейкинга и DAO (тиры)
 
@@ -16,9 +16,11 @@
 | Founder         | 1500-4000 VG                     | 60 дней          |
 | Expert          | 4000-25000 VG                    | 90 дней          |
 | Angel           | обладатель Angel Investor NFT    | Безлимитный      |
-| Investor        | 25000-50000 VG + Iron Hand NFT   | 365 дней         |
+| Investor        | 25000-50000 VG + Steel Hand NFT  | 365 дней         |
 | Launchpad Master| 50000-70000 VG + Titanium Hand   | 365 дней         |
 | Partner         | более 70000 VG + Diamond Hand    | 365 дней         |
+
+> Подробная информация о NFT-бустерах содержится в документах [NFT-коллекция "Investor's Hand"](./investors-hand-nft.md) и [Стейкинг VC токенов и NFT-бустеры](./04-vc-staking.md).
 
 ### Особенности стейкинга различных уровней
 
@@ -54,6 +56,24 @@
 - Ежедневный автокомпаундинг
 - Доступны все привилегии высших уровней
 
+## Влияние NFT-бустеров на стейкинг VG
+
+NFT-бустеры из коллекции "Investor's Hand" оказывают следующее влияние на стейкинг VG токенов:
+
+| Уровень NFT    | Бонус к стейкингу VG    | Особые преимущества                      |
+|----------------|-------------------------|------------------------------------------|
+| Paper Hand     | -10% к периоду (1.1x)   | -                                        |
+| Wooden Hand    | -25% к периоду (1.25x)  | -                                        |
+| Steel Hand     | -50% к периоду (1.5x)   | Доступ к уровню Investor DAO             |
+| Titanium Hand  | -75% к периоду (1.75x)  | Доступ к уровню Launchpad Master DAO     |
+| Diamond Hand   | -100% к периоду (2.0x)  | Доступ к уровню Partner DAO              |
+| Angel NFT      | Безлимитный период      | Ежедневный автокомпаундинг               |
+
+При применении NFT-бустера к стейкингу VG:
+1. NFT-бустер привязывается к аккаунту стейкинга VG
+2. NFT отмечается как "используемый" и не может применяться к другим стейкингам
+3. После завершения стейкинга NFT автоматически деактивируется и может использоваться повторно
+
 ## Основные характеристики стейкинга VG
 
 - **Минимальное количество токенов для стейкинга**: 100 VG
@@ -73,7 +93,8 @@
    - При наличии NFT-бустера проверяется его владение и статус
 
 2. **Определение периода стейкинга**:
-   - Период определяется согласно таблице уровней DAO
+   - Базовый период определяется согласно таблице уровней DAO
+   - При наличии NFT-бустера период сокращается в зависимости от множителя
    - Необходимые NFT проверяются для высших уровней
 
 3. **Блокировка токенов**:
@@ -85,23 +106,6 @@
    - Для низших уровней настраивается автоматический анстейкинг
    - Для высших уровней (Founder и выше) доступен ранний анстейкинг
    - Для уровней Investor и выше настраивается автокомпаундинг
-
-## Формула расчета периода стейкинга (альтернативный метод)
-
-В дополнение к фиксированным периодам по тирам, существует расчетная формула для динамического периода стейкинга:
-
-```
-P = Pbase * (1 - log(A/Amin) * K1) * (1 - B * K2)
-```
-
-Где:
-- `P` - итоговый период стейкинга в днях
-- `Pbase` - базовый период (180 дней, 90 дней при автореинвестировании)
-- `A` - количество стейкаемых VG токенов
-- `Amin` - минимальное количество токенов (100 VG)
-- `K1` - коэффициент влияния размера стейка (0.15)
-- `B` - бустер-фактор от NFT (0 - без NFT, 1 - с NFT)
-- `K2` - коэффициент влияния NFT-бустера (0.25)
 
 ## Автоматическое реинвестирование
 
@@ -115,24 +119,6 @@ P = Pbase * (1 - log(A/Amin) * K1) * (1 - B * K2)
    - 70% токенов автоматически реинвестируются на новый период
    - 30% токенов доступны для вывода
    - Создается новый аккаунт стейкинга с новым периодом
-
-## Применение NFT-бустера
-
-Применение NFT-бустеров из коллекции "Investor's Hand" обеспечивает:
-
-1. **Доступ к высшим уровням DAO**:
-   - Iron Hand NFT для уровня Investor
-   - Titanium Hand NFT для уровня Launchpad Master
-   - Diamond Hand NFT для уровня Partner
-
-2. **Улучшение условий стейкинга**:
-   - Ускорение периода стейкинга
-   - Повышение доходности
-   - Доступ к автокомпаундингу
-
-3. **Особые привилегии**:
-   - Angel NFT предоставляет безлимитный стейкинг с ежедневным компаундингом
-   - High-tier NFT дают доступ к участию в управлении экосистемой
 
 ## Техническая реализация
 
@@ -164,58 +150,54 @@ pub struct VgStakingState {
 }
 ```
 
-### Функции расчета периода стейкинга и реинвестирования
+### Определение периода стейкинга по тиру с учетом NFT-бустера
 
 ```rust
-pub fn calculate_staking_period(amount: u64, has_nft_booster: bool) -> u64 {
-    let base_period: u64;
-    let min_amount: u64 = 100;
-    let k1: f64 = 0.15;
-    let k2: f64 = 0.25;
-    
-    // Проверка на автоматическое реинвестирование
-    if amount >= 10_000 {
-        base_period = 90;
+pub fn get_staking_period_by_tier(
+    amount: u64, 
+    nft_tier: Option<u8>, 
+    nft_boost_multiplier: Option<u8>
+) -> u64 {
+    // Базовый период стейкинга на основании суммы VG (тира DAO)
+    let base_period = if amount <= 100 {
+        7 // Starter
+    } else if amount <= 500 {
+        14 // Community Member
+    } else if amount <= 1500 {
+        30 // Contributor
+    } else if amount <= 4000 {
+        60 // Founder
+    } else if amount <= 25000 {
+        90 // Expert
     } else {
-        base_period = 180;
+        365 // Investor, Launchpad Master, Partner
+    };
+    
+    // Проверка на Angel NFT
+    if let Some(tier) = nft_tier {
+        if tier == 6 { // Angel Investor
+            return u64::MAX; // Безлимитный период
+        }
     }
     
-    // Расчет влияния размера стейка
-    let amount_factor = 1.0 - (amount as f64 / min_amount as f64).log10() * k1;
-    
-    // Расчет влияния NFT-бустера
-    let booster_factor = if has_nft_booster { 1.0 - k2 } else { 1.0 };
-    
-    // Расчет итогового периода
-    let period = (base_period as f64 * amount_factor * booster_factor).round() as u64;
-    
-    // Применение ограничений
-    if period < 30 {
-        return 30;
-    } else if period > 180 {
-        return 180;
+    // Применение множителя NFT-бустера
+    if let Some(multiplier) = nft_boost_multiplier {
+        let boost_factor = multiplier as f64 / 100.0;
+        let reduced_period = (base_period as f64 * (1.0 - (boost_factor - 1.0))).round() as u64;
+        
+        // Минимальный период - 1 день
+        if reduced_period < 1 {
+            return 1;
+        }
+        
+        return reduced_period;
     }
     
-    period
-}
-
-pub fn is_auto_reinvestment(amount: u64) -> bool {
-    amount >= 10_000
-}
-
-pub fn get_reinvestment_amounts(total_amount: u64) -> (u64, u64) {
-    if !is_auto_reinvestment(total_amount) {
-        return (0, total_amount);
-    }
-    
-    let reinvest_amount = (total_amount as f64 * 0.7).round() as u64;
-    let withdraw_amount = total_amount - reinvest_amount;
-    
-    (reinvest_amount, withdraw_amount)
+    base_period
 }
 ```
 
-### Функция стейкинга VG токенов
+### Функция стейкинга VG токенов с применением NFT-бустера
 
 ```rust
 pub fn stake_vg(
@@ -243,48 +225,66 @@ pub fn stake_vg(
     );
     
     // Применение NFT-бустера, если он указан
-    let has_nft_booster = false;
+    let mut has_nft_booster = false;
+    let mut nft_boost_multiplier: u8 = 0;
+    let mut nft_tier: u8 = 0;
+    
     if let Some(booster_key) = nft_booster {
-        let nft_booster_account = ctx.accounts.nft_booster_account.as_ref()
-            .ok_or(ErrorCode::BoosterAccountNotProvided)?;
-        
-        // Проверка, что указанный бустер соответствует переданному аккаунту
-        require_keys_eq!(
-            nft_booster_account.key(),
-            booster_key,
-            ErrorCode::InvalidBoosterAccount
-        );
-        
-        // Проверка владельца NFT-бустера
-        require_keys_eq!(
-            nft_booster_account.owner,
-            owner,
-            ErrorCode::NotAuthorized
-        );
-        
-        // Проверка статуса NFT-бустера
-        require!(
-            nft_booster_account.status == 1, // Active
-            ErrorCode::BoosterNotActive
-        );
-        
-        // Применение бустера
-        apply_nft_booster(
-            ctx.accounts.apply_booster_context.clone(),
-            ctx.accounts.vg_staking_account.key(),
-        )?;
-        
-        has_nft_booster = true;
+        if let Some(nft_account) = &ctx.accounts.nft_account {
+            // Проверка владельца NFT
+            require_keys_eq!(
+                nft_account.owner,
+                owner,
+                ErrorCode::NotAuthorized
+            );
+            
+            // Проверка, что NFT не используется
+            require!(
+                !nft_account.is_used_for_staking,
+                ErrorCode::NftAlreadyInUse
+            );
+            
+            // Применение NFT-бустера через CPI
+            let cpi_accounts = ApplyNftToVgStakingContext {
+                investor_hand_program: ctx.accounts.investor_hand_program.to_account_info(),
+                nft_account: nft_account.to_account_info(),
+                owner: ctx.accounts.owner.to_account_info(),
+                vg_staking_account: ctx.accounts.vg_staking_account.to_account_info(),
+                system_program: ctx.accounts.system_program.to_account_info(),
+            };
+            
+            let cpi_ctx = CpiContext::new(
+                ctx.accounts.investor_hand_program.to_account_info(),
+                cpi_accounts,
+            );
+            
+            investors_hand::cpi::apply_nft_to_vg_staking(cpi_ctx)?;
+            
+            has_nft_booster = true;
+            nft_boost_multiplier = nft_account.boost_multiplier;
+            nft_tier = nft_account.level;
+        }
     }
     
-    // Расчет периода стейкинга
-    let staking_period = calculate_staking_period(amount, has_nft_booster);
-    let unlock_timestamp = current_timestamp + staking_period * 24 * 60 * 60;
+    // Определение периода стейкинга с учетом NFT-бустера
+    let staking_period = get_staking_period_by_tier(
+        amount, 
+        if has_nft_booster { Some(nft_tier) } else { None },
+        if has_nft_booster { Some(nft_boost_multiplier) } else { None }
+    );
+    
+    let unlock_timestamp = if staking_period == u64::MAX {
+        i64::MAX // Для безлимитного периода (Angel NFT)
+    } else {
+        current_timestamp + (staking_period as i64) * 24 * 60 * 60
+    };
     
     // Проверка на автоматическое реинвестирование
-    let is_auto_reinvestment = is_auto_reinvestment(amount);
+    let is_auto_reinvestment = amount >= 10_000 * 10u64.pow(9);
     let (reinvest_amount, withdraw_amount) = if is_auto_reinvestment {
-        get_reinvestment_amounts(amount)
+        let reinvest_amount = (amount as f64 * 0.7).round() as u64;
+        let withdraw_amount = amount - reinvest_amount;
+        (reinvest_amount, withdraw_amount)
     } else {
         (0, amount)
     };
@@ -341,7 +341,7 @@ pub fn stake_vg(
 }
 ```
 
-### Функция вывода VG токенов
+### Функция вывода VG токенов и деактивации NFT-бустера
 
 ```rust
 pub fn unstake_vg(
@@ -369,6 +369,37 @@ pub fn unstake_vg(
         !vg_staking_account.is_unstaked,
         ErrorCode::AlreadyUnstaked
     );
+    
+    // Деактивация NFT-бустера, если он был использован
+    if vg_staking_account.has_nft_booster {
+        if let Some(nft_booster_key) = vg_staking_account.nft_booster {
+            let nft_account = &ctx.accounts.nft_account.ok_or(ErrorCode::NftAccountNotProvided)?;
+            
+            // Деактивация NFT-бустера через CPI
+            let cpi_accounts = DeactivateNftContext {
+                investor_hand_program: ctx.accounts.investor_hand_program.to_account_info(),
+                nft_account: nft_account.to_account_info(),
+                authority: ctx.accounts.owner.to_account_info(),
+                owner: ctx.accounts.owner.to_account_info(),
+                system_program: ctx.accounts.system_program.to_account_info(),
+            };
+            
+            let seeds = &[
+                b"vg_staking",
+                ctx.accounts.owner.key.as_ref(),
+                &[vg_staking_account.bump],
+            ];
+            let signer = &[&seeds[..]];
+            
+            let cpi_ctx = CpiContext::new_with_signer(
+                ctx.accounts.investor_hand_program.to_account_info(),
+                cpi_accounts,
+                signer,
+            );
+            
+            investors_hand::cpi::deactivate_nft(cpi_ctx)?;
+        }
+    }
     
     // Определение суммы для вывода и реинвестирования
     let withdraw_amount = if vg_staking_account.is_auto_reinvestment {
@@ -534,11 +565,11 @@ pub fn distribute_tax(
 Стейкинг VG токенов создает экономическую ценность для экосистемы через:
 
 1. **Временное сокращение предложения VG токенов**:
-   - Блокировка VG токенов на период от 30 до 180 дней снижает циркулирующее предложение
+   - Блокировка VG токенов на период от 7 до 365 дней снижает циркулирующее предложение
    - Создает стабильность цены VG токенов
 
 2. **Стимулирование долгосрочного участия**:
-   - Расчет периода стейкинга в зависимости от количества токенов поощряет крупных держателей
+   - Прогрессивная структура уровней DAO поощряет долгосрочное участие
    - Механизм автоматического реинвестирования создает долгосрочную заинтересованность
 
 3. **Синергия с экосистемой VC токенов**:
@@ -563,7 +594,8 @@ pub fn distribute_tax(
 
 ## Дальнейшие материалы
 
-- [Архитектура системы](./01-system-architecture.md)
+- [NFT-коллекция "Investor's Hand"](./investors-hand-nft.md)
 - [Стейкинг VC токенов и NFT-бустеры](./04-vc-staking.md)
 - [Формула расчета периода стейкинга VG](./specs/vg-staking-formula.md)
-- [Governance и DAO](./07-governance.md) 
+- [Governance и DAO](./07-governance.md)
+- [Интеграция NFT-коллекции "Investor's Hand"](./specs/investors-hand-integration.md) 
