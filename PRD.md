@@ -359,4 +359,26 @@
 - `VgStaked`: Стейкинг VG токенов
 - `FeeRewardsClaimed`: Сбор вознаграждений за комиссии
 - `ProposalCreated`: Создание предложения
-- `ProposalExecuted`: Выполнение предложения 
+- `ProposalExecuted`: Выполнение предложения
+
+## 11. Связанные документы
+
+Для более подробной информации по каждому компоненту системы обратитесь к следующим документам:
+
+- [01-system-architecture.md](docs/01-system-architecture.md) - Подробная архитектура системы
+- [02-tokens.md](docs/02-tokens.md) - Детальное описание токенов экосистемы
+- [03-burn-and-earn.md](docs/03-burn-and-earn.md) - Подробный механизм "Burn and Earn"
+- [04-vc-staking.md](docs/04-vc-staking.md) - Стейкинг VC токенов
+- [04.5-investors-hand-nft.md](docs/04.5-investors-hand-nft.md.md) - NFT-коллекция "Investor's Hand"
+- [05-vg-staking.md](docs/05-vg-staking.md) - Стейкинг VG токенов
+- [06-nft-fee-key.md](docs/06-nft-fee-key.md) - NFT Fee Key и распределение комиссий
+- [07-governance.md](docs/07-governance.md) - Governance и DAO
+- [08-api.md](docs/08-api.md) - Полная спецификация API и интерфейсов
+- [09-security.md](docs/09-security.md) - Безопасность и аудит контрактов
+- [10-implementation-plan.md](docs/10-implementation-plan.md) - Детальный план реализации
+
+### Технические спецификации
+
+- [specs/data-structures.md](docs/specs/data-structures.md) - Структуры данных
+- [specs/vg-calculation-formula.md](docs/specs/vg-calculation-formula.md) - Формула расчета VG токенов
+- [specs/vg-staking-formula.md](docs/specs/vg-staking-formula.md) - Формула расчета периода стейкинга VG 
