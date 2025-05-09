@@ -30,6 +30,7 @@
 ## 3. Технические требования
 
 ### 3.1 Токены
+_Подробнее: [02-tokens.md](docs/02-tokens.md)_
 
 #### 3.1.1 VC Token
 - Тип: Standard SPL Token
@@ -50,28 +51,33 @@
 ### 3.2 Смарт-контракты
 
 #### 3.2.1 LP Formation Program (Burn and Earn)
+_Подробнее: [03-burn-and-earn.md](docs/03-burn-and-earn.md), [Формула расчета VG токенов](docs/specs/vg-calculation-formula.md)_
 - Конвертация VC в LP (50% на SOL)
 - Постоянная блокировка LP токенов
 - Эмиссия VG по формуле: `VG = LP * C * (1 + B * log10(LP/LP_min))`
 - Создание NFT Fee Key соответствующего уровня
 
 #### 3.2.2 VC Staking Program
+_Подробнее: [04-vc-staking.md](docs/04-vc-staking.md)_
 - Блокировка 1 млн VC на 90 дней
 - Создание NFT-бустера из коллекции "Investor's Hand"
 - Вывод токенов по истечении периода стейкинга
 
 #### 3.2.3 VG Staking Program
+_Подробнее: [05-vg-staking.md](docs/05-vg-staking.md), [Формула расчета периода стейкинга](docs/specs/vg-staking-formula.md)_
 - Многоуровневая система от Starter до Partner
 - Периоды стейкинга от 7 до 365 дней
 - Использование NFT-бустеров для сокращения периода
 - Автоматическое реинвестирование при стейке > 10,000 VG (100%)
 
 #### 3.2.4 NFT Fee Key Program
+_Подробнее: [06-nft-fee-key.md](docs/06-nft-fee-key.md)_
 - Четыре уровня: Common, Rare, Epic, Legendary
 - Расчет доли в пуле комиссий
 - Функции сбора вознаграждения
 
 #### 3.2.5 Governance Program
+_Подробнее: [07-governance.md](docs/07-governance.md)_
 - Интеграция с Realms DAO
 - Управление параметрами экосистемы
 - Голосование (мин. 100 VG)
@@ -80,6 +86,7 @@
 ### 3.3 NFT-коллекции
 
 #### 3.3.1 Investor's Hand NFT
+_Подробнее: [04.5-investors-hand-nft.md](docs/04.5-investors-hand-nft.md.md)_
 - Метаданные: 
   ```json
   {
@@ -165,6 +172,7 @@
 | Partner         | >70000 VG + Diamond Hand         | 365 дней         | Право вето, Совет директоров   |
 
 ## 5. Безопасность
+_Подробнее: [09-security.md](docs/09-security.md)_
 
 ### 5.1 Требования к безопасности
 - Защита от reentrancy атак
@@ -218,6 +226,7 @@
 - Интеграция с кошельками Solana
 
 ## 7. План разработки
+_Подробнее: [10-implementation-plan.md](docs/10-implementation-plan.md)_
 
 ### 7.1 Фазы разработки
 1. **Подготовка и проектирование** (2 дня)
@@ -305,6 +314,7 @@
 - Передача всех необходимых ключей и доступов
 
 ## 10. API и интерфейсы
+_Подробнее: [08-api.md](docs/08-api.md)_
 
 ### 10.1 API основных контрактов
 
