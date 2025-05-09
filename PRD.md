@@ -41,7 +41,8 @@ _Подробнее: [02-tokens.md](docs/02-tokens.md)_
 - Тип: Modified SPL Token с налогом 10%
 - Распределение налога:
   - 50% держателям NFT Fee Key
-  - 50% казна DAO
+  - 30% обратный выкуп и сжигание VC
+  - 20% казна DAO
 - Функции: трансфер, стейкинг, голосование в DAO
 
 #### 3.1.3 LP Token
@@ -168,7 +169,7 @@ _Подробнее: [04.5-investors-hand-nft.md](docs/04.5-investors-hand-nft.m
 | Expert          | 4000-25000 VG                    | 90 дней          | Минтинг NFT Marketplace        |
 | Angel           | Angel Investor NFT               | Безлимитный      | Ежедневный автокомпаундинг     |
 | Investor        | 25000-50000 VG + Steel Hand NFT  | 365 дней         | Еженедельный автокомпаундинг   |
-| Launchpad Master| 50000-70000 VG + Titanium Hand   | 365 дней         | Доля комиссий Launchpad        |
+| Launchpad Master| 50000-70000 VG + Titanium Hand   | 365 дней         | Еженедельный автокомпаундинг, доля комиссий Launchpad |
 | Partner         | >70000 VG + Diamond Hand         | 365 дней         | Право вето, Совет директоров   |
 
 ## 5. Безопасность
