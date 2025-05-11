@@ -8,9 +8,8 @@
     "forceConsistentCasingInFileNames": true,
     "outDir": "./dist",
     "declaration": true,
-    "resolveJsonModule": true,
-    "typeRoots": ["./node_modules/@types", "./types"]
+    "resolveJsonModule": true
   },
-  "include": ["./tests/**/*", "./app/**/*"],
+  "include": ["./tests", "./app"],
   "exclude": ["node_modules"]
-} 
+}

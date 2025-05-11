@@ -3,14 +3,14 @@ seeds = false
 skip-lint = false
 
 [programs.localnet]
-vc_token = "11111111111111111111111111111111"
-vg_token = "11111111111111111111111111111111"
-burn_and_earn = "11111111111111111111111111111111"
-vc_staking = "11111111111111111111111111111111"
-vg_staking = "11111111111111111111111111111111"
-nft_fee_key = "11111111111111111111111111111111"
-governance = "11111111111111111111111111111111"
-nft_investors_hand = "11111111111111111111111111111111"
+vc_token = "G5eyDZTpctZ6c956vjE3pjBK1qK6sLZzWeuDuk5sQCDZ"
+vg_token = "2mFty6Dg2m1JtLex3FotrsgzpMBFT3khYLRgbaqFQkbV"
+burn_and_earn = "966vZmQM6vVNMTRwRobrHE8yuh8vUN1U8Anxkv1HhPqQ"
+vc_staking = "pgAesyBEVLuhNU6GabaiRim7Na3o4JASSkwZWm48gtM"
+vg_staking = "H6tBbPeuaMXCiZFXeQmnV1Z2xvedXPdymtYGYMnDEASu"
+nft_fee_key = "EfaSacSFaQjRYoKwZqbuoZ1BPZeWrepacBvtxTaDY5ie"
+governance = "GFVubmbf9kSsDBk9on9AUS68mVMPBWPih9FvG58vhbq7"
+nft_investors_hand = "72YWCPaBkyEwFxU99sF66yuJ4eEpQoU1DfiE3NGdXPgG"
 
 [registry]
 url = "https://api.apr.dev"
@@ -20,7 +20,7 @@ cluster = "Localnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]
-test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
+test = "pnpm exec ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
 
 [workspace]
 members = [
@@ -38,4 +38,4 @@ members = [
 url = "https://api.devnet.solana.com"
 
 [test]
-startup_wait = 5000 
+startup_wait = 5000
