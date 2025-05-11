@@ -1,0 +1,35 @@
+{
+  "name": "tech-hy-contracts",
+  "version": "0.1.0",
+  "description": "Smart contracts for TECH-HY ecosystem on Solana",
+  "scripts": {
+    "test": "anchor test",
+    "build": "anchor build",
+    "deploy:dev": "anchor deploy --provider.cluster devnet",
+    "deploy:main": "anchor deploy --provider.cluster mainnet",
+    "start:validator": "solana-test-validator",
+    "lint": "eslint --ext .ts --fix tests/**/*.ts"
+  },
+  "author": "TECH-HY Team",
+  "license": "MIT",
+  "dependencies": {
+    "@coral-xyz/anchor": "^0.29.0",
+    "@solana/spl-token": "^0.3.10",
+    "@solana/web3.js": "^1.90.0",
+    "@metaplex-foundation/mpl-token-metadata": "^3.1.1",
+    "@metaplex-foundation/umi": "^0.8.10"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.3.8",
+    "@types/mocha": "^10.0.2",
+    "@types/node": "^20.8.7",
+    "chai": "^4.3.10",
+    "mocha": "^10.2.0",
+    "ts-mocha": "^10.0.0",
+    "typescript": "^5.2.2",
+    "eslint": "^8.52.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "prettier": "^3.0.3"
+  }
+} 

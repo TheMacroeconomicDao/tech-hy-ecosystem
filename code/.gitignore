@@ -1,0 +1,33 @@
+# Директории
+node_modules/
+dist/
+build/
+target/
+.anchor/
+test-ledger/
+logs/
+.yarn/
+
+# Ключи и файлы конфигурации
+*.keypair.json
+.env
+.env.*
+!.env.example
+id.json
+
+# Сгенерированные файлы
+*.log
+*.lock
+*.tsbuildinfo
+.DS_Store
+.idea/
+.vscode/
+
+# Профили и данные производительности
+*.profile
+*.trace
+
+# Зависимости Rust
+Cargo.lock
+.cargo/
+.rustup/ 

@@ -1,0 +1,41 @@
+[features]
+seeds = false
+skip-lint = false
+
+[programs.localnet]
+vc_token = "11111111111111111111111111111111"
+vg_token = "11111111111111111111111111111111"
+burn_and_earn = "11111111111111111111111111111111"
+vc_staking = "11111111111111111111111111111111"
+vg_staking = "11111111111111111111111111111111"
+nft_fee_key = "11111111111111111111111111111111"
+governance = "11111111111111111111111111111111"
+nft_investors_hand = "11111111111111111111111111111111"
+
+[registry]
+url = "https://api.apr.dev"
+
+[provider]
+cluster = "Localnet"
+wallet = "~/.config/solana/id.json"
+
+[scripts]
+test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
+
+[workspace]
+members = [
+  "programs/vc-token",
+  "programs/vg-token",
+  "programs/burn-and-earn",
+  "programs/vc-staking",
+  "programs/vg-staking",
+  "programs/nft-fee-key",
+  "programs/governance",
+  "programs/nft-investors-hand"
+]
+
+[test.validator]
+url = "https://api.devnet.solana.com"
+
+[test]
+startup_wait = 5000 
