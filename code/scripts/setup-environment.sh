@@ -6,6 +6,11 @@
 
 echo "Начинаем настройку среды разработки для проекта TECH-HY-SMARTS..."
 
+# Определение минимальных требуемых версий
+MIN_RUST_VERSION="1.75.0"
+MIN_SOLANA_VERSION="1.18.0"
+MIN_ANCHOR_VERSION="0.29.0"
+
 # Определение путей проекта
 PROJECT_ROOT="/Users/Gyber/ACTUAL-CODE/TECH-HY-SMARTS"
 CODE_DIR="$PROJECT_ROOT/code"
@@ -16,12 +21,75 @@ TESTS_DIR="$CODE_DIR/tests"
 # Проверка наличия инструментов
 check_installed() {
   if command -v $1 &> /dev/null; then
-    echo "✅ $1 уже установлен"
+    echo "✅ $1 установлен"
     return 0
   else
     echo "❌ $1 не установлен"
     return 1
   fi
+}
+
+# Сравнение версий (возвращает 0 если версия1 >= версия2)
+version_ge() {
+  [ "$1" = "$(echo -e "$1\n$2" | sort -V | tail -n1)" ]
+}
+
+# Получение текущей версии Rust
+get_rust_version() {
+  if check_installed rustc; then
+    RUST_VERSION=$(rustc --version | cut -d " " -f 2)
+    echo "Текущая версия Rust: $RUST_VERSION"
+    # Проверяем, не ночная ли это версия
+    if [[ $RUST_VERSION == *"nightly"* ]]; then
+      echo "⚠️ У вас установлена ночная (nightly) версия Rust. Рекомендуется использовать стабильную версию."
+      RUST_STABLE=false
+    else
+      RUST_STABLE=true
+      # Проверяем версию
+      if version_ge "$RUST_VERSION" "$MIN_RUST_VERSION"; then
+        echo "✅ Версия Rust соответствует требованиям (>= $MIN_RUST_VERSION)"
+        return 0
+      else
+        echo "⚠️ Версия Rust ($RUST_VERSION) ниже требуемой ($MIN_RUST_VERSION)"
+        return 1
+      fi
+    fi
+  fi
+  return 1
+}
+
+# Получение текущей версии Solana
+get_solana_version() {
+  if check_installed solana; then
+    SOLANA_VERSION=$(solana --version | head -n 1 | cut -d " " -f 2)
+    echo "Текущая версия Solana CLI: $SOLANA_VERSION"
+    # Проверяем версию
+    if version_ge "$SOLANA_VERSION" "$MIN_SOLANA_VERSION"; then
+      echo "✅ Версия Solana соответствует требованиям (>= $MIN_SOLANA_VERSION)"
+      return 0
+    else
+      echo "⚠️ Версия Solana ($SOLANA_VERSION) ниже требуемой ($MIN_SOLANA_VERSION)"
+      return 1
+    fi
+  fi
+  return 1
+}
+
+# Получение текущей версии Anchor
+get_anchor_version() {
+  if check_installed anchor; then
+    ANCHOR_VERSION=$(anchor --version | cut -d " " -f 2)
+    echo "Текущая версия Anchor: $ANCHOR_VERSION"
+    # Проверяем версию
+    if version_ge "$ANCHOR_VERSION" "$MIN_ANCHOR_VERSION"; then
+      echo "✅ Версия Anchor соответствует требованиям (>= $MIN_ANCHOR_VERSION)"
+      return 0
+    else
+      echo "⚠️ Версия Anchor ($ANCHOR_VERSION) ниже требуемой ($MIN_ANCHOR_VERSION)"
+      return 1
+    fi
+  fi
+  return 1
 }
 
 # Создание структуры проекта
@@ -39,38 +107,60 @@ setup_project_structure() {
   echo "✅ Структура проекта создана"
 }
 
-# Подзадача 1.1.1: Установка Solana CLI и Rust
+# Подзадача 1.1.1: Установка и обновление Solana CLI и Rust
 install_rust_and_solana() {
-  echo "Подзадача 1.1.1: Установка Solana CLI и Rust"
+  echo "Подзадача 1.1.1: Установка/обновление Solana CLI и Rust"
   
-  # Проверяем и устанавливаем Rust
-  if ! check_installed rustc; then
+  # Проверяем и устанавливаем/обновляем Rust
+  if check_installed rustc; then
+    echo "Обновляем Rust..."
+    # Проверяем стабильность версии
+    if ! $RUST_STABLE; then
+      echo "Переключаемся на стабильную версию Rust..."
+      rustup default stable
+    fi
+    # Обновляем Rust
+    rustup update stable
+    rustup component add rustfmt clippy
+  else
     echo "Устанавливаем Rust..."
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable
     source $HOME/.cargo/env
     rustup component add rustfmt clippy
-    rustup update
   fi
   
   # Проверяем и устанавливаем Solana CLI
-  if ! check_installed solana; then
-    echo "Устанавливаем Solana CLI..."
-    sh -c "$(curl -sSfL https://release.solana.com/v1.18.1/install)"
+  if ! check_installed solana || ! get_solana_version; then
+    echo "Устанавливаем/обновляем Solana CLI..."
+    # Пробуем с таймаутом и повторными попытками
+    for i in {1..3}; do
+      echo "Попытка $i/3..."
+      if curl -sSfL --connect-timeout 30 --max-time 300 https://release.solana.com/v1.18.1/install | sh; then
+        echo "✅ Solana CLI успешно установлен"
+        break
+      else
+        echo "⚠️ Ошибка при установке Solana CLI, пробуем еще раз..."
+        sleep 5
+      fi
+      
+      if [ $i -eq 3 ]; then
+        echo "❌ Не удалось установить Solana CLI автоматически"
+        echo "Пожалуйста, установите Solana CLI вручную: https://docs.solana.com/cli/install-solana-cli-tools"
+      fi
+    done
+    
     export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
-  fi
-  
-  # Обновляем Solana CLI если уже установлен
-  if check_installed solana; then
+  else
     echo "Обновляем Solana CLI..."
     solana-install update
   fi
   
   # Проверяем версии
-  rustc --version
-  cargo --version
-  solana --version
+  echo "Проверяем версии инструментов..."
+  get_rust_version
+  get_solana_version
   
-  echo "✅ Rust и Solana CLI установлены"
+  echo "✅ Rust и Solana CLI проверены/установлены"
 }
 
 # Подзадача 1.1.2: Настройка Anchor фреймворка
@@ -78,11 +168,27 @@ setup_anchor() {
   echo "Подзадача 1.1.2: Настройка Anchor фреймворка"
   
   # Проверяем и устанавливаем Anchor
-  if ! check_installed anchor; then
+  if ! check_installed anchor || ! get_anchor_version; then
     echo "Устанавливаем Anchor..."
-    cargo install --git https://github.com/coral-xyz/anchor avm --locked
-    avm install latest
-    avm use latest
+    
+    # Пробуем с таймаутом и повторными попытками
+    for i in {1..3}; do
+      echo "Попытка $i/3..."
+      if cargo install --git https://github.com/coral-xyz/anchor avm --locked --force; then
+        echo "✅ Anchor успешно установлен"
+        avm install latest
+        avm use latest
+        break
+      else
+        echo "⚠️ Ошибка при установке Anchor, пробуем еще раз..."
+        sleep 5
+      fi
+      
+      if [ $i -eq 3 ]; then
+        echo "❌ Не удалось установить Anchor автоматически"
+        echo "Пожалуйста, установите Anchor вручную: https://www.anchor-lang.com/docs/installation"
+      fi
+    done
   else
     echo "Обновляем Anchor..."
     avm install latest
@@ -90,7 +196,7 @@ setup_anchor() {
   fi
   
   # Проверяем версию Anchor
-  anchor --version
+  get_anchor_version
   
   echo "✅ Anchor фреймворк настроен"
 }
@@ -153,14 +259,41 @@ install_additional_dependencies() {
 EOL
   fi
   
+  # Установка пакетов с повторными попытками при ошибке
+  install_npm_packages() {
+    local packages="$1"
+    local dev_flag="$2"
+    
+    for i in {1..3}; do
+      echo "Попытка $i/3..."
+      if [ "$dev_flag" = "--save-dev" ]; then
+        if npm install --save-dev $packages; then
+          return 0
+        fi
+      else
+        if npm install $packages; then
+          return 0
+        fi
+      fi
+      echo "⚠️ Ошибка при установке пакетов, пробуем еще раз..."
+      sleep 2
+    done
+    
+    echo "❌ Не удалось установить пакеты автоматически"
+    return 1
+  }
+  
   # Установка TypeScript
-  npm install --save-dev typescript ts-node @types/node
+  echo "Устанавливаем TypeScript и утилиты..."
+  install_npm_packages "typescript ts-node @types/node" "--save-dev"
   
   # Установка библиотек для Solana
-  npm install @solana/web3.js @solana/spl-token @metaplex-foundation/mpl-token-metadata
+  echo "Устанавливаем библиотеки для Solana..."
+  install_npm_packages "@solana/web3.js @solana/spl-token @metaplex-foundation/mpl-token-metadata"
   
   # Установка зависимостей для тестов
-  npm install --save-dev mocha chai @coral-xyz/anchor
+  echo "Устанавливаем зависимости для тестов..."
+  install_npm_packages "mocha chai @coral-xyz/anchor" "--save-dev"
   
   # Создаем tsconfig.json
   echo "Создаем tsconfig.json..."
@@ -575,7 +708,10 @@ EOL
 create_run_test_script() {
   echo "Создаем скрипт запуска тестовой среды..."
   
-  cat > "$SCRIPTS_DIR/run-test-environment.sh" << EOL
+  if [ -f "$SCRIPTS_DIR/run-test-environment.sh" ]; then
+    echo "Скрипт run-test-environment.sh уже существует."
+  else
+    cat > "$SCRIPTS_DIR/run-test-environment.sh" << EOL
 #!/bin/bash
 
 # Скрипт запуска тестовой среды для проекта TECH-HY-SMARTS
@@ -695,14 +831,17 @@ echo "Для отслеживания транзакций используйт�
 echo "Для остановки валидатора используйте: pkill solana-test-valid"
 EOL
 
-  # Делаем скрипт исполняемым
-  chmod +x "$SCRIPTS_DIR/run-test-environment.sh"
+    # Делаем скрипт исполняемым
+    chmod +x "$SCRIPTS_DIR/run-test-environment.sh"
+  fi
   
-  echo "✅ Скрипт запуска тестовой среды создан"
+  echo "✅ Скрипт запуска тестовой среды создан/проверен"
 }
 
 # Вызов функций для настройки среды
 echo "==== Начинаем настройку среды ===="
+RUST_STABLE=false  # Инициализируем переменную
+get_rust_version    # Получаем текущую версию Rust и определяем стабильность
 install_rust_and_solana
 setup_anchor
 setup_project_structure
