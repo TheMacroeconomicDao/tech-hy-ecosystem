@@ -3,7 +3,8 @@ import { Program } from '@coral-xyz/anchor';
 import { PublicKey, Keypair, LAMPORTS_PER_SOL } from '@solana/web3.js';
 import { getAssociatedTokenAddress } from '@solana/spl-token';
 import { expect } from 'chai';
-import BN from 'bn.js';
+import { BN } from 'bn.js';
+import { createFundedWallet, getTokenBalance } from '../../../../tests/utils/test-utils';
 
 describe('VC Token Unit Tests', () => {
   // Connection и provider для тестов
@@ -29,20 +30,6 @@ describe('VC Token Unit Tests', () => {
   let treasuryTokenAccount: PublicKey;
   let metadataUri = 'https://tech-hy.io/token-metadata/vc.json';
 
-  // Вспомогательная функция для создания кошелька
-  async function createFundedWallet(lamports = LAMPORTS_PER_SOL): Promise<Keypair> {
-    const wallet = Keypair.generate();
-    const tx = await connection.requestAirdrop(wallet.publicKey, lamports);
-    await connection.confirmTransaction(tx);
-    return wallet;
-  }
-
-  // Вспомогательная функция для получения баланса токена
-  async function getTokenBalance(tokenAccount: PublicKey): Promise<number> {
-    const accountInfo = await connection.getTokenAccountBalance(tokenAccount);
-    return Number(accountInfo.value.amount);
-  }
-
   before(async () => {
     console.log('Setting up VC Token test environment...');
     
@@ -54,7 +41,7 @@ describe('VC Token Unit Tests', () => {
     console.log(`VC Token mint PDA: ${mintPubkey.toString()}`);
     
     // Создаем казну DAO
-    treasuryWallet = await createFundedWallet(10 * LAMPORTS_PER_SOL);
+    treasuryWallet = await createFundedWallet(connection, 10 * LAMPORTS_PER_SOL);
     console.log(`Treasury wallet: ${treasuryWallet.publicKey.toString()}`);
   });
 
@@ -85,7 +72,7 @@ describe('VC Token Unit Tests', () => {
       console.log('VC Token initialized successfully');
       
       // Проверяем, что токены были выпущены на кошелек казны
-      const tokenBalance = await getTokenBalance(treasuryTokenAccount);
+      const tokenBalance = await getTokenBalance(connection, treasuryTokenAccount);
       const expectedSupply = TOTAL_SUPPLY.toNumber();
       
       console.log(`Treasury token balance: ${tokenBalance}`);

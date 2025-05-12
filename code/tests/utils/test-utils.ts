@@ -1,8 +1,8 @@
 import * as anchor from '@coral-xyz/anchor';
 import { Program } from '@coral-xyz/anchor';
 import { PublicKey, Keypair, Connection, LAMPORTS_PER_SOL, TransactionInstruction, Transaction } from '@solana/web3.js';
-import { TOKEN_PROGRAM_ID, createMint, createAssociatedTokenAccount, mintTo } from '@solana/spl-token';
-import BN from 'bn.js';
+import { TOKEN_PROGRAM_ID, createMint, createAssociatedTokenAccount, mintTo, getAccount, getAssociatedTokenAddress, getMint } from '@solana/spl-token';
+import { BN } from 'bn.js';
 
 // Конфигурация для тестов
 export const TEST_CONFIG = {
@@ -58,8 +58,8 @@ export async function findBurnAndEarnStateAddress(programId: PublicKey): Promise
 // Функция для создания тестового кошелька и пополнения его SOL
 export async function createFundedWallet(connection: Connection, lamports = LAMPORTS_PER_SOL): Promise<Keypair> {
   const wallet = Keypair.generate();
-  const tx = await connection.requestAirdrop(wallet.publicKey, lamports);
-  await connection.confirmTransaction(tx);
+  const signature = await connection.requestAirdrop(wallet.publicKey, lamports);
+  await connection.confirmTransaction(signature, 'confirmed');
   return wallet;
 }
 
@@ -138,4 +138,138 @@ export function logError(message: string, error?: any): void {
   if (error) {
     console.error(error);
   }
-} 
+}
+
+/**
+ * Создание нового минта SPL токена
+ * @param connection - соединение с Solana
+ * @param payer - плательщик комиссии
+ * @param mintAuthority - адрес с правом минта токенов
+ * @param decimals - количество десятичных знаков токена
+ * @returns Адрес созданного минта
+ */
+export async function createTestMint(
+  connection: Connection,
+  payer: Keypair,
+  mintAuthority: PublicKey,
+  decimals = 9
+): Promise<PublicKey> {
+  return createMint(
+    connection,
+    payer,
+    mintAuthority,
+    mintAuthority, // freeze authority
+    decimals,
+    undefined,
+    undefined,
+    TOKEN_PROGRAM_ID
+  );
+}
+
+/**
+ * Создание ассоциированного токен-аккаунта и минт токенов на него
+ * @param connection - соединение с Solana
+ * @param mint - адрес минта токена
+ * @param owner - владелец токен-аккаунта
+ * @param authority - адрес с правом минта
+ * @param amount - количество токенов
+ * @returns Адрес созданного токен-аккаунта
+ */
+export async function createTokenAccount(
+  connection: Connection,
+  mint: PublicKey,
+  owner: PublicKey,
+  authority: Keypair,
+  amount?: number
+): Promise<PublicKey> {
+  const tokenAccount = await createAssociatedTokenAccount(
+    connection,
+    authority,
+    mint,
+    owner,
+    undefined,
+    undefined,
+    TOKEN_PROGRAM_ID
+  );
+  
+  if (amount) {
+    await mintTo(
+      connection,
+      authority,
+      mint,
+      tokenAccount,
+      authority,
+      amount,
+      [],
+      undefined,
+      TOKEN_PROGRAM_ID
+    );
+  }
+  
+  return tokenAccount;
+}
+
+/**
+ * Ожидание определенного количества подтверждений транзакции
+ * @param connection - соединение с Solana
+ * @param txHash - хэш транзакции
+ * @param confirmations - требуемое количество подтверждений
+ * @returns Хэш подтвержденной транзакции
+ */
+export async function confirmTx(
+  connection: Connection,
+  txHash: string,
+  confirmations = 1
+): Promise<string> {
+  const result = await connection.confirmTransaction({
+    signature: txHash,
+    lastValidBlockHeight: await connection.getBlockHeight(),
+    blockhash: (await connection.getLatestBlockhash()).blockhash
+  }, 'confirmed');
+  
+  return txHash;
+}
+
+/**
+ * Ожидание указанного количества миллисекунд
+ * @param ms - время в миллисекундах
+ * @returns Promise, который разрешается через указанное время
+ */
+export function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+/**
+ * Генерирует PDA адрес с бампом
+ * @param seeds - массив seed-ов для PDA
+ * @param programId - ID программы
+ * @returns [адрес PDA, бамп]
+ */
+export function findProgramAddress(
+  seeds: (Buffer | Uint8Array)[],
+  programId: PublicKey
+): [PublicKey, number] {
+  return PublicKey.findProgramAddressSync(seeds, programId);
+}
+
+/**
+ * Загрузить данные аккаунта в указанный тип
+ * @param connection - соединение с Solana
+ * @param address - адрес аккаунта
+ * @param program - программа Anchor
+ * @param accountType - название типа аккаунта в IDL
+ * @returns Данные аккаунта в указанном типе
+ */
+export async function loadAccountData(
+  connection: Connection,
+  address: PublicKey,
+  program: Program,
+  accountType: string
+): Promise<any> {
+  const accountInfo = await connection.getAccountInfo(address);
+  if (!accountInfo) {
+    throw new Error(`Аккаунт ${address.toString()} не найден`);
+  }
+  
+  return program.coder.accounts.decode(accountType, accountInfo.data);
+}
