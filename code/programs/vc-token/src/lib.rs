@@ -2,7 +2,7 @@ use anchor_lang::prelude::*;
 use anchor_spl::{
     token_interface::{self, Mint, MintTo, TokenAccount, TokenInterface},
     associated_token::AssociatedToken,
-    metadata::{self, mpl_token_metadata, Metadata, MetadataAccount},
+    metadata::{mpl_token_metadata},
 };
 
 declare_id!("VCzfGwp5qVL8pmta1GHqGrSQqzMa5qsY4M1jbjsdaYJ");

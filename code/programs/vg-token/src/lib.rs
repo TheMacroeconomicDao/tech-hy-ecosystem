@@ -1,8 +1,8 @@
 use anchor_lang::prelude::*;
 use anchor_spl::{
-    token_interface::{self, Mint, MintTo, TokenAccount, TokenInterface, Transfer, TransferChecked},
+    token_interface::{self, Mint, MintTo, TokenAccount, TokenInterface, TransferChecked},
     associated_token::AssociatedToken,
-    metadata::{self, mpl_token_metadata, Metadata, MetadataAccount},
+    metadata::{mpl_token_metadata},
 };
 use anchor_spl::token_interface::spl_token_2022::instruction::AuthorityType;
 

@@ -1,0 +1,17 @@
+[features]
+seeds = false
+
+[programs.localnet]
+vc_token = "VCzfGwp5qVL8pmta1GHqGrSQqzMa5qsY4M1jbjsdaYJ"
+vg_token = "VGnHJHKr2NwxSdQQoYrJY9TBZ9YHS5cCwBPEr68mEPG"
+burn_and_earn = "BAEpWRJiqZrZkmyzGbcBAvQYpRKbRq5L3D5WwA1dvYf5"
+
+[registry]
+url = "https://anchor.projectserum.com"
+
+[provider]
+cluster = "localnet"
+wallet = "~/.config/solana/id.json"
+
+[scripts]
+test = "ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts" 
