@@ -87,7 +87,7 @@ pub mod vc_token {
             mint: ctx.accounts.mint.key(),
             mint_authority: ctx.accounts.mint.key(),
             payer: ctx.accounts.payer.key(),
-            update_authority: ctx.accounts.payer.key(),
+            update_authority: (ctx.accounts.payer.key(), true),
             system_program: ctx.accounts.system_program.key(),
             rent: Some(ctx.accounts.rent.key()),
         }
@@ -111,7 +111,7 @@ pub mod vc_token {
         anchor_lang::solana_program::program::invoke_signed(
             &ix,
             account_infos,
-            &[signer_seeds],
+            &[&seeds[..]],
         )?;
 
         msg!("Метаданные токена успешно установлены");

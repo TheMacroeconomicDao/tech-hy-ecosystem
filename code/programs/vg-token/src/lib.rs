@@ -4,8 +4,9 @@ use anchor_spl::{
     associated_token::AssociatedToken,
     metadata::{self, mpl_token_metadata, Metadata, MetadataAccount},
 };
+use spl_token::instruction::AuthorityType;
 
-declare_id!("VGnHJHKr2NwxSdQQoYrJY9TBZ9YHS5cCwBPEr68mEPGT");
+declare_id!("VGnHJHKr2NwxSdQQoYrJY9TBZ9YHS5cCwBPEr68mEPG");
 
 // Константы токена
 pub const VG_TOKEN_MINT_SEED: &[u8] = b"vg_token_mint";
@@ -200,7 +201,7 @@ pub mod vg_token {
             mint: ctx.accounts.mint.key(),
             mint_authority: ctx.accounts.mint.key(),
             payer: ctx.accounts.payer.key(),
-            update_authority: ctx.accounts.payer.key(),
+            update_authority: (ctx.accounts.payer.key(), true),
             system_program: ctx.accounts.system_program.key(),
             rent: Some(ctx.accounts.rent.key()),
         }
@@ -215,7 +216,7 @@ pub mod vg_token {
         anchor_lang::solana_program::program::invoke_signed(
             &ix,
             account_infos,
-            &[signer_seeds],
+            &[&seeds[..]],
         )?;
 
         msg!("Метаданные токена успешно установлены");
@@ -249,7 +250,7 @@ pub mod vg_token {
         
         token_interface::set_authority(
             cpi_context,
-            token_interface::AuthorityType::FreezeAccount,
+            AuthorityType::FreezeAccount,
             Some(ctx.accounts.dao_authority.key()),
         )?;
         

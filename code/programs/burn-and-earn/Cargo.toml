@@ -28,4 +28,5 @@ vc-token = { path = "../vc-token", features = ["cpi"] }
 # Зависимость от программы VG токена
 vg-token = { path = "../vg-token", features = ["cpi"] }
 # Для математических операций
-libm = "0.2.8" 
+libm = "0.2.8"
+spl-token = "8.0.0" 
