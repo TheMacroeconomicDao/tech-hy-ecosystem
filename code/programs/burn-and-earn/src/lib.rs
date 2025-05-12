@@ -38,7 +38,7 @@ pub mod burn_and_earn {
         burn_and_earn_state.total_locked_lp = 0;
         burn_and_earn_state.total_vg_minted = 0;
         burn_and_earn_state.total_vc_burned = 0;
-        burn_and_earn_state.bump = *ctx.bumps.get("burn_and_earn_state").unwrap();
+        burn_and_earn_state.bump = ctx.bumps.burn_and_earn_state;
         
         msg!("Burn and Earn программа инициализирована");
         Ok(())

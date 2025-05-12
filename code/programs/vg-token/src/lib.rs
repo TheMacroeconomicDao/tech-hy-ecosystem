@@ -4,7 +4,7 @@ use anchor_spl::{
     associated_token::AssociatedToken,
     metadata::{self, mpl_token_metadata, Metadata, MetadataAccount},
 };
-use spl_token::instruction::AuthorityType;
+use anchor_spl::token_interface::spl_token_2022::instruction::AuthorityType;
 
 declare_id!("VGnHJHKr2NwxSdQQoYrJY9TBZ9YHS5cCwBPEr68mEPG");
 
