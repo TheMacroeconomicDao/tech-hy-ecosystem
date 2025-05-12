@@ -11,6 +11,10 @@ use solana_program::clock::Clock;
 use vc_token::program::VcToken as VcTokenProgram;
 use vg_token::program::VgToken as VgTokenProgram;
 
+// Импорт ID программ VC и VG токенов
+use vc_token::ID as VC_TOKEN_ID;
+use vg_token::ID as VG_TOKEN_ID;
+
 declare_id!("BAEpWRJiqZrZkmyzGbcBAvQYpRKbRq5L3D5WwA1dvYf5");
 
 // Константы для формулы эмиссии VG
@@ -283,12 +287,12 @@ pub struct BurnAndLock<'info> {
     
     /// Программа VC токена
     /// CHECK: Проверяется через ограничения и CPI
-    #[account(address = vc_token::ID)]
+    #[account(address = VC_TOKEN_ID)]
     pub vc_token_program: AccountInfo<'info>,
     
     /// Программа VG токена
     /// CHECK: Проверяется через ограничения и CPI
-    #[account(address = vg_token::ID)]
+    #[account(address = VG_TOKEN_ID)]
     pub vg_token_program: AccountInfo<'info>,
     
     pub token_program: Interface<'info, TokenInterface>,
