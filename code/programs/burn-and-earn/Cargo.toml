@@ -1,0 +1,31 @@
+[package]
+name = "burn-and-earn"
+version = "0.1.0"
+description = "Burn and Earn mechanism for TECH-HY ecosystem"
+edition = "2024"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "burn_and_earn"
+
+[features]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+cpi = ["no-entrypoint"]
+default = []
+idl-build = [
+    "anchor-lang/idl-build",
+    "anchor-spl/idl-build"
+]
+
+[dependencies]
+anchor-lang = "0.31.1"
+anchor-spl = { version = "0.31.1", features = ["metadata"] }
+solana-program = "2.2.1"
+# Зависимость от программы VC токена
+vc-token = { path = "../vc-token", features = ["cpi"] }
+# Зависимость от программы VG токена
+vg-token = { path = "../vg-token", features = ["cpi"] }
+# Для математических операций
+libm = "0.2.8" 
