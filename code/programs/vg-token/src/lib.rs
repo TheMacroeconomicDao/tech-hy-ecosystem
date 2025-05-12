@@ -107,45 +107,51 @@ pub mod vg_token {
         let sender_info = ctx.accounts.sender.to_account_info();
 
         // 1. Переводим основную сумму (за вычетом налога) получателю
-        token_interface::transfer(
+        token_interface::transfer_checked(
             CpiContext::new(
                 token_program_info.clone(),
-                Transfer {
+                TransferChecked {
                     from: sender_token_account_info.clone(),
                     to: ctx.accounts.recipient_token_account.to_account_info(),
                     authority: sender_info.clone(),
+                    mint: ctx.accounts.mint.to_account_info(),
                 },
             ),
             transfer_amount,
+            TOKEN_DECIMALS,
         )?;
         
         // 2. Переводим налог в казну DAO
         if dao_tax_amount > 0 {
-            token_interface::transfer(
+            token_interface::transfer_checked(
                 CpiContext::new(
                     token_program_info.clone(),
-                    Transfer {
+                    TransferChecked {
                         from: sender_token_account_info.clone(),
                         to: ctx.accounts.dao_treasury_token_account.to_account_info(),
                         authority: sender_info.clone(),
+                        mint: ctx.accounts.mint.to_account_info(),
                     },
                 ),
                 dao_tax_amount,
+                TOKEN_DECIMALS,
             )?;
         }
         
         // 3. Переводим налог на аккаунт NFT Fee Key (в будущем будет распределение)
         if nft_holders_tax_amount > 0 {
-            token_interface::transfer(
+            token_interface::transfer_checked(
                 CpiContext::new(
                     token_program_info,
-                    Transfer {
+                    TransferChecked {
                         from: sender_token_account_info,
                         to: ctx.accounts.fee_collector_token_account.to_account_info(),
                         authority: sender_info,
+                        mint: ctx.accounts.mint.to_account_info(),
                     },
                 ),
                 nft_holders_tax_amount,
+                TOKEN_DECIMALS,
             )?;
         }
         

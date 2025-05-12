@@ -111,7 +111,7 @@ pub mod vc_token {
         anchor_lang::solana_program::program::invoke_signed(
             &ix,
             account_infos,
-            &[_signer_seeds[..]],
+            &[&seeds[..]],
         )?;
 
         msg!("Метаданные токена успешно установлены");
