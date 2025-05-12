@@ -26,7 +26,7 @@ pub mod vc_token {
             VC_TOKEN_MINT_SEED, 
             &[ctx.bumps.mint]
         ];
-        let signer_seeds = &[&seeds[..]];
+        let _signer_seeds = &[&seeds[..]];  // Префикс _ для неиспользуемых переменных
         
         // Оптимизация: создаем CPI контекст только один раз
         let cpi_context = CpiContext::new_with_signer(
@@ -36,7 +36,7 @@ pub mod vc_token {
                 to: ctx.accounts.treasury_token_account.to_account_info(),
                 authority: ctx.accounts.mint.to_account_info(),
             },
-            signer_seeds
+            _signer_seeds
         );
         
         // Выполняем минтинг всех токенов
@@ -61,7 +61,7 @@ pub mod vc_token {
             VC_TOKEN_MINT_SEED, 
             &[ctx.bumps.mint]
         ];
-        let signer_seeds = &[&seeds[..]];
+        let _signer_seeds = &[&seeds[..]];  // Префикс _ для неиспользуемых переменных
 
         // Оптимизация: минимизируем создание векторов в горячем пути
         let metadata = ctx.accounts.metadata.to_account_info();
@@ -111,7 +111,7 @@ pub mod vc_token {
         anchor_lang::solana_program::program::invoke_signed(
             &ix,
             account_infos,
-            &[&seeds[..]],
+            &[_signer_seeds[..]],
         )?;
 
         msg!("Метаданные токена успешно установлены");

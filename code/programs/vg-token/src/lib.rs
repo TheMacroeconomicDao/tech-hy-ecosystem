@@ -21,13 +21,8 @@ pub mod vg_token {
     use super::*;
 
     /// Инициализирует новый VG токен с заданными параметрами
-    pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
-        msg!("Инициализация VG токена...");
-
-        // Инициализация контракта (без непосредственной эмиссии токенов)
-        // Эмиссия будет выполняться через программу Burn and Earn
-        msg!("VG токен успешно инициализирован с нулевой начальной эмиссией");
-        
+    pub fn initialize(_ctx: Context<Initialize>) -> Result<()> {
+        // Просто возвращаем успешное завершение, так как инициализация происходит через ограничения Anchor
         Ok(())
     }
     
@@ -172,7 +167,7 @@ pub mod vg_token {
             VG_TOKEN_MINT_SEED, 
             &[ctx.bumps.mint]
         ];
-        let signer_seeds = &[&seeds[..]];
+        let _signer_seeds = &[&seeds[..]];  // Префикс _ для неиспользуемых переменных
 
         // Получаем данные для инструкции create_metadata_accounts_v3
         let metadata_infos = vec![

@@ -1,15 +1,12 @@
 use anchor_lang::prelude::*;
 use anchor_spl::{
-    token_interface::{self, Mint, TokenAccount, TokenInterface, Transfer, TransferChecked},
+    token_interface::{Mint, TokenAccount, TokenInterface},
     associated_token::AssociatedToken,
-    metadata::{self, mpl_token_metadata},
 };
 use libm::log10;
 use solana_program::clock::Clock;
 
 // Импортируем программы VC и VG токенов для CPI вызовов
-use vc_token::program::VcToken as VcTokenProgram;
-use vg_token::program::VgToken as VgTokenProgram;
 
 // Импорт ID программ VC и VG токенов
 use vc_token::ID as VC_TOKEN_ID;
