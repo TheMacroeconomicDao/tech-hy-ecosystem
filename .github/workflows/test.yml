@@ -1,0 +1,111 @@
+name: TECH-HY Test Suite
+
+on:
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ main, dev ]
+
+jobs:
+  test:
+    name: Test TECH-HY Smart Contracts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+          components: rustfmt, clippy
+
+      - name: Install Solana CLI
+        run: sh -c "$(curl -sSfL https://release.solana.com/v1.17.0/install)"
+      
+      - name: Add Solana to PATH
+        run: echo "$HOME/.local/share/solana/install/active_release/bin" >> $GITHUB_PATH
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Anchor CLI
+        run: |
+          cargo install --git https://github.com/coral-xyz/anchor avm --locked
+          avm install 0.31.1
+          avm use 0.31.1
+
+      - name: Cache Rust dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Cache NPM dependencies
+        uses: actions/cache@v3
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Build programs
+        run: anchor build
+
+      - name: Setup test environment
+        run: |
+          cd code/tests
+          npm install
+          mkdir -p idl
+          cp -f ../../target/idl/vc_token.json ./idl/
+          cp -f ../../target/idl/vg_token.json ./idl/
+          cp -f ../../target/idl/burn_and_earn.json ./idl/
+          solana-keygen new --no-bip39-passphrase -o ./test-keypair.json -s -f
+          solana config set --keypair ./test-keypair.json
+          solana config set --url localhost
+
+      - name: Start local validator
+        run: |
+          solana-test-validator -r &
+          sleep 5
+          solana airdrop 100
+
+      - name: Run Rust tests
+        run: cargo test --all
+
+      - name: Run unit tests
+        run: |
+          cd code/tests
+          npm run test:unit
+
+      - name: Run integration tests
+        run: |
+          cd code/tests
+          npm run test:integration
+
+      - name: Run E2E tests
+        run: |
+          cd code/tests
+          npm run test:e2e
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: test-results
+          path: code/tests/mochawesome-report/
+
+      - name: Run linting
+        run: |
+          cargo clippy -- -D warnings
+          cd code/tests
+          npm run lint
+
+      - name: Check formatting
+        run: cargo fmt --all -- --check 
