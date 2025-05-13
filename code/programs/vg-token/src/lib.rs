@@ -21,38 +21,48 @@ pub mod vg_token {
     use super::*;
 
     /// Инициализирует новый VG токен с заданными параметрами
-    pub fn initialize(_ctx: Context<Initialize>) -> Result<()> {
-        // Просто возвращаем успешное завершение, так как инициализация происходит через ограничения Anchor
-        Ok(())
-    }
-    
-    /// Минтинг токенов - может вызывать только авторизованная программа (Burn and Earn)
-    pub fn mint_tokens(ctx: Context<MintTokens>, amount: u64) -> Result<()> {
-        // Проверка, что вызывает Burn and Earn программа
-        // В реальном коде здесь будет проверка на правильный PDA от Burn and Earn
-        // Пока заглушка для разработки
-        msg!("Минтинг {} VG токенов...", amount);
+    /// Выпускает все токены в размере 1 миллиарда и передает их на эскроу-счет для Burn and Earn
+    pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
+        msg!("Инициализация VG токена...");
 
-        // Создание минта и выпуск токенов
-        let cpi_accounts = MintTo {
-            mint: ctx.accounts.mint.to_account_info(),
-            to: ctx.accounts.recipient_token_account.to_account_info(),
-            authority: ctx.accounts.mint.to_account_info(),
-        };
-        
+        // Минтинг полной эмиссии на эскроу-счет
         let seeds = &[
-            VG_TOKEN_MINT_SEED, 
+            VG_TOKEN_MINT_SEED,
             &[ctx.bumps.mint]
         ];
         let signer_seeds = &[&seeds[..]];
+
+        token_interface::mint_to(
+            CpiContext::new_with_signer(
+                ctx.accounts.token_program.to_account_info(),
+                MintTo {
+                    mint: ctx.accounts.mint.to_account_info(),
+                    to: ctx.accounts.escrow_vault_token_account.to_account_info(),
+                    authority: ctx.accounts.mint.to_account_info(), // PDA mint как временный authority
+                },
+                signer_seeds
+            ),
+            TOTAL_SUPPLY
+        )?;
+
+        // Отзываем mint_authority у PDA mint, чтобы дальнейший минтинг был невозможен
+        token_interface::set_authority(
+            CpiContext::new_with_signer(
+                ctx.accounts.token_program.to_account_info(),
+                token_interface::SetAuthority {
+                    current_authority: ctx.accounts.mint.to_account_info(),
+                    account_or_mint: ctx.accounts.mint.to_account_info(),
+                },
+                signer_seeds
+            ),
+            AuthorityType::MintTokens,
+            None // Устанавливаем нового mint authority в None
+        )?;
         
-        let cpi_program = ctx.accounts.token_program.to_account_info();
-        let cpi_context = CpiContext::new_with_signer(cpi_program, cpi_accounts, signer_seeds);
-        
-        token_interface::mint_to(cpi_context, amount)?;
-        
-        msg!("VG токены успешно выпущены");
-        
+        // Freeze authority по умолчанию None, так как не указан в #[account(init ... mint::freeze_authority = ...)]
+        // и мы удаляем инструкцию set_freeze_authority
+
+        msg!("VG токен успешно инициализирован с полной эмиссией {} токенов на эскроу-счет и отозванной mint authority.", TOTAL_SUPPLY);
         Ok(())
     }
     
@@ -223,41 +233,6 @@ pub mod vg_token {
         msg!("Метаданные токена успешно установлены");
         Ok(())
     }
-    
-    /// Установка авторитета замораживания для токена (только для мультисиг DAO)
-    pub fn set_freeze_authority(ctx: Context<SetFreezeAuthority>) -> Result<()> {
-        // В будущем здесь будет проверка на мультисиг DAO
-        // Пока заглушка для разработки
-        msg!("Установка freeze authority для VG токена...");
-        
-        let seeds = &[
-            VG_TOKEN_MINT_SEED, 
-            &[ctx.bumps.mint]
-        ];
-        let signer_seeds = &[&seeds[..]];
-        
-        // Реализуем функциональность через CPI
-        let cpi_program = ctx.accounts.token_program.to_account_info();
-        let cpi_accounts = token_interface::SetAuthority {
-            account_or_mint: ctx.accounts.mint.to_account_info(),
-            current_authority: ctx.accounts.mint.to_account_info(),
-        };
-        
-        let cpi_context = CpiContext::new_with_signer(
-            cpi_program,
-            cpi_accounts,
-            signer_seeds
-        );
-        
-        token_interface::set_authority(
-            cpi_context,
-            AuthorityType::FreezeAccount,
-            Some(ctx.accounts.dao_authority.key()),
-        )?;
-        
-        msg!("Freeze authority успешно установлен");
-        Ok(())
-    }
 }
 
 #[derive(Accounts)]
@@ -269,40 +244,26 @@ pub struct Initialize<'info> {
         init,
         payer = payer,
         mint::decimals = TOKEN_DECIMALS,
-        mint::authority = mint,
-        mint::freeze_authority = mint, // Временно устанавливаем freeze authority на самого себя
+        mint::authority = mint, // PDA mint будет временным mint_authority, затем отзовем
+        // mint::freeze_authority НЕ указываем, будет None по умолчанию
         seeds = [VG_TOKEN_MINT_SEED],
         bump
     )]
     pub mint: InterfaceAccount<'info, Mint>,
 
-    pub token_program: Interface<'info, TokenInterface>,
-    pub system_program: Program<'info, System>,
-}
+    /// Эскроу-аккаунт, который получит все выпущенные VG токены для дальнейшего распределения программой Burn and Earn
+    /// CHECK: Адрес этого аккаунта должен быть известен программе Burn and Earn. Может быть PDA самой программы Burn and Earn.
+    #[account(mut)] // Может потребоваться инициализация если это PDA
+    pub escrow_vault_authority: SystemAccount<'info>, // Владелец токен-аккаунта эскроу
 
-#[derive(Accounts)]
-pub struct MintTokens<'info> {
-    #[account(mut)]
-    pub payer: Signer<'info>,
-    
-    #[account(mut)]
-    pub recipient: SystemAccount<'info>,
-    
-    #[account(
-        mut,
-        seeds = [VG_TOKEN_MINT_SEED],
-        bump
-    )]
-    pub mint: InterfaceAccount<'info, Mint>,
-    
     #[account(
         init_if_needed,
         payer = payer,
         associated_token::mint = mint,
-        associated_token::authority = recipient,
+        associated_token::authority = escrow_vault_authority,
     )]
-    pub recipient_token_account: InterfaceAccount<'info, TokenAccount>,
-    
+    pub escrow_vault_token_account: InterfaceAccount<'info, TokenAccount>,
+
     pub token_program: Interface<'info, TokenInterface>,
     pub associated_token_program: Program<'info, AssociatedToken>,
     pub system_program: Program<'info, System>,
@@ -405,25 +366,6 @@ pub struct SetMetadata<'info> {
     /// CHECK: Это известный sysvarcall
     #[account(address = anchor_lang::solana_program::sysvar::rent::ID)]
     pub rent: UncheckedAccount<'info>,
-}
-
-#[derive(Accounts)]
-pub struct SetFreezeAuthority<'info> {
-    #[account(mut)]
-    pub payer: Signer<'info>,
-    
-    #[account(
-        mut,
-        seeds = [VG_TOKEN_MINT_SEED],
-        bump,
-    )]
-    pub mint: InterfaceAccount<'info, Mint>,
-    
-    /// CHECK: Адрес мультисиг DAO, который получит права на замораживание
-    pub dao_authority: UncheckedAccount<'info>,
-    
-    pub token_program: Interface<'info, TokenInterface>,
-    pub system_program: Program<'info, System>,
 }
 
 // Ошибки программы

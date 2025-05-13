@@ -42,7 +42,21 @@ pub mod vc_token {
         // Выполняем минтинг всех токенов
         token_interface::mint_to(cpi_context, TOTAL_SUPPLY)?;
         
-        msg!("VC токен успешно инициализирован с полной эмиссией {} токенов", TOTAL_SUPPLY);
+        // Отзываем mint_authority у PDA mint, чтобы дальнейший минтинг был невозможен
+        token_interface::set_authority(
+            CpiContext::new_with_signer(
+                ctx.accounts.token_program.to_account_info(),
+                token_interface::SetAuthority {
+                    current_authority: ctx.accounts.mint.to_account_info(),
+                    account_or_mint: ctx.accounts.mint.to_account_info(),
+                },
+                _signer_seeds // Используем те же seeds для подписи от имени PDA mint
+            ),
+            token_interface::spl_token_2022::instruction::AuthorityType::MintTokens,
+            None // Устанавливаем нового mint authority в None
+        )?;
+        
+        msg!("VC токен успешно инициализирован с полной эмиссией {} токенов и отозванной mint authority", TOTAL_SUPPLY);
         
         Ok(())
     }

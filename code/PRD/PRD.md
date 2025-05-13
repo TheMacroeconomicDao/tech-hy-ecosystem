@@ -595,6 +595,6 @@ _Подробнее: [08-api.md](docs/08-api.md)_
 
 ### Технические спецификации
 
-- [specs/data-structures.md](docs/specs/data-structures.md) - Структуры данных
-- [specs/vg-calculation-formula.md](docs/specs/vg-calculation-formula.md) - Формула расчета VG токенов
-- [specs/vg-staking-formula.md](docs/specs/vg-staking-formula.md) - Формула расчета периода стейкинга VG 
+- [specs/data-structures.md](../../docs/specs/data-structures.md) - Структуры данных
+- [specs/vg-calculation-formula.md](../../docs/specs/vg-calculation-formula.md) - Формула расчета VG токенов
+- [specs/vg-staking-formula.md](../../docs/specs/vg-staking-formula.md) - Формула расчета периода стейкинга VG 

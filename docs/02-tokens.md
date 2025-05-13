@@ -70,8 +70,6 @@ pub enum VCTokenInstruction {
     Initialize,
     /// Перевод токенов с одного аккаунта на другой
     Transfer { amount: u64 },
-    /// Административные операции (доступны только мультисигу DAO)
-    AdminOperation { operation_type: AdminOperationType },
 }
 
 pub enum AdminOperationType {
@@ -99,9 +97,9 @@ VG Token - governance токен с налогом 10% на транзакции
 
 ### Технические параметры
 
-- **Mint authority**: Программа Burn and Earn (PDA)
-- **не продаётся и не покупается получается через вечную блокировку LP токенов VC/SOL**
-- **Freeze authority**: Мультисиг DAO (3/5 подписей)
+- **Mint authority**: Отсутствует (токены создаются в полном объеме при инициализации, минт запрещен)
+- **не продаётся и не покупается получается через вечную блокировку LP токенов VC/SOL и распределяется программой Burn and Earn из начального пула по средствам вечной блокировки LP токенов VC/SOL**
+- **Freeze authority**: Отсутствует (заморозка токенов или счетов запрещена)
 - **Метаданные токена**:
   - **Имя**: TECH HY Venture Gift Token
   - **Символ**: VG
