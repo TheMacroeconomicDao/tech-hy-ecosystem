@@ -251,16 +251,16 @@ pub struct Initialize<'info> {
     )]
     pub mint: InterfaceAccount<'info, Mint>,
 
-    /// Эскроу-аккаунт, который получит все выпущенные VG токены для дальнейшего распределения программой Burn and Earn
-    /// CHECK: Адрес этого аккаунта должен быть известен программе Burn and Earn. Может быть PDA самой программы Burn and Earn.
-    #[account(mut)] // Может потребоваться инициализация если это PDA
-    pub escrow_vault_authority: SystemAccount<'info>, // Владелец токен-аккаунта эскроу
+    /// Эскроу-аккаунт (PDA программы Burn and Earn), который будет авторитетом для токен-аккаунта,
+    /// хранящего все выпущенные VG токены для дальнейшего распределения программой Burn and Earn.
+    /// CHECK: Адрес этого PDA должен быть корректно вычислен клиентом и принадлежать программе Burn and Earn.
+    pub burn_and_earn_escrow_pda: UncheckedAccount<'info>,
 
     #[account(
         init_if_needed,
         payer = payer,
         associated_token::mint = mint,
-        associated_token::authority = escrow_vault_authority,
+        associated_token::authority = burn_and_earn_escrow_pda, // PDA программы Burn and Earn является авторитетом этого токен-аккаунта
     )]
     pub escrow_vault_token_account: InterfaceAccount<'info, TokenAccount>,
 
