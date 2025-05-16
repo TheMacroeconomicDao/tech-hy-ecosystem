@@ -1,8 +1,68 @@
-# Спецификация интеграции NFT-коллекции "Investor's Hand"
+# Investor's Hand NFT Integration
 
-## Обзор интеграции
+## Overview
 
-Данный документ описывает техническую спецификацию интеграции NFT-коллекции "Investor's Hand" с программами стейкинга VC и VG токенов, а также с системой управления DAO. Интеграция обеспечивает единое функционирование всей экосистемы и позволяет реализовать различные преимущества для держателей NFT.
+This document describes the integration of the "Investor's Hand" NFT collection into the TECH HY ecosystem, including its use as a booster in staking and other mechanisms.
+
+## NFT Collection Description
+
+- The "Investor's Hand" collection consists of unique NFTs with different rarity levels (Common, Rare, Epic, Legendary).
+- Each NFT has metadata including:
+  - Unique identifier
+  - Rarity
+  - Image/animation
+  - Owner address
+  - Booster multiplier value
+
+## Use Cases in the Ecosystem
+
+### 1. Staking Booster
+- NFTs from the collection can be used as boosters when staking VG tokens.
+- The booster multiplier depends on the NFT's rarity:
+  - Common: 0.1
+  - Rare: 0.2
+  - Epic: 0.3
+  - Legendary: 0.5
+- Only one NFT can be used as a booster per staking position.
+- The NFT must be owned by the user and locked for the staking period.
+
+### 2. DAO Voting Power
+- Holding an NFT increases the user's voting power in the DAO.
+- The increase is proportional to the NFT's rarity.
+
+### 3. Additional Ecosystem Benefits
+- Access to exclusive features, airdrops, or events for NFT holders.
+- Priority participation in ecosystem launches.
+
+## Integration Process
+
+1. **NFT Ownership Verification**:
+   - The system checks that the user owns the NFT and that it is not used in another staking position.
+2. **NFT Locking**:
+   - The NFT is locked for the duration of the staking or until the user withdraws their position.
+3. **Booster Application**:
+   - The booster multiplier is applied to the staking reward formula.
+4. **Unlocking**:
+   - After the staking period ends, the NFT is unlocked and returned to the user.
+
+## Security and Fairness Considerations
+
+- Only NFTs from the official "Investor's Hand" collection are eligible.
+- The system prevents double use of the same NFT in multiple positions.
+- All operations are transparent and verifiable on-chain.
+
+## Smart Contract Requirements
+
+- NFT ownership and locking logic must be implemented in the staking contract.
+- Booster multipliers must be read from NFT metadata.
+- The contract must support unlocking and returning NFTs after staking ends.
+
+## Example Workflow
+
+1. User selects an NFT from their wallet to use as a booster.
+2. The system verifies ownership and locks the NFT.
+3. The user stakes VG tokens, and the booster is applied.
+4. After the staking period, the user withdraws their tokens and the NFT is unlocked.
 
 ## Схемы взаимодействия программ
 

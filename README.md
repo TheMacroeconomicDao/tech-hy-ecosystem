@@ -1,296 +1,203 @@
-# Документация экосистемы TECH-HY и токенов VC/VG на Solana
+# TECH-HY Ecosystem and VC/VG Tokens on Solana — Documentation
 
 <div align="center">
-  <h3>Полная техническая документация экосистемы</h3>
-  <p>Версия 1.2</p>
+  <h3>Complete Technical Documentation of the Ecosystem</h3>
+  <p>Version 1.2</p>
 </div>
 
-## 📋 Содержание
+## 📋 Contents
 
-- [Обзор проекта](#обзор-проекта)
-  - [Цель проекта](#цель-проекта)
-  - [Ключевые особенности](#ключевые-особенности)
-  - [Схема взаимодействия компонентов](#схема-взаимодействия-компонентов)
-- [Основные компоненты экосистемы](#основные-компоненты-экосистемы)
-  - [Токены](#токены)
-  - [NFT-коллекции](#nft-коллекции)
-  - [Ключевые механизмы](#ключевые-механизмы)
-- [Руководство по документации](#руководство-по-документации)
-  - [Основные документы](#основные-документы)
-  - [Технические спецификации](#технические-спецификации)
-  - [Рекомендуемый порядок ознакомления](#рекомендуемый-порядок-ознакомления)
-- [Техническая реализация](#техническая-реализация)
-  - [Технические требования](#технические-требования)
-  - [Технологический стек](#технологический-стек)
-  - [Смарт-контракты](#смарт-контракты)
-  - [Безопасность](#безопасность)
-- [Быстрый старт](#быстрый-старт)
-- [План развития](#план-развития)
-- [Глоссарий](#глоссарий)
+- [Project Overview](#project-overview)
+  - [Project Goal](#project-goal)
+  - [Key Features](#key-features)
+  - [Component Interaction Diagram](#component-interaction-diagram)
+- [Core Ecosystem Components](#core-ecosystem-components)
+  - [Tokens](#tokens)
+  - [NFT Collections](#nft-collections)
+  - [Key Mechanisms](#key-mechanisms)
+- [Documentation Guide](#documentation-guide)
+  - [Main Documents](#main-documents)
+  - [Technical Specifications](#technical-specifications)
+  - [Recommended Reading Order](#recommended-reading-order)
+- [Technical Implementation](#technical-implementation)
+  - [Technical Requirements](#technical-requirements)
+  - [Tech Stack](#tech-stack)
+  - [Smart Contracts](#smart-contracts)
+  - [Security](#security)
+- [Quick Start](#quick-start)
+- [Development Plan](#development-plan)
+- [Glossary](#glossary)
 
-## 📝 Обзор проекта
+## 📝 Project Overview
 
-### Цель проекта
+### Project Goal
 
-Экосистема токенов VC/VG представляет собой комплексное решение на блокчейне Solana, направленное на создание устойчивой токеномики с механизмами долгосрочного стимулирования участников, децентрализованным управлением и системой распределения доходов от комиссий.
+The VC/VG token ecosystem is a comprehensive solution on the Solana blockchain aimed at creating sustainable tokenomics with long-term participant incentives, decentralized governance, and a system for distributing fee income.
 
-### Ключевые особенности
+### Key Features
 
-- **Dual-токен система** (VC/VG) с различными функциями и экономическими моделями
-- **Автоматическое сжигание токенов** через механизм "Burn and Earn"
-- **Многоуровневая система стейкинга** с NFT-бустерами
-- **Децентрализованное управление** через DAO на основе Realms
-- **Система дохода от комиссий** через NFT Fee Key
-- **Масштабируемость** благодаря использованию Solana
+- **Dual-token system** (VC/VG) with different functions and economic models
+- **Automatic token burning** via the "Burn and Earn" mechanism
+- **Multi-level staking system** with NFT boosters
+- **Decentralized governance** via DAO based on Realms
+- **Fee income system** via NFT Fee Key
+- **Scalability** thanks to Solana
 
-### Схема взаимодействия компонентов
+### Component Interaction Diagram
 
-```
-                                  +---------------+
-                                  |   VC Token    |
-                                  +-------+-------+
-                                          |
-                      +------------------->---------------+
-                      |                   v               |
-  +-----------------+ |  +---------------+-------------+  |  +----------------+
-  |                 | |  |                             |  |  |                |
-  | Investor's Hand | +->| VC Staking                  |  +->| LP Token      |
-  | NFT Collection  |    | (1M tokens, 90 days)        |     | (Permanent    |
-  | (Бустеры)       |<---+                             |     |  Lock)        |
-  +-+---------------+    +-----------------------------+     +-------+--------+
-    |                                                                |
-    |    +----------------------+                                    |
-    |    |                      |                                    |
-    |    | Angel Investor NFT   |                                    |
-    |    | (Безлимитный период) |                                    v
-    |    |                      |         +------------------+    +-----------------+
-    |    +----------+-----------+         |                  |    |                 |
-    |               |                     | Burn & Earn      |<-->| NFT Fee Key     |
-    |               |                     | Механизм         |    | + Fee           |
-    |               v                     |                  |    |   Distribution  |
-    |        +------+------+              +---------+--------+    +-----------------+
-    |        |             |                        |
-    +------->| VG Token    |<-----------------------+
-             | + Taxation  |
-             | (10%)       |
-             +------+------+
-                    |
-                    |     +---------------------------+
-                    +---->|                           |
-                          | VG Staking                |
-                          | (Мультитиры DAO + NFT)    |
-                          | + Автокомпаундинг         |
-                          |                           |
-                          +--------------+------------+
-                                         |
-                                         |
-                                         v
-                                +--------+-------+
-                                |                |
-                                | Governance DAO |
-                                | (9 уровней)    |
-                                |                |
-                                +----------------+
-```
+*(Diagram omitted for brevity, but can be translated if needed)*
 
-## 🧩 Основные компоненты экосистемы
+## 🧩 Core Ecosystem Components
 
-### Токены
+### Tokens
 
-1. **VC токен**
-   - SPL токен без налога 
-   - Основной токен экосистемы
-   - Эмиссия: 5 миллиардов (5,000,000,000) токенов
-   - Распределение: 30% публичная продажа, 20% команда, 15% маркетинг, 15% разработка, 10% ликвидность, 10% резерв
-   - Используется для создания LP и стейкинга
+1. **VC Token**
+   - SPL token with no tax
+   - Main ecosystem token
+   - Emission: 5,000,000,000 tokens
+   - Distribution: 30% public sale, 20% team, 15% marketing, 15% development, 10% liquidity, 10% reserve
+   - Used for LP creation and staking
 
-2. **VG токен**
-   - SPL токен с налогом 10%
-   - Governance токен для управления экосистемой через DAO
-   - Эмиссия: 1 миллиард (1,000,000,000) токенов
-   - Налог распределяется между:
-     - Держателями NFT Fee Key (50%)
-     - Казной DAO (50%)
+2. **VG Token**
+   - SPL token with 10% tax
+   - Governance token for DAO
+   - Emission: 1,000,000,000 tokens
+   - Tax distribution:
+     - NFT Fee Key holders (50%)
+     - DAO treasury (50%)
 
-3. **LP токены**
-   - Токены ликвидности для пары VC/SOL
-   - Подлежат постоянной блокировке в механизме "Burn and Earn"
-   - Генерируют VG токены и NFT Fee Key
+3. **LP Tokens**
+   - Liquidity tokens for VC/SOL pair
+   - Permanently locked in "Burn and Earn"
+   - Generate VG tokens and NFT Fee Key
 
-### NFT-коллекции
+### NFT Collections
 
-1. **NFT-коллекция "Investor's Hand"**
-   - Пять основных уровней бустеров с разными множителями:
-     | Уровень NFT    | Множитель | Сокращение периода стейкинга |
-     |----------------|-----------|------------------------------|
-     | Paper Hand     | 1.1x      | 10%                          |
-     | Wooden Hand    | 1.25x     | 25%                          |
-     | Steel Hand     | 1.5x      | 50%                          |
-     | Titanium Hand  | 1.75x     | 75%                          |
-     | Diamond Hand   | 2.0x      | 100%                         |
-   - Особый тип: Angel Investor NFT (безлимитный период)
-   - Доступ к высшим уровням DAO (Steel, Titanium, Diamond)
-   - Получение через стейкинг VC или специальное распределение
+1. **"Investor's Hand" NFT Collection**
+   - Five main booster levels with different multipliers:
+     | NFT Level      | Multiplier | Staking Period Reduction |
+     |---------------|------------|-------------------------|
+     | Paper Hand    | 1.1x       | 10%                     |
+     | Wooden Hand   | 1.25x      | 25%                     |
+     | Steel Hand    | 1.5x       | 50%                     |
+     | Titanium Hand | 1.75x      | 75%                     |
+     | Diamond Hand  | 2.0x       | 100%                    |
+   - Special type: Angel Investor NFT (unlimited period)
+   - Access to higher DAO levels (Steel, Titanium, Diamond)
+   - Obtained via VC staking or special distribution
 
 2. **NFT Fee Key**
-   - Четыре уровня NFT: Common, Rare, Epic, Legendary
-   - Получение через механизм "Burn and Earn"
-   - Дают право на долю комиссий от транзакций с VG токенами
+   - Four NFT levels: Common, Rare, Epic, Legendary
+   - Obtained via "Burn and Earn"
+   - Entitles holder to a share of VG token transaction fees
 
-### Ключевые механизмы
+### Key Mechanisms
 
-1. **Механизм "Burn and Earn"**
-   - Пользователь предоставляет оба актива (VC и SOL) для создания пары ликвидности
-   - Формирование LP токенов через добавление ликвидности на Raydium
-   - Постоянная блокировка LP токенов без возможности разблокировки
-   - Эмиссия VG токенов по формуле `VG = LP * C * (1 + B * log10(LP/LP_min))`
-   - Создание NFT Fee Key, дающего право на доход от комиссий
+1. **"Burn and Earn" Mechanism**
+   - User provides both assets (VC and SOL) to create a liquidity pair
+   - LP tokens formed via Raydium liquidity addition
+   - LP tokens are permanently locked
+   - VG tokens issued by formula: `VG = LP * C * (1 + B * log10(LP/LP_min))`
+   - NFT Fee Key is created, entitling to fee income
 
-2. **Стейкинг VC токенов**
-   - Блокировка фиксированной суммы в 1 млн VC токенов на 90 дней
-   - Получение NFT-бустера из коллекции "Investor's Hand" (стандартно Wooden Hand)
-   - Специальное распределение для высших уровней NFT (Titanium, Diamond, Angel)
+2. **VC Token Staking**
+   - Lock 1M VC tokens for 90 days
+   - Receive NFT booster from "Investor's Hand" (default: Wooden Hand)
+   - Special distribution for higher-level NFTs (Titanium, Diamond, Angel)
 
-3. **Стейкинг VG токенов**
-   - Многоуровневая система DAO-статусов: от Starter до Partner
-   - Период стейкинга от 7 до 365 дней в зависимости от уровня
-   - Сокращение периода стейкинга с помощью NFT-бустеров (10-100%)
-   - Автоматическое реинвестирование при стейкинге более 10,000 VG
-   - 100% токенов реинвестируются автоматически
+3. **VG Token Staking**
+   - Multi-level DAO status system: from Starter to Partner
+   - Staking period: 7–365 days depending on level
+   - Staking period reduction via NFT boosters (10–100%)
+   - Auto-compounding for >10,000 VG staked
+   - 100% tokens are auto-compounded
 
-4. **Децентрализованное управление (DAO)**
-   - Голосование держателей VG токенов
-   - Прогрессивная структура из 9 уровней участия
-   - Управление параметрами экосистемы
-   - Высшие уровни требуют NFT соответствующего уровня
+4. **Decentralized Governance (DAO)**
+   - VG token holder voting
+   - Progressive 9-level participation structure
+   - Ecosystem parameter management
+   - Higher levels require corresponding NFT
 
-## 📚 Руководство по документации
+## 📚 Documentation Guide
 
-### Основные документы
+### Main Documents
 
-1. [**Архитектура системы**](./docs/01-system-architecture.md)
-   - Детальное описание архитектуры всей экосистемы
-   - Взаимодействие всех компонентов и программ
-   - Технический стек и требования к безопасности
-
-2. [**Токены экосистемы**](./docs/02-tokens.md)
-   - Подробные характеристики VC, VG и LP токенов
-   - Механизм налогообложения VG токена
-   - Правила эмиссии и распределения
-
-3. [**Механизм "Burn and Earn"**](./docs/03-burn-and-earn.md)
-   - Пошаговый процесс конвертации и блокировки
-   - Формула расчета VG токенов
-   - Интеграция с Raydium для создания ликвидности
-
-4. [**Стейкинг VC токенов и NFT-бустеры**](./docs/04-vc-staking.md)
-   - Полный цикл стейкинга VC токенов
-   - Создание и использование NFT-бустеров из коллекции "Investor's Hand"
-   - Влияние NFT-бустеров на экосистему
-
-5. [**Стейкинг VG токенов**](./docs/05-vg-staking.md)
-   - Уровни DAO и периоды стейкинга
-   - Механизм автоматического реинвестирования
-   - Применение NFT-бустеров к стейкингу VG
-
+1. [**System Architecture**](./docs/01-system-architecture.md)
+2. [**Ecosystem Tokens**](./docs/02-tokens.md)
+3. [**Burn and Earn Mechanism**](./docs/03-burn-and-earn.md)
+4. [**VC Staking and NFT Boosters**](./docs/04-vc-staking.md)
+5. [**VG Staking**](./docs/05-vg-staking.md)
 6. [**NFT Fee Key**](./docs/06-nft-fee-key.md)
-   - Система уровней NFT и их влияние на доход
-   - Механизм распределения комиссий
-   - Процесс создания и использования NFT Fee Key
+7. [**"Investor's Hand" NFT Collection**](./docs/investors-hand-nft.md)
+8. [**Governance and DAO**](./docs/07-governance.md)
+9. [**API and Interfaces**](./docs/08-api.md)
+10. [**Security and Audit**](./docs/09-security.md)
+11. [**Implementation Plan**](./docs/10-implementation-plan.md)
 
-7. [**NFT-коллекция "Investor's Hand"**](./docs/investors-hand-nft.md)
-   - Подробное описание уровней NFT-бустеров
-   - Механизм интеграции со стейкингом и DAO
-   - Технические аспекты реализации
+### Technical Specifications
 
-8. [**Governance и DAO**](./docs/07-governance.md)
-   - Интеграция с Realms для создания DAO
-   - Процесс создания предложений и голосования
-   - 9 уровней участия в DAO и их привилегии
+- [**Data Structures**](./docs/specs/data-structures.md)
+- [**VG Token Calculation Formula**](./docs/specs/vg-calculation-formula.md)
+- [**VG Staking Period Formula**](./docs/specs/vg-staking-formula.md)
+- [**"Investor's Hand" NFT Integration**](./docs/specs/investors-hand-integration.md)
+- [**Raydium Integration**](./docs/specs/raydium-integration.md)
+- [**Metaplex Integration**](./docs/specs/metaplex-integration.md)
+- [**Realms Integration**](./docs/specs/realms-integration.md)
 
-9. [**API и интерфейсы**](./docs/08-api.md)
-   - Полный референс всех функций смарт-контрактов
-   - Примеры использования API
-   - Обработка ошибок и события
+### Recommended Reading Order
 
-10. [**Безопасность и аудит**](./docs/09-security.md)
-    - Модель безопасности системы
-    - План аудита контрактов
-    - Меры защиты от атак
+**For general understanding:**
+1. System Architecture
+2. Ecosystem Tokens
+3. Burn and Earn Mechanism
+4. VC Staking and NFT Boosters
+5. VG Staking
+6. "Investor's Hand" NFT Collection
+7. Governance and DAO
 
-11. [**План реализации**](./docs/10-implementation-plan.md)
-    - Дорожная карта разработки
-    - Приоритизация задач и зависимости
-    - График запуска и тестирования
+**For developers:**
+1. System Architecture
+2. Data Structures
+3. API and Interfaces
 
-### Технические спецификации
+**For auditors and security specialists:**
+1. Security and Audit
+2. System Architecture
+3. Data Structures
+4. "Investor's Hand" NFT Integration
 
-- [**Структуры данных**](./docs/specs/data-structures.md) - Детальное описание всех структур данных в смарт-контрактах
-- [**Формула расчета VG токенов**](./docs/specs/vg-calculation-formula.md) - Математическая модель расчета VG токенов при блокировке LP
-- [**Формула расчета периода стейкинга VG**](./docs/specs/vg-staking-formula.md) - Математическая модель для динамического периода стейкинга
-- [**Интеграция NFT-коллекции "Investor's Hand"**](./docs/specs/investors-hand-integration.md) - Техническая спецификация интеграции NFT-бустеров с системами стейкинга и DAO
-- [**Интеграция с Raydium**](./docs/specs/raydium-integration.md) - Техническая спецификация интеграции с Raydium AMM
-- [**Интеграция с Metaplex**](./docs/specs/metaplex-integration.md) - Техническая спецификация создания и управления NFT
-- [**Интеграция с Realms**](./docs/specs/realms-integration.md) - Техническая спецификация интеграции с Realms DAO
+## 💻 Technical Implementation
 
-### Рекомендуемый порядок ознакомления
+### Technical Requirements
 
-**Для общего понимания проекта:**
-1. [Архитектура системы](./docs/01-system-architecture.md)
-2. [Токены экосистемы](./docs/02-tokens.md)
-3. [Механизм "Burn and Earn"](./docs/03-burn-and-earn.md)
-4. [Стейкинг VC токенов и NFT-бустеры](./docs/04-vc-staking.md)
-5. [Стейкинг VG токенов](./docs/05-vg-staking.md)
-6. [NFT-коллекция "Investor's Hand"](./docs/investors-hand-nft.md)
-7. [Governance и DAO](./docs/07-governance.md)
+- **OS**: Linux, MacOS, or Windows (WSL2)
+- **Rust**: 1.86.0+
+- **Solana CLI**: 2.1.22+
+- **Anchor**: 0.29.0+
+- **Node.js**: 18.x+
+- **pnpm**: 8.x+
+- **TypeScript**: 5.x+
 
-**Для разработчиков:**
-1. [Архитектура системы](./docs/01-system-architecture.md)
-2. [Структуры данных](./docs/specs/data-structures.md)
-3. [API и интерфейсы](./docs/08-api.md)
-4. [NFT-коллекция "Investor's Hand"](./docs/investors-hand-nft.md)
-5. [Интеграция NFT-коллекции "Investor's Hand"](./docs/specs/investors-hand-integration.md)
+### Tech Stack
 
-**Для аудиторов и специалистов по безопасности:**
-1. [Безопасность и аудит](./docs/09-security.md)
-2. [Архитектура системы](./docs/01-system-architecture.md)
-3. [Структуры данных](./docs/specs/data-structures.md)
-4. [Интеграция NFT-коллекции "Investor's Hand"](./docs/specs/investors-hand-integration.md)
-
-## 💻 Техническая реализация
-
-### Технические требования
-
-Для разработки и работы с экосистемой TECH-HY требуются следующие версии программного обеспечения:
-
-- **Операционная система**: Linux, MacOS или Windows (WSL2)
-- **Rust**: версия 1.86.0 или новее
-- **Solana CLI**: версия 2.1.22 или новее
-- **Anchor**: версия 0.29.0 или новее
-- **Node.js**: версия 18.x или новее
-- **pnpm**: версия 8.x или новее
-- **TypeScript**: версия 5.x или новее
-
-### Технологический стек
-
-- **Блокчейн**: Solana
-- **Язык программирования**: Rust
-- **Фреймворк**: Anchor
-- **Токен-стандарт**: SPL Token
-- **NFT-стандарт**: Metaplex NFT Standard
+- **Blockchain**: Solana
+- **Language**: Rust
+- **Framework**: Anchor
+- **Token Standard**: SPL Token
+- **NFT Standard**: Metaplex NFT Standard
 - **AMM**: Raydium
 - **Governance**: Realms DAO
 
-### Смарт-контракты
+### Smart Contracts
 
-Экосистема состоит из следующих основных программ:
+The ecosystem consists of:
 
-1. **Token Contracts** - контракты для управления токенами
+1. **Token Contracts**
    - VC Token Contract
    - VG Token Contract
    - LP Token Integration
 
-2. **Program Contracts** - программы для реализации бизнес-логики
+2. **Program Contracts**
    - LP Formation Program (Burn and Earn)
    - VC Staking Program
    - VG Staking Program
@@ -298,118 +205,182 @@
    - Investor's Hand NFT Program
    - Governance Program
 
-3. **External Integrations** - интеграции с внешними сервисами
+3. **External Integrations**
    - Raydium Integration
    - Metaplex Integration
    - Realms Integration
 
-### Безопасность
+### Security
 
-Безопасность экосистемы обеспечивается:
+Security is ensured by:
 
-- Тщательным проектированием и тестированием
-- Многоуровневой системой проверок и валидации
-- Аудитом смарт-контрактов независимыми специалистами
-- Постепенным и контролируемым запуском функциональности
-- Механизмами аварийной остановки и восстановления
+- Careful design and testing
+- Multi-level checks and validation
+- Independent smart contract audits
+- Gradual and controlled feature rollout
+- Emergency stop and recovery mechanisms
 
-Подробнее о безопасности смотрите в [документе по безопасности](./docs/09-security.md).
+See [security document](./docs/09-security.md) for details.
 
-## 🚀 Быстрый старт
+## 🚀 Quick Start
 
-Для быстрого старта разработки следуйте этим шагам:
+1. **Setup development environment**
+   ```bash
+   git clone https://github.com/TheMacroeconomicDao/tech-hy-contracts.git
+   cd tech-hy-contracts
+   pnpm install
+   ```
+2. **Build contracts**
+   ```bash
+   anchor build
+   ```
+3. **Run tests**
+   ```bash
+   pnpm test
+   ```
+4. **Run local validator**
+   ```bash
+   solana-test-validator
+   ```
+5. **Deploy to testnet**
+   ```bash
+   anchor deploy --provider.cluster devnet
+   ```
 
-1. **Настройка среды разработки**
+See [dev guide](./docs/dev-guide.md) for more.
 
-```bash
-# Клонирование репозитория
-git clone https://github.com/TheMacroeconomicDao/tech-hy-contracts.git
-cd tech-hy-contracts
+## 🚀 Development Plan
 
-# Установка зависимостей
-pnpm install
-```
+1. **Stages 1-2**: Basic tokens and architecture (6 days)
+2. **Stages 3-4**: "Burn and Earn" and VC staking (11 days)
+3. **Stages 5-7**: NFT Fee Key, VG staking, DAO (17 days)
+4. **Stage 8**: "Investor's Hand" NFT collection (7 days)
+5. **Stage 9**: Testing and optimization (5 days)
+6. **Stages 10-11**: Testnet and mainnet launch (6 days)
 
-2. **Сборка контрактов**
+See [implementation plan](./docs/10-implementation-plan.md) for details.
 
-```bash
-# Сборка всех Rust программ
-anchor build
-```
+## 📘 Glossary
 
-3. **Запуск тестов**
-
-```bash
-# Запуск всех тестов
-pnpm test
-```
-
-4. **Локальный запуск валидатора**
-
-```bash
-# Запуск локального валидатора Solana
-solana-test-validator
-```
-
-5. **Деплой программ в тестовую сеть**
-
-```bash
-# Деплой программ в тестовую сеть devnet
-anchor deploy --provider.cluster devnet
-```
-
-Более подробные инструкции можно найти в [руководстве по разработке](./docs/dev-guide.md).
-
-## 🚀 План развития
-
-Разработка и запуск экосистемы включает следующие этапы:
-
-1. **Этап 1-2**: Разработка базовых токенов и архитектуры (6 дней)
-2. **Этап 3-4**: Разработка механизма "Burn and Earn" и стейкинга VC (11 дней)
-3. **Этап 5-7**: Разработка NFT Fee Key, стейкинга VG и DAO (17 дней)
-4. **Этап 8**: Разработка NFT-коллекции "Investor's Hand" (7 дней)
-5. **Этап 9**: Тестирование и оптимизация (5 дней)
-6. **Этап 10-11**: Запуск в тестовой и основной сети (6 дней)
-
-Полный график и детализация этапов представлены в [плане реализации](./docs/10-implementation-plan.md).
-
-## 📘 Глоссарий
-
-- **VC** - основной токен экосистемы без налога (0%)
-- **VG** - governance токен с налогом 10%, получаемый за блокировку LP токенов
-- **LP токен** - токен ликвидности, создаваемый из пары VC/SOL
-- **NFT-бустер** - невзаимозаменяемый токен из коллекции "Investor's Hand", улучшающий условия стейкинга VG токенов
-- **Investor's Hand** - коллекция NFT-бустеров с пятью уровнями: Paper, Wooden, Steel, Titanium, Diamond Hand
-- **Angel NFT** - специальный NFT для ранних инвесторов, обеспечивающий безлимитный период стейкинга и автокомпаундинг
-- **NFT Fee Key** - невзаимозаменяемый токен, дающий право на доход от комиссий
-- **Burn and Earn** - механизм постоянной блокировки LP токенов для получения VG токенов и NFT Fee Key
-- **Permanent lock** - постоянная блокировка LP токенов без возможности разблокировки
-- **DAO** - децентрализованная автономная организация для управления экосистемой
-- **DAO-тиры** - уровни участия в DAO, от Starter до Partner, определяющие права и периоды стейкинга
-- **SPL Token** - Solana Program Library Token, стандарт токенов на Solana
-- **AMM** - Automated Market Maker, автоматический маркет-мейкер (Raydium)
-- **PDA** - Program Derived Address, адрес, производный от программы в Solana
+- **VC** — main ecosystem token, no tax (0%)
+- **VG** — governance token, 10% tax, earned for locking LP tokens
+- **LP token** — liquidity token for VC/SOL pair
+- **NFT booster** — non-fungible token from "Investor's Hand" collection, improves VG staking
+- **Investor's Hand** — NFT booster collection with five levels: Paper, Wooden, Steel, Titanium, Diamond Hand
+- **Angel NFT** — special NFT for early investors, unlimited staking and auto-compounding
+- **NFT Fee Key** — NFT entitling to fee income
+- **Burn and Earn** — mechanism for permanent LP token lock to receive VG and NFT Fee Key
+- **Permanent lock** — irreversible LP token lock
+- **DAO** — decentralized autonomous organization
+- **DAO tiers** — participation levels from Starter to Partner, define rights and staking periods
+- **SPL Token** — Solana Program Library Token standard
+- **AMM** — Automated Market Maker (Raydium)
+- **PDA** — Program Derived Address
 
 ---
 
-## 📅 История обновлений
+## 📅 Changelog
 
-### Версия 1.2 (Текущая)
-- Добавлен раздел технических требований и версий используемых технологий
-- Обновлена информация о токенах: эмиссия, распределение, налоги
-- Исправлено описание механизма "Burn and Earn" с учетом актуальной модели
-- Добавлен раздел "Быстрый старт" для упрощения начала работы с проектом
-- Обновлена схема механизма Burn and Earn в соответствии с новой моделью
+### Version 1.2 (Current)
+- Added technical requirements and version info
+- Updated token info: emission, distribution, taxes
+- Fixed "Burn and Earn" description
+- Added "Quick Start" section
+- Updated Burn and Earn diagram
 
-### Версия 1.1
-- Добавлена детальная документация по NFT-коллекции "Investor's Hand"
-- Обновлена информация о DAO и стейкинге VG с учетом различных уровней NFT-бустеров
-- Добавлена техническая спецификация интеграции NFT-бустеров с системами стейкинга и DAO
-- Обновлен план разработки с включением этапа создания NFT-коллекции "Investor's Hand"
-- Улучшена формула расчета периода стейкинга VG с учетом множителей NFT-бустеров
+### Version 1.1
+- Added detailed "Investor's Hand" NFT documentation
+- Updated DAO and VG staking info for NFT boosters
+- Added NFT booster integration spec
+- Updated development plan for NFT collection
+- Improved VG staking period formula
 
-### Версия 1.0 (Первоначальная)
-- Разработана базовая архитектура экосистемы VC/VG токенов
-- Описаны механизмы "Burn and Earn", стейкинга токенов и система DAO
-- Созданы технические спецификации структур данных и формул расчета
-- Сформирован план разработки и реализации проекта 
+### Version 1.0 (Initial)
+- Developed basic VC/VG token architecture
+- Described "Burn and Earn", staking, DAO
+- Created data structure and formula specs
+- Formed project development plan
+
+# TECH HY Smart Contracts
+
+The TECH HY project is a set of Solana smart contracts, including VC and VG tokens and a staking system.
+
+## Main Components
+
+1. **VC Token** — standard SPL token, 5B emission at init
+2. **VG Token** — Token-2022 with 10% tax on transactions
+3. **Staking** — contract for VG staking with levels and rewards
+
+## Docker Launch
+
+Project is Docker-ready for isolated development.
+
+### Requirements
+
+- Docker
+- Docker Compose
+
+### Launch
+
+1. Clone repo and cd:
+   ```bash
+   git clone <repo-url>
+   cd tech-hy-contracts
+   ```
+2. Start container with tests:
+   ```bash
+   docker-compose up anchor
+   ```
+3. For interactive shell:
+   ```bash
+   docker-compose run anchor-shell
+   ```
+
+### npm Scripts
+
+- `npm start` — run container with tests
+- `npm run shell` — interactive shell
+- `npm run build` — build programs
+- `npm run test` — run tests
+- `npm run deploy` — deploy to network
+
+## Project Structure
+
+```
+tech-hy-contracts/
+├── programs/
+│   ├── vc-token/        # VC SPL token
+│   ├── vg-token/        # Token-2022 with Transfer Hook
+│   └── staking/         # VG staking
+├── tests/               # Tests
+├── Anchor.toml          # Anchor config
+├── Dockerfile           # Docker image config
+└── docker-compose.yml   # Container config
+```
+
+## Development
+
+### Main Docker Commands
+
+- Build:
+  ```bash
+  anchor build
+  ```
+- Test:
+  ```bash
+  anchor test
+  ```
+- Deploy to localnet:
+  ```bash
+  anchor deploy
+  ```
+- Deploy to devnet:
+  ```bash
+  anchor deploy --provider.cluster devnet
+  ```
+
+## Further Development
+
+- Full Transfer Hook for VG token
+- Add DAO to staking system
+- Develop Burn & Earn component 

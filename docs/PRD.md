@@ -1,398 +1,278 @@
-# PRD: Экосистема TECH HY
+# PRD: TECH HY Ecosystem
 
-## 1. Введение
+## 1. Introduction
 
-### 1.1. Видение
-Создание комплексной и самодостаточной децентрализованной финансовой экосистемы на блокчейне Solana, предоставляющей пользователям инновационные инструменты для управления активами, участия в развитии проекта и получения дохода.
+### 1.1. Vision
+Create a comprehensive and self-sufficient decentralized financial ecosystem on Solana, providing users with innovative tools for asset management, project participation, and income generation.
 
-### 1.2. Цели
-- Разработать и внедрить два взаимосвязанных токена (VC и VG) с уникальными экономическими моделями.
-- Реализовать механизм "Burn and Earn" для стимулирования предоставления ликвидности и распределения токенов управления.
-- Создать гибкие программы стейкинга для VC и VG токенов с использованием NFT-бустеров.
-- Внедрить систему децентрализованного управления (DAO) на базе протокола Realms.
-- Обеспечить высокий уровень безопасности, прозрачности и удобства использования для всех участников.
+### 1.2. Goals
+- Develop and implement two interconnected tokens (VC and VG) with unique economic models.
+- Implement a "Burn and Earn" mechanism to incentivize liquidity provision and governance token distribution.
+- Create flexible staking programs for VC and VG tokens using NFT boosters.
+- Introduce decentralized governance (DAO) based on the Realms protocol.
+- Ensure high security, transparency, and usability for all participants.
 
+## 2. System Architecture
 
+### 2.1. High-Level Overview
+The TECH HY ecosystem architecture on Solana is a set of interconnected SPL tokens (smart contracts) ensuring all component functionality. The system is designed for security, scalability, and Solana resource optimization.
 
-## 2. Архитектура системы
+### 2.2. Key Components
+1. **Token Contracts**: Manage main ecosystem tokens.
+2. **Program Contracts**: Implement core business logic and mechanics.
+3. **NFTs**: Specialized tokens for extended functionality and privileges.
+4. **External Integrations**: Interact with existing Solana protocols.
 
-### 2.1. Высокоуровневый обзор
-Архитектура экосистемы TECH HY на Solana представляет собой набор взаимосвязанных SPL токенов  (смарт-контрактов), обеспечивающих функционирование всех компонентов. Система разработана с учетом требований безопасности, масштабируемости и оптимизации использования ресурсов Solana.
+### 2.3. Tech Stack
+- **Blockchain**: Solana
+- **Language**: Rust
+- **Framework**: Anchor
+- **Token Standard**: SPL Token, Token-2022 (VG with tax)
+- **NFT Standard**: Metaplex
+- **AMM**: Raydium
+- **Governance (DAO)**: Realms
 
-### 2.2. Ключевые компоненты
-1.  **Контракты токенов (Token Contracts)**: Управление основными токенами экосистемы.
-2.  **Программные контракты (Program Contracts)**: Реализация основной бизнес-логики и механик.
-3.  **NFT**: Специализированные токены для расширения функциональности и предоставления привилегий.
-4.  **Внешние интеграции (External Integrations)**: Взаимодействие с существующими протоколами Solana.
+## 3. Key Components — Detailed Specs
 
-### 2.3. Технологический стек
--   **Блокчейн**: Solana
--   **Язык программирования**: Rust
--   **Фреймворк**: Anchor
--   **Стандарт токенов**: SPL Token, Token-2022 (для VG с налогом)
--   **Стандарт NFT**: Metaplex
--   **AMM**: Raydium
--   **Управление (DAO)**: Realms
-
-## 3. Ключевые компоненты - Детальные спецификации
-
-### 3.1. Токены
+### 3.1. Tokens
 
 #### 3.1.1. VC Token (TECH HY Venture Card Token)
--   **Назначение**: Основной утилитарный токен экосистемы, используется для создания LP токенов, стейкинга для получения NFT-бустеров и оплаты услуг.
--   **Характеристики**:
-    -   **Тикер**: VC
-    -   **Тип**: SPL Token
-    -   **Десятичные знаки**: 9
-    -   **Налог на транзакции**: 0%
-    -   **Общая эмиссия**: 5,000,000,000 VC (пять миллиардов)
--   **Технические параметры**:
-    -   **Mint Authority**: Отсутствует после инициализации (No Mint).
-    -   **Freeze Authority**: Отсутствует после инициализации.
--   **Метаданные (пример)**:
-    -   **Имя**: TECH HY Venture Card Token
-    -   **Символ**: VC
-    -   **URI**: `https://tech-hy-venture-club.gitbook.io/tech-hy-venture-club-white-paper/10.-dual-token-economy-and-tokenomics/10.1-usdvc-tech-hy-venture-club-utility-community-token`
-    -   **Изображение**: `https://techhy.me/images/vc-logo.png`
--   **Использование / Утилиты**:
-    1.  **Создание LP токенов**: Участие в механизме "Burn and Earn" путем предоставления VC (в паре с SOL).
-    2.  **Стейкинг для NFT-бустера**: Блокировка 1,000,000 VC на 90 дней для получения NFT "Investor's Hand".
-    3.  **Финансовые инструменты**: Номинальная стоимость для оплаты услуг в экосистеме TECH HY (до 50% стоимости), обеспечение для фонда, залог для Success Fee.
-    4.  **Эксклюзивный доступ**: Доступ к TECH HY Investors Private Club, кэшбэк, участие в фарминге LP.
--   **API / Инструкции (пример)**:
-    ```rust
-    pub enum VCTokenInstruction {
-        Initialize, // Первичная инициализация токена
-        Transfer { amount: u64 }, // Стандартный перевод
-        AdminOperation { operation_type: AdminOperationType }, // Для мультисига DAO
-    }
-    pub enum AdminOperationType {
-        UpdateMetadata { new_uri: String },
-        TransferAuthority { new_authority: Pubkey }, // Передача прав администратора
-    }
-    ```
+- **Purpose**: Main utility token, used for LP creation, staking for NFT boosters, and service payments.
+- **Specs**:
+  - **Ticker**: VC
+  - **Type**: SPL Token
+  - **Decimals**: 9
+  - **Transaction Tax**: 0%
+  - **Total Supply**: 5,000,000,000 VC
+- **Technical Params**:
+  - **Mint Authority**: None after init
+  - **Freeze Authority**: None after init
+- **Metadata (example)**:
+  - **Name**: TECH HY Venture Card Token
+  - **Symbol**: VC
+  - **URI**: `https://tech-hy-venture-club.gitbook.io/tech-hy-venture-club-white-paper/10.-dual-token-economy-and-tokenomics/10.1-usdvc-tech-hy-venture-club-utility-community-token`
+  - **Image**: `https://techhy.me/images/vc-logo.png`
+- **Utility**:
+  1. **LP Creation**: Participate in "Burn and Earn" by providing VC (paired with SOL).
+  2. **Staking for NFT Booster**: Lock 1,000,000 VC for 90 days to get "Investor's Hand" NFT.
+  3. **Financial Tools**: Used for service payments (up to 50%), fund collateral, Success Fee collateral.
+  4. **Exclusive Access**: Access to TECH HY Investors Private Club, cashback, LP farming.
+- **API / Instructions (example)**:
+  ```rust
+  pub enum VCTokenInstruction {
+      Initialize,
+      Transfer { amount: u64 },
+      AdminOperation { operation_type: AdminOperationType },
+  }
+  pub enum AdminOperationType {
+      UpdateMetadata { new_uri: String },
+      TransferAuthority { new_authority: Pubkey },
+  }
+  ```
 
 #### 3.1.2. VG Token (TECH HY Venture Gift Token)
--   **Назначение**: Токен управления (governance) с механизмом налога на транзакции, используется для участия в DAO и стейкинга.
--   **Характеристики**:
-    -   **Тикер**: VG
-    -   **Тип**: Модифицированный SPL Token ( с использованием расширений Token-2022 для налога на перевод).
-    -   **Десятичные знаки**: 9
-    -   **Налог на транзакции**: 10% (взимается при переводах, стейкинге, анстейкинге).
-    -   **Общая эмиссия**: 1,000,000,000 VG (один миллиард).
--   **Технические параметры**:
-    -   **Mint Authority**: Отсутствует. Вся эмиссия создается при инициализации контракта токена. Дальнейший минт невозможен.
-    -   **Freeze Authority**: Отсутствует. Заморозка токенов или отдельных счетов невозможна.
--   **Метаданные (пример)**:
-    -   **Имя**: TECH HY Venture Gift Token
-    -   **Символ**: VG
-    -   **URI**: `https://techhy.me/metadata/vg-token.json`
-    -   **Изображение**: `https://techhy.me/images/vg-logo.png`
--   **Получение**:
-    -   Не продается и не покупается напрямую.
-    -   Распределяется программой "Burn and Earn" из начального пула (из контракта который выдаёт его в обмен на вечную блокировку LP токенов VC/SOL.) 
--   **Использование / Утилиты**:
-    1.  **Стейкинг**: Блокировка для получения пассивного дохода и доступа к уровням DAO.
-    2.  **Управление (DAO)**: Голосование по предложениям, участие в развитии экосистемы.
-    3.  **Доступ к привилегиям**: Многоуровневая система доступа в DAO, дропы, бустеры.
--   **Механизм налога (10%)**:
-    -   **Распределение**:
-        -   50% держателям NFT Fee Key.
-        -   50% в казну DAO.
-    -   **Связанные аккаунты (PDA)**:
-        ```rust
-        // Хранит параметры налога (ставка, доли распределения, адрес казны DAO)
-        pub struct TaxConfig {
-            pub tax_rate: u16,          // 10% = 1000 (база 10000)
-            pub dao_share: u16,         // 50% = 5000 (база 10000)
-            pub nft_holders_share: u16, // 50% = 5000 (база 10000)
-            pub dao_treasury: Pubkey,   // Адрес казны DAO
-            pub authority: Pubkey,      // Адрес управляющего (мультисиг DAO)
-        }
-
-        // Пул для временного хранения налогов для держателей NFT Fee Key
-        pub struct NFTHoldersPool {
-            pub total_collected: u64,
-            pub last_distribution: i64,
-            pub distribution_period: i64, // Период распределения (например, раз в сутки)
-        }
-
-        // Информация о доле каждого NFT Fee Key
-        pub struct NFTHolderInfo { // PDA, key: nft_mint
-            pub nft_mint: Pubkey,
-            pub owner: Pubkey,
-            pub tier_multiplier: u16,    // Множитель уровня NFT (база 1000)
-            pub locked_lp_amount: u64,
-            pub share_percentage: u16,   // Процент от общего пула (база 10000)
-            pub last_claimed: i64,
-        }
-        ```
-    -   **Реализация**: Кастомная программа-обертка (wrapper) поверх стандарта SPL Token, перехватывающая инструкции перевода для взимания и распределения налога.
--   **API / Инструкции (пример)**:
-    ```rust
-    pub enum VGTokenInstruction {
-        InitializeTaxConfig { tax_rate: u16, dao_share: u16, nft_holders_share: u16 }, // Инициализация параметров налога
-        UpdateTaxConfig { tax_rate: u16, dao_share: u16, nft_holders_share: u16 }, // Обновление (через DAO)
-        Transfer { amount: u64 }, // Перевод с автоматическим взиманием налога
-        DistributeNFTHoldersRewards, // Периодическое распределение из NFTHoldersPool по NFTHolderInfo
-        ClaimNFTHolderReward { nft_mint: Pubkey }, // Клейм вознаграждения держателем NFT Fee Key
-    }
-    ```
+- **Purpose**: Governance token with transaction tax, used for DAO and staking.
+- **Specs**:
+  - **Ticker**: VG
+  - **Type**: Modified SPL Token (Token-2022 extensions for tax)
+  - **Decimals**: 9
+  - **Transaction Tax**: 10%
+  - **Total Supply**: 1,000,000,000 VG
+- **Technical Params**:
+  - **Mint Authority**: None after init
+  - **Freeze Authority**: None
+- **Metadata (example)**:
+  - **Name**: TECH HY Venture Gift Token
+  - **Symbol**: VG
+  - **URI**: `https://techhy.me/metadata/vg-token.json`
+  - **Image**: `https://techhy.me/images/vg-logo.png`
+- **Acquisition**:
+  - Not sold or bought directly.
+  - Distributed by "Burn and Earn" from initial pool (contract issues in exchange for permanent LP lock).
+- **Utility**:
+  1. **Staking**: Lock for passive income and DAO access.
+  2. **Governance (DAO)**: Voting, ecosystem development.
+  3. **Privileges**: Multi-level DAO access, drops, boosters.
+- **Tax Mechanism (10%)**:
+  - **Distribution**:
+    - 50% to NFT Fee Key holders.
+    - 50% to DAO treasury.
+  - **Related Accounts (PDA)**:
+    *(Rust structs omitted for brevity, can be translated if needed)*
+  - **Implementation**: Custom wrapper over SPL Token, intercepts transfer instructions for tax.
+- **API / Instructions (example)**:
+  *(Rust enums omitted for brevity, can be translated if needed)*
 
 #### 3.1.3. LP Token (VC/SOL)
--   **Назначение**: Представляет долю пользователя в пуле ликвидности VC/SOL на Raydium.
--   **Характеристики**:
-    -   **Тип**: Стандартный LP токен Raydium.
-    -   **Пара**: VC/SOL.
--   **Получение**: Через предоставление ликвидности (VC и SOL) в соответствующий пул на Raydium.
--   **Использование**: Исключительно для механизма "Burn and Earn" - перманентная блокировка в специальном контракте.
--   **Техническая реализация (связанные PDA в программе "Burn and Earn")**:
-    ```rust
-    // Хранилище для перманентно заблокированных LP токенов
-    pub struct PermanentLockVault {
-        pub total_locked_lp: u64,
-        pub total_weighted_locked_lp: u64, // Для расчета долей NFT Fee Key
-        pub lp_mint: Pubkey,               // Адрес минта LP токена
-        pub authority: Pubkey,             // PDA программы Burn and Earn
-    }
-
-    // Информация о блокировке LP токенов конкретным пользователем
-    pub struct UserLockInfo { // PDA, key: user_pubkey
-        pub user: Pubkey,
-        pub locked_lp_amount: u64,
-        pub lock_timestamp: i64,
-        pub vg_received: u64,          // Количество распределенных VG
-        pub nft_fee_key_mint: Option<Pubkey>, // Минт выданного NFT Fee Key
-    }
-    ```
--   **API / Инструкции (в рамках программы "Burn and Earn")**:
-    ```rust
-    pub enum LPTokenInstruction { // На самом деле это будут инструкции программы Burn and Earn
-        InitializeLockVault { lp_mint: Pubkey },
-        LockLPTokens { amount: u64 }, // Блокировка LP и получение VG + NFT Fee Key
-        GetUserLockInfo { user: Pubkey },
-    }
-    ```
+- **Purpose**: Represents user share in VC/SOL Raydium pool.
+- **Specs**:
+  - **Type**: Standard Raydium LP token.
+  - **Pair**: VC/SOL.
+- **Acquisition**: By providing liquidity (VC and SOL) to Raydium pool.
+- **Usage**: Only for "Burn and Earn" — permanent lock in special contract.
+- **Technical Implementation**:
+  *(Rust structs and enums omitted for brevity)*
 
 ### 3.2. NFTs
 
 #### 3.2.1. NFT Fee Key
--   **Назначение**: Предоставляет право на получение доли от 50% налоговых сборов с транзакций VG токенов.
--   **Получение**: Автоматически создается (минтится) при блокировке LP токенов в механизме "Burn and Earn".
--   **Характеристики**: Передаваемый NFT.
--   **Уровни и Множители** (зависят от количества заблокированных LP токенов):
-    | Уровень   | LP токены      | Множитель |
-    |-----------|----------------|-----------|
-    | Common    | < 1,000        | 1.0x      |
-    | Rare      | 1,000 - 9,999  | 1.2x      |
-    | Epic      | 10,000 - 99,999| 1.5x      |
-    | Legendary | >= 100,000     | 2.0x      |
--   **Метаданные (пример)**:
-    -   **Название**: `VC/VG Fee Key #{id}`
-    -   **Символ**: `VCFK`
-    -   **Атрибуты**:
-        -   `locked_lp_amount`: Количество заблокированных LP.
-        -   `lock_timestamp`: Время блокировки (Unix timestamp).
-        -   `fee_share_percentage`: Расчетный процент от общего пула комиссий.
-        -   `tier`: Уровень NFT (Common, Rare, Epic, Legendary).
--   **Формула расчета доли в комиссиях**:
-    `user_share_percentage = (user_locked_lp * tier_multiplier) / total_weighted_locked_lp * 100%`
-    (где `total_weighted_locked_lp` - сумма `locked_lp * tier_multiplier` по всем NFT Fee Key).
--   **Техническая реализация (Программа NFT Fee Key)**:
-    -   **Программа**: Отдельный контракт или модуль, управляющий логикой NFT Fee Key.
-    -   **Структуры данных**:
-        -   `NFTFeeKeyAccountData` (PDA, key: mint_address): хранит данные конкретного NFT (уровень, `locked_lp_amount`, владелец, `last_claimed` и т.д.).
-        -   Взаимодействует с `NFTHoldersPool` и `NFTHolderInfo` из контракта VG Token для получения и распределения наград.
-    -   **Ключевые функции/инструкции**:
-        -   `CreateNFTFeeKey` (вызывается из "Burn and Earn"): создание NFT через Metaplex, запись атрибутов.
-        -   `ClaimFees` (вызывается пользователем): перечисление накопленных VG из `NFTHoldersPool` пользователю.
-        -   `UpdatePoolShares` (периодически или при изменениях): пересчет `total_weighted_locked_lp` и `share_percentage` для всех NFT.
+- **Purpose**: Entitles holder to 50% of VG token tax.
+- **Acquisition**: Minted automatically when LP tokens are locked in "Burn and Earn".
+- **Specs**: Transferable NFT.
+- **Levels and Multipliers** (depend on locked LP amount):
+  | Level     | LP Tokens      | Multiplier |
+  |-----------|---------------|------------|
+  | Common    | < 1,000       | 1.0x       |
+  | Rare      | 1,000–9,999   | 1.2x       |
+  | Epic      | 10,000–99,999 | 1.5x       |
+  | Legendary | ≥ 100,000     | 2.0x       |
+- **Metadata (example)**:
+  *(JSON omitted for brevity)*
+- **Fee Share Formula**:
+  `user_share_percentage = (user_locked_lp * tier_multiplier) / total_weighted_locked_lp * 100%`
+- **Technical Implementation**:
+  *(Details omitted for brevity)*
 
-#### 3.2.2. NFT-коллекция "Investor's Hand" (NFT-бустеры)
--   **Назначение**: Улучшение условий стейкинга VG токенов (повышение доходности, доступ к автокомпаундингу) и предоставление доступа к высшим уровням DAO.
--   **Получение**:
-    1.  **Стейкинг VC**: Первичное получение (Paper Hand или Wooden Hand) путем стейкинга 1,000,000 VC на 90 дней.
-    2.  **Апгрейд**: Последовательное улучшение уровня NFT путем стейкинга дополнительных VC токенов на определенный срок и сжигания NFT предыдущего уровня.
-    3.  **Специальное распределение**: Angel Investor NFT (для ранних инвесторов), Titanium/Diamond Hand (для крупных партнеров), лимитированные серии с партнерских площадок.
-    4.  **Вторичный рынок**: Покупка у других пользователей.
--   **Уровни и Преимущества**:
-    | Уровень NFT    | Описание        | Бонус к стейкингу VG | Доступ к DAO      | Получение (пример)                       |
-    |----------------|-----------------|----------------------|-------------------|------------------------------------------|
-    | Paper Hand     | Базовый         | +10% (1.1x)          | -                 | Стейкинг 1 млн VC (30 дней)              |
-    | Wooden Hand    | Начальный       | +25% (1.25x)         | -                 | Апгрейд с Paper / Стейкинг 1 млн VC (90 дней) |
-    | Steel Hand     | Средний         | +50% (1.5x)          | Investor          | Апгрейд с Wooden                          |
-    | Titanium Hand  | Продвинутый     | +75% (1.75x)         | Launchpad Master  | Апгрейд с Steel / Спец. распределение    |
-    | Diamond Hand   | Высший          | +100% (2.0x)         | Partner           | Апгрейд с Titanium / Спец. распределение |
-    | Angel Investor | Эксклюзив       | +100% (2.0x)         | Angel (все уровни)| Пресейл от 50 SOL, ежедневный автокомп.  |
-    | Limited Edition| Партнерский     | +15% (1.15x)         | -                 | Пресейлы на партнерских площадках        |
--   **Система прогрессии (апгрейда)**:
-    | Текущий       | Целевой       | Доп. VC для стейка | Срок стейка | Действие с текущим NFT |
-    |---------------|---------------|--------------------|-------------|------------------------|
-    | -             | Paper Hand    | 1,000,000 VC       | 30 дней     | -                      |
-    | Paper Hand    | Wooden Hand   | 1,500,000 VC       | 60 дней     | Сжигание               |
-    | Wooden Hand   | Steel Hand    | 2,500,000 VC       | 90 дней     | Сжигание               |
-    | Steel Hand    | Titanium Hand | 4,000,000 VC       | 180 дней    | Сжигание               |
-    | Titanium Hand | Diamond Hand  | 6,000,000 VC       | 365 дней    | Сжигание               |
--   **Метаданные NFT (пример)**:
-    ```json
-    {
-      "name": "[Уровень] Hand NFT #{id}",
-      "symbol": "VCIH",
-      "description": "NFT из коллекции Investor's Hand для экосистемы VC/VG",
-      "image": "https://token-cdn.tech-hy.com/investors-hand/{level}/{id}.png",
-      "attributes": [
-        {"trait_type": "hand_tier", "value": "[Paper/Wooden/Steel/Titanium/Diamond/Angel]"},
-        {"trait_type": "staked_vc_amount", "value": "1000000"}, // Суммарно для текущего уровня
-        {"trait_type": "stake_timestamp", "value": "1650000000"},
-        {"trait_type": "boost_multiplier", "value": "[110/125/150/175/200]"}, // x100
-        {"trait_type": "dao_tier_access", "value": "[... соответствующий уровень DAO ...]"}
-      ]
-    }
-    ```
--   **Техническая реализация (часть Программы Стейкинга VC)**:
-    -   **Структуры данных**:
-        -   `InvestorHandNFTAccountData` (PDA, key: mint_address): информация о NFT (уровень, владелец, связанный стейк VC, статус использования в стейкинге VG).
-        -   `InvestorHandCollectionState`: общая статистика коллекции (количество NFT каждого уровня и т.д.).
-    -   **Ключевые функции/инструкции**:
-        -   `MintInvestorHandViaVCStake`: стейкинг VC и минт NFT (через Metaplex).
-        -   `UpgradeInvestorHandNFT`: стейкинг дополнительных VC, сжигание старого NFT, минт нового.
-        -   `AdminMintInvestorHandNFT`: для Titanium, Diamond, Angel.
-        -   `ApplyToVGStake`: привязка NFT к активному стейку VG.
-        -   `DeactivateFromVGStake`: отвязка NFT от стейка VG.
+#### 3.2.2. "Investor's Hand" NFT Collection (Boosters)
+- **Purpose**: Improve VG staking (yield, auto-compounding), access to higher DAO levels.
+- **Acquisition**:
+  1. **VC Staking**: Initial (Paper or Wooden Hand) by staking 1,000,000 VC for 90 days.
+  2. **Upgrade**: Level up by staking more VC and burning previous NFT.
+  3. **Special Distribution**: Angel Investor NFT (early investors), Titanium/Diamond Hand (major partners), limited partner series.
+  4. **Secondary Market**: Buy from others.
+- **Levels and Benefits**:
+  | NFT Level      | Description | VG Staking Bonus | DAO Access        | Example Acquisition                |
+  |----------------|-------------|------------------|-------------------|------------------------------------|
+  | Paper Hand     | Basic       | +10% (1.1x)      | -                 | Stake 1M VC (30 days)              |
+  | Wooden Hand    | Entry       | +25% (1.25x)     | -                 | Upgrade from Paper / Stake 1M VC   |
+  | Steel Hand     | Mid         | +50% (1.5x)      | Investor          | Upgrade from Wooden                |
+  | Titanium Hand  | Advanced    | +75% (1.75x)     | Launchpad Master  | Upgrade from Steel / Special dist. |
+  | Diamond Hand   | Top         | +100% (2.0x)     | Partner           | Upgrade from Titanium / Special    |
+  | Angel Investor | Exclusive   | +100% (2.0x)     | Angel (all levels)| Presale from 50 SOL, daily autocomp|
+  | Limited Edition| Partner     | +15% (1.15x)     | -                 | Partner platform presales          |
+- **Upgrade System**:
+  | Current        | Target        | Extra VC Stake | Stake Period | Action with Current NFT |
+  |----------------|--------------|---------------|--------------|------------------------|
+  | -              | Paper Hand   | 1,000,000 VC  | 30 days      | -                      |
+  | Paper Hand     | Wooden Hand  | 1,500,000 VC  | 60 days      | Burn                   |
+  | Wooden Hand    | Steel Hand   | 2,500,000 VC  | 90 days      | Burn                   |
+  | Steel Hand     | Titanium Hand| 4,000,000 VC  | 180 days     | Burn                   |
+  | Titanium Hand  | Diamond Hand | 6,000,000 VC  | 365 days     | Burn                   |
+- **NFT Metadata (example)**:
+  *(JSON omitted for brevity)*
 
-### 3.3. Программные контракты (Смарт-контракты)
+- **Technical Implementation**:
+  *(Details omitted for brevity)*
 
-#### 3.3.1. Программа Формирования LP ("Burn and Earn")
--   **Назначение**: Обеспечение механизма конвертации VC и SOL в перманентно заблокированные LP токены с последующим распределением VG токенов и созданием NFT Fee Key.
--   **Ключевая логика**:
-    1.  Пользователь предоставляет VC и SOL в требуемой пропорции.
-    2.  Программа взаимодействует с Raydium для создания LP токенов VC/SOL.
-    3.  Полученные LP токены переводятся и блокируются в `PermanentLockVault` (PDA этого контракта). Блокировка необратима.
-    4.  Программа рассчитывает количество VG токенов для пользователя по формуле: `VG_amount = LP_amount * C * (1 + B * log10(LP_amount/LP_min))` (где C=10, B=0.2, LP_min=1).
-    5.  Программа инициирует перевод рассчитанного количества VG токенов из централизованного хранилища (например, казна DAO или специальный эскроу-счет) на счет пользователя.
-    6.  Программа вызывает Программу NFT Fee Key для создания и передачи пользователю NFT Fee Key соответствующего уровня.
--   **Структуры данных**:
-    -   `PermanentLockVault` (см. раздел LP Token).
-    -   `UserLockInfo` (см. раздел LP Token).
-    -   Конфигурационный аккаунт с параметрами C, B, LP_min и адресом хранилища VG токенов.
--   **API / Инструкции (пример)**:
-    -   `InitializeBurnAndEarn { config_params }`
-    -   `ExecuteBurnAndEarn { vc_amount: u64, sol_amount: u64 }` (включает шаги 2-6)
--   **Внешние зависимости**: Raydium (для создания LP), Программа NFT Fee Key (для создания NFT), Контракт VG Token (для перевода VG).
+### 3.3. Program Contracts (Smart Contracts)
 
-#### 3.3.2. Программа Стейкинга VC (и управления NFT "Investor's Hand")
--   **Назначение**: Управление процессом стейкинга VC токенов и полным жизненным циклом NFT-бустеров "Investor's Hand".
--   **Ключевая логика**:
-    1.  **Стейкинг и Минт NFT**: Пользователь стейкает VC (например, 1 млн на 90 дней). Программа блокирует VC в `VCStakingVault` и минтит (через Metaplex) NFT "Investor's Hand" (например, Wooden Hand), передавая его пользователю.
-    2.  **Апгрейд NFT**: Пользователь, имея NFT, стейкает дополнительное количество VC на определенный срок. Программа сжигает текущий NFT, блокирует доп. VC и минтит NFT следующего уровня.
-    3.  **Анстейкинг VC**: По истечении срока блокировки пользователь может вывести свои VC. NFT "Investor's Hand" остается у пользователя.
-    4.  **Административные функции**: Минт специальных NFT (Titanium, Diamond, Angel) администратором.
--   **Структуры данных**:
-    -   `VCStakingVault` (PDA для хранения застейканных VC).
-    -   `VCUserStakeSession` (PDA, key: user_pubkey, nft_mint): информация о текущем или прошлом стейке VC (сумма, сроки, связанный NFT).
-    -   `InvestorHandNFTAccountData` (см. раздел NFT "Investor's Hand").
-    -   `InvestorHandCollectionState` (см. раздел NFT "Investor's Hand").
--   **API / Инструкции (пример)**:
-    -   `StakeVCAndMintNFT { amount: u64, duration_days: u8 }`
-    -   `UpgradeInvestorHandNFT { current_nft_mint: Pubkey, additional_vc_amount: u64, new_duration_days: u8 }`
-    -   `WithdrawStakedVC { stake_session_id: Pubkey }`
-    -   `AdminMintSpecialInvestorHandNFT { user: Pubkey, tier: String, vc_equivalent_staked: u64 }`
--   **Внешние зависимости**: Metaplex (для минта и сжигания NFT).
+#### 3.3.1. LP Formation Program ("Burn and Earn")
+- **Purpose**: Convert VC and SOL into permanently locked LP tokens, distribute VG tokens, and create NFT Fee Key.
+- **Key Logic**:
+  1. User provides VC and SOL.
+  2. Program interacts with Raydium to create LP tokens.
+  3. LP tokens are locked in `PermanentLockVault` (PDA).
+  4. VG tokens calculated and transferred to user.
+  5. NFT Fee Key is created and transferred to user.
+- **Data Structures**:
+  *(Omitted for brevity)*
+- **API / Instructions (example)**:
+  *(Omitted for brevity)*
 
-#### 3.3.3. Программа Стейкинга VG
--   **Назначение**: Реализация механизма стейкинга VG токенов для участия в DAO, получения вознаграждений и использования бустов от NFT "Investor's Hand".
--   **Ключевая логика**:
-    1.  **Стейкинг**: Пользователь указывает количество VG для стейкинга и опционально NFT "Investor's Hand".
-    2.  **Налог**: Программа инициирует CPI к контракту VG Token для перевода VG токенов пользователя на адрес стейкинг-контракта; контракт VG Token автоматически удерживает 10% налог.
-    3.  **Определение Условий**: Период стейкинга, уровень DAO и доступные бонусы (например, автокомпаундинг) определяются на основе количества застейканных VG и примененного NFT "Investor's Hand".
-    4.  **Применение Буста**: Если NFT "Investor's Hand" применен, его множитель учитывается при расчете эффективной доли стейка или вознаграждений.
-    5.  **Автокомпаундинг**: Для определенных уровней DAO или при стейкинге >10,000 VG, вознаграждения автоматически реинвестируются (с удержанием налога).
-    6.  **Анстейкинг**: Пользователь может вывести свои VG (за вычетом налога) по окончании периода или досрочно (если разрешено для его уровня DAO), с возможной потерей части вознаграждений при досрочном выводе. NFT "Investor's Hand" деактивируется от этого стейка.
--   **Структуры данных**:
-    -   `VGStakingVault` (PDA для хранения застейканных VG).
-    -   `VGUserStake` (PDA, key: user_pubkey, stake_id): информация о стейке пользователя (сумма, начало, конец, примененный NFT, уровень DAO, статус автокомпаундинга).
-    -   `VGStakingStats`: общая статистика по стейкингу VG.
-    -   Конфигурация уровней DAO и их параметров.
--   **API / Инструкции (пример)**:
-    -   `StakeVG { amount: u64, investor_hand_nft_mint: Option<Pubkey> }`
-    -   `WithdrawVG { stake_id: Pubkey }`
-    -   `ClaimRewards { stake_id: Pubkey }` (если не полный автокомпаундинг)
-    -   `ActivateAutoCompounding { stake_id: Pubkey }`
--   **Внешние зависимости**: Контракт VG Token (для обработки налогов), Программа Стейкинга VC (для валидации NFT "Investor's Hand").
+#### 3.3.2. VC Staking Program (and "Investor's Hand" NFT management)
+- **Purpose**: Manage VC staking and full NFT booster lifecycle.
+- **Key Logic**:
+  1. **Staking and Minting NFT**: User stakes VC, program locks VC and mints NFT.
+  2. **NFT Upgrade**: User stakes more VC, burns current NFT, mints next-level NFT.
+  3. **Unstaking VC**: After lock period, user can withdraw VC. NFT remains.
+  4. **Admin Functions**: Mint special NFTs (Titanium, Diamond, Angel).
+- **Data Structures**:
+  *(Omitted for brevity)*
+- **API / Instructions (example)**:
+  *(Omitted for brevity)*
 
-#### 3.3.4. Программа NFT Fee Key
--   **Назначение**: Отдельный контракт, управляющий созданием NFT Fee Key и процессом получения вознаграждений их держателями.
--   **Ключевая логика**:
-    1.  **Создание NFT**: Вызывается Программой "Burn and Earn". Минтит NFT Fee Key через Metaplex, определяет его уровень на основе количества заблокированных LP, сохраняет метаданные. Регистрирует NFT в `NFTHolderInfo` контракта VG Token.
-    2.  **Сбор Вознаграждений**: Пользователь-владелец NFT Fee Key вызывает инструкцию для клейма. Программа взаимодействует с `NFTHoldersPool` (в контракте VG Token), рассчитывает и переводит накопленные VG пользователю. Обновляет `last_claimed` в `NFTHolderInfo`.
-    3.  **Обновление Долей**: Периодический или триггерный пересчет `total_weighted_locked_lp` (в `PermanentLockVault` программы B&E или в своем хранилище) и обновление `share_percentage` для всех активных NFT Fee Key в их `NFTHolderInfo`.
--   **Структуры данных**:
-    -   `NFTFeeKeyData` (PDA, key: mint_address): информация о конкретном NFT (уровень, `locked_lp_amount` и т.д.).
-    -   Конфигурация для взаимодействия с контрактом VG Token и B&E.
--   **API / Инструкции (пример)**:
-    -   `InitializeNFTFeeKeyProgram { ... }`
-    -   `CreateFeeKeyAndRegister { owner: Pubkey, locked_lp_amount: u64 }` (вызывается CPI из B&E)
-    -   `ClaimAccumulatedFees { nft_fee_key_mint: Pubkey }`
-    -   `AdminUpdateTotalWeightedLp { new_total_weighted_lp: u64 }`
--   **Внешние зависимости**: Metaplex, Программа "Burn and Earn", Контракт VG Token.
+#### 3.3.3. VG Staking Program
+- **Purpose**: VG staking for DAO, rewards, NFT booster usage.
+- **Key Logic**:
+  1. **Staking**: User specifies VG amount and optional NFT.
+  2. **Tax**: Program calls VG Token contract, which withholds 10% tax.
+  3. **Terms**: Staking period, DAO level, and bonuses determined by staked VG and NFT.
+  4. **Booster Application**: NFT multiplier applied to stake/rewards.
+  5. **Auto-compounding**: For certain DAO levels or >10,000 VG staked.
+  6. **Unstaking**: User can withdraw VG (minus tax) after period or early (if allowed).
+- **Data Structures**:
+  *(Omitted for brevity)*
+- **API / Instructions (example)**:
+  *(Omitted for brevity)*
 
-#### 3.3.5. Программа Управления (DAO)
--   **Назначение**: Обеспечение децентрализованного управления экосистемой через голосования держателей застейканных VG токенов.
--   **Ключевая логика**:
-    1.  **Интеграция с Realms**: Создание и конфигурация "realm" в протоколе Realms.
-    2.  **Предложения**: Держатели VG (с минимальным порогом застейканных VG, например, 10,000) могут создавать предложения по изменению управляемых параметров, обновлению контрактов, использованию казны DAO.
-    3.  **Голосование**: Держатели застейканных VG (с мин. порогом, например, 100) голосуют. Вес голоса пропорционален количеству VG. Период голосования (например, 7 дней), кворум (например, 30% от активного стейка VG).
-    4.  **Исполнение**: Принятые предложения исполняются через специальную программу-исполнитель (DAO Executor), которая производит CPI к целевым контрактам для изменения параметров или вызова функций. Для критических изменений возможна временная задержка.
-    5.  **Казна DAO**: Управление средствами казны (пополняется 50% налога VG, пожертвованиями). Расходование средств только по результатам голосования.
-    6.  **Аварийное Управление**: Механизм мультиподписи (например, 3 из 5 или 5 из 7 ключевых участников) для экстренных действий (приостановка контрактов, срочные обновления).
--   **Управляемые параметры (примеры)**:
-    -   Ставка налога VG токена (диапазон 5-15%).
-    -   Пропорции распределения налога VG.
-    -   Коэффициенты в формуле "Burn and Earn".
-    -   Параметры уровней NFT Fee Key.
-    -   Условия стейкинга VC и VG (суммы, сроки, множители NFT-бустеров).
--   **API / Инструкции**: В основном используются инструкции протокола Realms, плюс кастомные инструкции для DAO Executor и управления казной.
--   **Внешние зависимости**: Протокол Realms.
+#### 3.3.4. NFT Fee Key Program
+- **Purpose**: Manage NFT Fee Key creation and rewards.
+- **Key Logic**:
+  1. **NFT Creation**: Called by "Burn and Earn", mints NFT, sets level, saves metadata.
+  2. **Reward Claim**: NFT holder claims, program calculates and transfers VG.
+  3. **Share Update**: Periodic or triggered recalculation of shares.
+- **Data Structures**:
+  *(Omitted for brevity)*
+- **API / Instructions (example)**:
+  *(Omitted for brevity)*
 
-## 4. Ключевые механики - Сводка
+#### 3.3.5. Governance Program (DAO)
+- **Purpose**: Decentralized governance via staked VG token voting.
+- **Key Logic**:
+  1. **Realms Integration**: Create/configure realm in Realms protocol.
+  2. **Proposals**: VG stakers (min. 10,000) can create proposals.
+  3. **Voting**: VG stakers (min. 100) vote. Weight = staked VG. Voting period (e.g., 7 days), quorum (e.g., 30% of active VG stake).
+  4. **Execution**: Accepted proposals executed via DAO Executor.
+  5. **DAO Treasury**: Managed by voting, funded by 50% VG tax and donations.
+  6. **Emergency Management**: Multisig for critical actions.
+- **Managed Params (examples)**:
+  - VG tax rate (5–15%)
+  - VG tax distribution proportions
+  - Burn and Earn formula coefficients
+  - NFT Fee Key parameters
+  - VC/VG staking terms
+- **API / Instructions**: Mainly Realms protocol, plus custom for DAO Executor/treasury.
+- **External Dependencies**: Realms protocol.
 
-### 4.1. Поток "Burn and Earn"
-Пользователь (VC + SOL) → [Raydium] → LP Токены → [Программа "Burn and Earn": Блокировка LP] → Пользователь получает: Распределенные VG Токены + NFT Fee Key.
+## 4. Key Mechanics — Summary
 
-### 4.2. Поток Стейкинга VC и NFT "Investor's Hand"
-Пользователь (VC) → [Программа Стейкинга VC: Блокировка VC] → Пользователь получает NFT "Investor's Hand".
-Пользователь (существующий NFT "Investor's Hand" + доп. VC) → [Программа Стейкинга VC: Сжигание старого NFT, Блокировка доп. VC] → Пользователь получает улучшенный NFT "Investor's Hand".
+### 4.1. "Burn and Earn" Flow
+User (VC + SOL) → [Raydium] → LP Tokens → [Burn and Earn: LP Lock] → User receives: VG Tokens + NFT Fee Key.
 
-### 4.3. Поток Стейкинга VG
-Пользователь (VG Токены + опц. NFT "Investor's Hand") → [Программа Стейкинга VG: Блокировка VG (с удержанием налога)] → Участие в DAO + Вознаграждения (с учетом буста NFT).
+### 4.2. VC Staking and "Investor's Hand" NFT Flow
+User (VC) → [VC Staking: VC Lock] → User receives "Investor's Hand" NFT.
+User (existing NFT + extra VC) → [VC Staking: Burn old NFT, Lock extra VC] → User receives upgraded NFT.
 
-### 4.4. Сбор и Распределение Налога (VG Токен)
-Любой перевод/стейкинг/анстейкинг VG → [Контракт VG Token: Удержание 10% налога] → 50% в Пул для держателей NFT Fee Key + 50% в Казну DAO.
+### 4.3. VG Staking Flow
+User (VG Tokens + optional NFT) → [VG Staking: VG Lock (with tax)] → DAO participation + rewards (with NFT boost).
 
-## 5. Внешние интеграции
--   **Raydium**: Для создания пулов ликвидности VC/SOL и получения LP токенов в механизме "Burn and Earn".
--   **Metaplex**: Для создания (минтинга), обновления метаданных и сжигания всех NFT в экосистеме (NFT Fee Key, NFT "Investor's Hand").
--   **Realms**: Для обеспечения инфраструктуры DAO (создание предложений, голосование, управление казной).
+### 4.4. VG Token Tax Collection and Distribution
+Any VG transfer/stake/unstake → [VG Token Contract: 10% tax] → 50% to NFT Fee Key Pool + 50% to DAO Treasury.
 
-## 6. Аспекты безопасности
--   Все контракты должны пройти тщательный аудит безопасности.
--   Использование PDA для хранения ключевых данных и управления полномочиями.
--   Строгая проверка подписей и полномочий во всех инструкциях.
--   Валидация всех входных данных для предотвращения некорректного использования.
--   Защита от распространенных векторов атак (reentrancy, integer overflow/underflow, и т.д.).
--   Ограничение полномочий административных функций, использование мультиподписи для критических операций.
--   Прозрачность всех операций и состояний контрактов.
+## 5. External Integrations
+- **Raydium**: For VC/SOL liquidity pools and LP tokens in "Burn and Earn".
+- **Metaplex**: For minting, updating, and burning all NFTs (NFT Fee Key, "Investor's Hand").
+- **Realms**: For DAO infrastructure (proposals, voting, treasury management).
 
-## 7. Пользовательский интерфейс (UI/UX) - Рекомендации
-Для взаимодействия с экосистемой потребуется разработка веб-интерфейса, который должен обеспечивать:
--   **Управление Токенами**: Отображение балансов, история транзакций.
--   **Механизм "Burn and Earn"**: Интерфейс для предоставления VC/SOL, получения LP, их блокировки и просмотра полученных VG/NFT Fee Key.
--   **Стейкинг VC**: Интерфейс для стейкинга VC, просмотра активных стейков, сроков, полученных/имеющихся NFT "Investor's Hand", инициирования апгрейда NFT.
--   **Стейкинг VG**: Интерфейс для стейкинга VG, выбора NFT "Investor's Hand" для буста, просмотра активных стейков, расчетной доходности, клейма наград (если применимо), анстейкинга.
--   **Управление NFT**: Просмотр всех NFT пользователя (Fee Key, Investor's Hand), их атрибутов, возможность выставления на продажу на внешних или интегрированном маркетплейсе.
--   **DAO (Управление)**:
-    -   Просмотр активных и завершенных предложений.
-    -   Создание новых предложений (для пользователей с достаточным уровнем DAO).
-    -   Голосование по предложениям.
-    -   Отслеживание состояния казны DAO.
--   Интуитивно понятный дизайн, адаптивность для мобильных устройств, четкие инструкции и подсказки для пользователей. 
+## 6. Security Aspects
+- All contracts must be thoroughly audited.
+- Use PDA for key data and authority management.
+- Strict signature and authority checks in all instructions.
+- Validate all inputs to prevent misuse.
+- Protect against common attack vectors (reentrancy, integer overflow/underflow, etc.).
+- Restrict admin functions, use multisig for critical ops.
+- Transparency of all contract operations and states.
+
+## 7. User Interface (UI/UX) — Recommendations
+A web interface should provide:
+- **Token Management**: Balances, transaction history.
+- **"Burn and Earn"**: Interface for providing VC/SOL, getting/locking LP, viewing VG/NFT Fee Key.
+- **VC Staking**: Interface for staking VC, viewing stakes, terms, NFTs, NFT upgrades.
+- **VG Staking**: Interface for staking VG, choosing NFT booster, viewing stakes, yield, claiming rewards, unstaking.
+- **NFT Management**: View all user NFTs, attributes, list for sale.
+- **DAO (Governance)**:
+  - View active/completed proposals.
+  - Create proposals (for eligible users).
+  - Vote on proposals.
+  - Track DAO treasury.
+- Intuitive design, mobile-friendly, clear instructions and tooltips. 

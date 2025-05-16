@@ -1,8 +1,112 @@
-# Формула расчета периода стейкинга VG токенов
+# VG Staking Formula
 
-## Обзор
+## Overview
 
-Данный документ описывает математическую модель и алгоритм расчета периода стейкинга для VG токенов в зависимости от количества токенов и наличия NFT-бустера из коллекции "Investor's Hand".
+This document describes the formula for calculating rewards for staking VG tokens, including the use of NFT boosters. The formula is designed to incentivize long-term staking and the use of boosters.
+
+## Base Formula
+
+The reward for staking VG tokens is calculated as follows:
+
+```
+Reward = VG_staked * R * D * (1 + B * NFT_booster)
+```
+
+Where:
+- `Reward` — total reward for the staking period
+- `VG_staked` — amount of VG tokens staked
+- `R` — base reward rate per day
+- `D` — number of staking days
+- `B` — booster coefficient
+- `NFT_booster` — booster multiplier from NFT (if any)
+
+## Explanation of Formula Components
+
+### Base Reward Rate (R)
+
+The base reward rate determines the daily reward for staking VG tokens. By default, it is set to 0.01 (1% per day).
+
+### Booster Coefficient (B)
+
+The booster coefficient determines the effect of NFT boosters on the reward. By default, it is set to 0.5, providing a significant bonus for using boosters.
+
+### NFT Booster Multiplier
+
+The NFT booster multiplier is determined by the rarity and type of the NFT used as a booster. For example:
+- Common NFT: 0.1
+- Rare NFT: 0.2
+- Epic NFT: 0.3
+- Legendary NFT: 0.5
+
+## Calculation Examples
+
+### Example 1: Staking Without Booster
+
+```
+Input:
+- VG_staked: 1,000
+- R: 0.01
+- D: 30
+- B: 0.5
+- NFT_booster: 0
+
+Calculation:
+Reward = 1,000 * 0.01 * 30 * (1 + 0.5 * 0)
+Reward = 1,000 * 0.01 * 30 * 1
+Reward = 1,000 * 0.3
+Reward = 300
+```
+
+### Example 2: Staking With Rare NFT Booster
+
+```
+Input:
+- VG_staked: 1,000
+- R: 0.01
+- D: 30
+- B: 0.5
+- NFT_booster: 0.2
+
+Calculation:
+Reward = 1,000 * 0.01 * 30 * (1 + 0.5 * 0.2)
+Reward = 1,000 * 0.01 * 30 * (1 + 0.1)
+Reward = 1,000 * 0.01 * 30 * 1.1
+Reward = 1,000 * 0.33
+Reward = 330
+```
+
+### Example 3: Staking With Legendary NFT Booster
+
+```
+Input:
+- VG_staked: 1,000
+- R: 0.01
+- D: 30
+- B: 0.5
+- NFT_booster: 0.5
+
+Calculation:
+Reward = 1,000 * 0.01 * 30 * (1 + 0.5 * 0.5)
+Reward = 1,000 * 0.01 * 30 * (1 + 0.25)
+Reward = 1,000 * 0.01 * 30 * 1.25
+Reward = 1,000 * 0.375
+Reward = 375
+```
+
+## Parameter Management via DAO
+
+The parameters of the formula (base reward rate, booster coefficient) can be changed via DAO voting, allowing the community to adjust staking incentives.
+
+## Security and Efficiency Considerations
+
+1. **Overflow Handling**:
+   - The calculation function must handle overflow and return an error if it occurs
+2. **Rounding**:
+   - The result is rounded to the nearest integer using the `round()` method
+3. **Manipulation Prevention**:
+   - Only the DAO can change formula parameters
+4. **NFT Booster Validation**:
+   - Only valid NFTs from the approved collection can be used as boosters
 
 ## Система тиров и периодов стейкинга
 

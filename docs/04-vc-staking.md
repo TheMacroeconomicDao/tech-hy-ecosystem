@@ -1,181 +1,181 @@
-# Стейкинг VC токенов и NFT-бустеры
+# VC Token Staking and NFT Boosters
 
-## Обзор стейкинга VC токенов
+## Overview of VC Token Staking
 
-Стейкинг VC токенов (VC Freezing Program) - это процесс блокировки (заморозки) фиксированной суммы VC токенов на определенный период времени, в результате которого пользователь получает NFT-бустер из коллекции "Investor's Hand". Эти NFT обеспечивают множество преимуществ в экосистеме, включая улучшение условий стейкинга VG токенов и доступ к высшим уровням DAO.
+VC token staking (VC Freezing Program) is the process of locking (freezing) a fixed amount of VC tokens for a certain period, after which the user receives an NFT booster from the "Investor's Hand" collection. These NFTs provide multiple benefits in the ecosystem, including improved VG staking conditions and access to higher DAO levels.
 
-Пользователи могут потратить 1,000,000 VC токенов для получения пожизненного доступа к TECH HY Investors Private Club через механизм стейкинга.
+Users can spend 1,000,000 VC tokens to get lifetime access to the TECH HY Investors Private Club via the staking mechanism.
 
-## NFT-коллекция "Investor's Hand"
+## "Investor's Hand" NFT Collection
 
-NFT-бустеры представлены коллекцией "Investor's Hand", которая включает пять уровней "рук", представляющие различную степень приверженности проекту:
+NFT boosters are represented by the "Investor's Hand" collection, which includes five hand levels, each representing a different degree of commitment to the project:
 
-| Уровень NFT    | Описание                             | Бонус к стейкингу VG | Доступ к DAO         |
-|----------------|--------------------------------------|----------------------|----------------------|
-| Paper Hand     | Базовый уровень                      | 10% (множитель 1.1x) | -                    |
-| Wooden Hand    | Начальный уровень                    | 25% (множитель 1.25x)| -                    |
-| Steel Hand     | Средний уровень                      | 50% (множитель 1.5x) | Investor             |
-| Titanium Hand  | Продвинутый уровень                  | 75% (множитель 1.75x)| Launchpad Master     |
-| Diamond Hand   | Высший уровень                       | 100% (множитель 2.0x)| Partner              |
+| NFT Level      | Description                | VG Staking Bonus | DAO Access         |
+|----------------|---------------------------|------------------|--------------------|
+| Paper Hand     | Basic level                | 10% (1.1x)       | -                  |
+| Wooden Hand    | Entry level                | 25% (1.25x)      | -                  |
+| Steel Hand     | Middle level               | 50% (1.5x)       | Investor           |
+| Titanium Hand  | Advanced level             | 75% (1.75x)      | Launchpad Master   |
+| Diamond Hand   | Top level                  | 100% (2.0x)      | Partner            |
 
-Специальный статус в экосистеме имеет **Angel Investor NFT**, который предоставляется участникам пресейла с вкладом от 50 SOL и дает особые привилегии, включая неограниченный период стейкинга и ежедневный автокомпаундинг.
+**Angel Investor NFT** has a special status in the ecosystem, granted to presale participants with a contribution of 50 SOL or more, and provides unique privileges, including unlimited staking period and daily autocompounding.
 
-Titanium и Diamond Hand являются наиболее редкими и ценными, они выпускаются вручную по специальным запросам и требуют значительных вложений в экосистему.
+Titanium and Diamond Hand are the rarest and most valuable, issued manually by special request and require significant ecosystem commitment.
 
-> Подробное описание всех аспектов NFT-коллекции "Investor's Hand" представлено в отдельном документе [NFT-коллекция "Investor's Hand"](./investors-hand-nft.md).
+> Detailed description of all aspects of the "Investor's Hand" NFT collection is provided in a separate document [Investor's Hand NFT Collection](./investors-hand-nft.md).
 
-## Программа заморозки VC (VC Freezing Program)
+## VC Freezing Program
 
-Программа заморозки VC является основным механизмом для получения NFT из коллекции "Investor's Hand" и предоставляет следующие возможности:
+The VC freezing program is the main mechanism for obtaining NFTs from the "Investor's Hand" collection and provides the following opportunities:
 
-- Временное снижение циркулирующего предложения VC токенов
-- Получение NFT-бустеров с различными преимуществами
-- Обеспечение доступа к высшим уровням DAO
-- Получение повышенных доходов от стейкинга
-- Создание вторичного рынка NFT через возможность продажи
+- Temporary reduction of circulating VC token supply
+- Receiving NFT boosters with various benefits
+- Access to higher DAO levels
+- Increased staking returns
+- Creation of a secondary NFT market via transferability
 
-## Основные характеристики стейкинга VC
+## Main Characteristics of VC Staking
 
-- **Сумма стейкинга**: 1,000,000 VC токенов (стандартная)
-- **Период стейкинга**: 90 дней (стандартный)
-- **Вознаграждение**: NFT-бустер из коллекции "Investor's Hand"
-- **Назначение**: Улучшение условий стейкинга VG и доступ к высшим уровням DAO
+- **Staking amount**: 1,000,000 VC tokens (standard)
+- **Staking period**: 90 days (standard)
+- **Reward**: NFT booster from the "Investor's Hand" collection
+- **Purpose**: Improve VG staking conditions and access to higher DAO levels
 
-## Способы получения NFT-бустеров
+## Ways to Obtain NFT Boosters
 
-NFT-бустеры можно получить двумя способами:
-1. **Минтинг через заморозку (стейкинг) VC токенов** - основной способ для Paper, Wooden и Steel Hand
-2. **Приобретение на маркетплейсе** - покупка у других участников экосистемы
-3. **Специальное распределение от администрации** - для Titanium, Diamond и Angel Hand
+NFT boosters can be obtained in two ways:
+1. **Minting via VC token freezing (staking)** – main way for Paper, Wooden, and Steel Hand
+2. **Purchase on the marketplace** – buy from other ecosystem participants
+3. **Special distribution by the administration** – for Titanium, Diamond, and Angel Hand
 
-## Взаимосвязь с DAO
+## DAO Relationship
 
-NFT-бустеры играют ключевую роль в системе управления и стейкинга:
+NFT boosters play a key role in the governance and staking system:
 
-- **Доступ к высшим уровням DAO**:
-  - Steel Hand NFT + 25,000-50,000 VG → уровень Investor (365 дней стейкинга)
-  - Titanium Hand NFT + 50,000-70,000 VG → уровень Launchpad Master (365 дней стейкинга)
-  - Diamond Hand NFT + более 70,000 VG → уровень Partner (365 дней стейкинга)
-  - Angel NFT → безлимитный период стейкинга с ежедневным автокомпаундингом
+- **Access to higher DAO levels**:
+  - Steel Hand NFT + 25,000-50,000 VG → Investor level (365 days staking)
+  - Titanium Hand NFT + 50,000-70,000 VG → Launchpad Master level (365 days staking)
+  - Diamond Hand NFT + more than 70,000 VG → Partner level (365 days staking)
+  - Angel NFT → unlimited staking period with daily autocompounding
 
-- **Умножение доходности стейкинга**:
-  - Увеличение доходности стейкинга VG на 10-100% в зависимости от уровня NFT
-  - Доступ к автокомпаундингу (еженедельному для высших уровней, ежедневному для Angel)
-  - Доступ к особым привилегиям экосистемы
+- **Staking yield multiplier**:
+  - Increase VG staking yield by 10-100% depending on NFT level
+  - Access to autocompounding (weekly for higher levels, daily for Angel)
+  - Access to special ecosystem privileges
 
-## Процесс стейкинга VC токенов и минтинга NFT
+## VC Token Staking and NFT Minting Process
 
-### Шаги процесса
+### Process Steps
 
-1. **Инициирование стейкинга**:
-   - Пользователь инициирует стейкинг с указанием суммы в 1 млн VC
-   - Проверяется достаточность баланса VC токенов
+1. **Staking initiation**:
+   - User initiates staking with 1M VC amount
+   - VC token balance is checked
 
-2. **Блокировка токенов**:
-   - VC токены переводятся в специальное хранилище (VC Staking Vault)
-   - Токены блокируются на период стейкинга (90 дней)
+2. **Token locking**:
+   - VC tokens are transferred to a special vault (VC Staking Vault)
+   - Tokens are locked for the staking period (90 days)
 
-3. **Создание NFT-бустера**:
-   - Автоматически генерируется NFT-бустер через Metaplex
-   - Базовый уровень - Wooden Hand (множитель 1.25x)
-   - NFT передается в кошелек пользователя
+3. **NFT booster creation**:
+   - NFT booster is automatically generated via Metaplex
+   - Base level – Wooden Hand (1.25x multiplier)
+   - NFT is sent to the user's wallet
 
-4. **Завершение периода стейкинга**:
-   - По истечении периода стейкинга пользователь может вывести свои VC токены
-   - NFT-бустер остается у пользователя навсегда и может использоваться для стейкинга VG
+4. **End of staking period**:
+   - After the staking period, the user can withdraw their VC tokens
+   - NFT booster remains with the user forever and can be used for VG staking
 
-## Характеристики NFT-бустера
+## NFT Booster Characteristics
 
-### Метаданные NFT-бустера
+### NFT Booster Metadata
 
-- **Название**: [Уровень] Hand NFT #{id}
-- **Символ**: VCIH (VC Investor's Hand)
-- **Описание**: NFT для доступа к расширенным возможностям экосистемы VC/VG
-- **Изображение**: Уникальное изображение, соответствующее уровню NFT
-- **Атрибуты**:
-  - `hand_tier`: Уровень руки (Paper, Wooden, Steel, Titanium, Diamond)
-  - `staked_vc_amount`: Количество застейканных VC токенов
-  - `stake_timestamp`: Время начала стейкинга (Unix timestamp)
-  - `boost_multiplier`: Множитель бустера (от 1.1x до 2.0x в зависимости от уровня)
-  - `dao_tier_access`: Минимальный уровень доступа в DAO
+- **Name**: [Level] Hand NFT #{id}
+- **Symbol**: VCIH (VC Investor's Hand)
+- **Description**: NFT for access to advanced VC/VG ecosystem features
+- **Image**: Unique image corresponding to NFT level
+- **Attributes**:
+  - `hand_tier`: Hand level (Paper, Wooden, Steel, Titanium, Diamond)
+  - `staked_vc_amount`: Amount of staked VC tokens
+  - `stake_timestamp`: Staking start time (Unix timestamp)
+  - `boost_multiplier`: Booster multiplier (from 1.1x to 2.0x depending on level)
+  - `dao_tier_access`: Minimum DAO access level
 
-## Техническая реализация
+## Technical Implementation
 
-### Структуры данных
+### Data Structures
 
-В системе используются следующие основные структуры данных:
+The system uses the following main data structures:
 
-#### Аккаунт стейкинга VC токенов
-Хранит информацию о конкретном стейкинге, включая:
-- Владелец
-- Заблокированная сумма
-- Временная метка начала стейкинга
-- Временная метка окончания блокировки
-- Адрес NFT-минта
-- Флаг разблокировки
-- Бамп для PDA
+#### VC Token Staking Account
+Stores info about a specific staking, including:
+- Owner
+- Locked amount
+- Staking start timestamp
+- Lock end timestamp
+- NFT mint address
+- Unlock flag
+- PDA bump
 
-### Функция стейкинга VC токенов и создания NFT-бустера
+### VC Token Staking and NFT Booster Creation Function
 
-Основные этапы процесса стейкинга:
-- Проверка количества VC токенов (1 млн VC)
-- Расчет времени разблокировки (90 дней)
-- Перевод VC токенов в хранилище
-- Инициализация аккаунта стейкинга VC
-- Создание NFT через программу "Investor's Hand"
+Main process steps:
+- Check VC token amount (1M VC)
+- Calculate unlock time (90 days)
+- Transfer VC tokens to vault
+- Initialize VC staking account
+- Create NFT via "Investor's Hand" program
 
-### Функция вывода VC токенов после окончания периода стейкинга
+### VC Token Withdrawal Function after Staking Period
 
-Основные этапы процесса вывода токенов:
-- Проверка владельца аккаунта стейкинга
-- Проверка окончания периода стейкинга
-- Проверка, что токены еще не выведены
-- Перевод VC токенов обратно пользователю
-- Обновление статуса аккаунта стейкинга
+Main process steps:
+- Check staking account owner
+- Check staking period end
+- Check tokens not yet withdrawn
+- Transfer VC tokens back to user
+- Update staking account status
 
-## Экономическое обоснование
+## Economic Rationale
 
-NFT-коллекция "Investor's Hand" создает экономическую ценность для экосистемы через:
+The "Investor's Hand" NFT collection creates economic value for the ecosystem by:
 
-1. **Временное сокращение предложения VC токенов**:
-   - Блокировка значительных объемов VC токенов снижает циркулирующее предложение
-   - Создает дополнительный спрос на VC токены
+1. **Temporarily reducing VC token supply**:
+   - Locking significant VC token volumes reduces circulating supply
+   - Creates additional demand for VC tokens
 
-2. **Стимулирование долгосрочного стейкинга**:
-   - NFT-бустеры необходимы для доступа к высшим уровням DAO
-   - Использование NFT требует длительного стейкинга VG токенов (до 365 дней)
+2. **Incentivizing long-term staking**:
+   - NFT boosters are required for access to higher DAO levels
+   - Using NFTs requires long-term VG staking (up to 365 days)
 
-3. **Создание прогрессивной системы управления**:
-   - Система меритократии, основанная на вкладе в экосистему
-   - Защита от спекулянтов через требования долгосрочного стейкинга
+3. **Creating a progressive governance system**:
+   - Meritocracy based on ecosystem contribution
+   - Protection from speculators via long-term staking requirements
 
-4. **Развитие вторичного рынка NFT**:
-   - Передаваемые NFT создают рыночные возможности для трейдеров
-   - Возможность монетизации статуса в экосистеме
+4. **Developing a secondary NFT market**:
+   - Transferable NFTs create market opportunities for traders
+   - Ability to monetize status in the ecosystem
 
-## Интерфейс пользователя
+## User Interface
 
-Для удобства пользователей реализуется веб-интерфейс, который позволяет:
+A web interface is implemented for user convenience, allowing:
 
-1. Стейкать VC токены и получать NFT-бустеры
-2. Отслеживать статус стейкинга и оставшееся время до разблокировки
-3. Выводить VC токены после окончания периода стейкинга
-4. Просматривать информацию о своих NFT-бустерах и их статусе
-5. Покупать и продавать NFT на интегрированном маркетплейсе
+1. Stake VC tokens and receive NFT boosters
+2. Track staking status and remaining unlock time
+3. Withdraw VC tokens after staking period ends
+4. View info about their NFT boosters and status
+5. Buy and sell NFTs on the integrated marketplace
 
-## Обработка ошибок и граничных случаев
+## Error Handling and Edge Cases
 
-### Недостаточное количество VC токенов
+### Insufficient VC Token Amount
 
-Если у пользователя недостаточно VC токенов для стейкинга (менее 1 млн), транзакция будет отменена с соответствующей ошибкой. Пользователю будет предложено приобрести необходимое количество VC токенов или уменьшить сумму стейкинга.
+If the user has insufficient VC tokens for staking (<1M), the transaction will be canceled with an appropriate error. The user will be prompted to acquire more VC tokens or reduce the staking amount.
 
-### Преждевременный вывод токенов
+### Early Token Withdrawal
 
-Невозможен вывод VC токенов до истечения периода стейкинга (90 дней). При попытке вывода токенов раньше времени транзакция будет отменена с соответствующей ошибкой.
+It is not possible to withdraw VC tokens before the staking period (90 days) ends. Attempting to do so will result in a transaction error.
 
-## Дальнейшие материалы
+## Further Materials
 
-- [NFT-коллекция "Investor's Hand"](./investors-hand-nft.md)
-- [Стейкинг VG токенов](./05-vg-staking.md)
-- [Governance и DAO](./07-governance.md)
-- [Интеграция NFT-коллекции "Investor's Hand"](./specs/investors-hand-integration.md) 
+- [Investor's Hand NFT Collection](./investors-hand-nft.md)
+- [VG Token Staking](./05-vg-staking.md)
+- [Governance and DAO](./07-governance.md)
+- [Investor's Hand NFT Collection Integration](./specs/investors-hand-integration.md) 

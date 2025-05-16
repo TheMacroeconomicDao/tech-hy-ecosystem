@@ -1,131 +1,131 @@
-# Архитектура системы
+# System Architecture
 
-## Общая архитектура
+## General Architecture
 
-Архитектура экосистемы токенов VC/VG на Solana представляет собой набор взаимосвязанных программ (смарт-контрактов), обеспечивающих функционирование всех компонентов экосистемы. Система разработана с учетом требований безопасности, масштабируемости и оптимизации использования вычислительных ресурсов Solana.
+The architecture of the VC/VG token ecosystem on Solana is a set of interconnected programs (smart contracts) that ensure the functioning of all ecosystem components. The system is designed with security, scalability, and Solana compute resource optimization in mind.
 
-## Компоненты системы
+## System Components
 
-Система состоит из трех основных групп компонентов:
+The system consists of three main groups of components:
 
-1. **Token Contracts** - контракты для управления токенами
-2. **Program Contracts** - программы для реализации бизнес-логики
-3. **External Integrations** - интеграции с внешними сервисами
+1. **Token Contracts** - contracts for token management
+2. **Program Contracts** - programs for business logic implementation
+3. **External Integrations** - integrations with external services
 
 ### 1. Token Contracts
 
-#### 1.1 VC Token (SPL Token без налога)
-- Стандартный SPL токен
-- Нулевой налог (0%)
-- Используется для LP и стейкинга
+#### 1.1 VC Token (SPL Token without tax)
+- Standard SPL token
+- Zero tax (0%)
+- Used for LP and staking
 
-#### 1.2 VG Token (SPL Token с налогом 10%)
-- SPL токен с модифицированной логикой транзакций
-- Налог 10% на все транзакции
-- Распределение налога:
-  - 50% держателям NFT Fee Key
-  - 50% казна DAO
+#### 1.2 VG Token (SPL Token with 10% tax)
+- SPL token with modified transaction logic
+- 10% tax on all transactions
+- Tax distribution:
+  - 50% to NFT Fee Key holders
+  - 50% to DAO treasury
 
-#### 1.3 LP Token (SPL Token для пары VC/SOL)
-- Стандартный LP токен Raydium
-- Постоянная блокировка без возможности вывода
-- Пропорциональная выдача VG токенов при блокировке
+#### 1.3 LP Token (SPL Token for VC/SOL pair)
+- Standard Raydium LP token
+- Permanent lock, no withdrawal possible
+- Proportional VG token issuance upon lock
 
 ### 2. Program Contracts
 
 #### 2.1 LP Formation Program
-- Проверка и управление парой VC/SOL в требуемой пропорции
-- Добавление ликвидности в пул Raydium
-- Создание и блокировка LP токенов
-- Выдача VG токенов и NFT Fee Key
+- Checks and manages the VC/SOL pair in the required proportion
+- Adds liquidity to the Raydium pool
+- Creates and locks LP tokens
+- Issues VG tokens and NFT Fee Key
 
 #### 2.2 VC Staking Program
-- Блокировка 1 млн VC токенов на 90 дней
-- Создание NFT-бустера через Metaplex
-- Контроль периода стейкинга и вывода токенов
+- Locks 1M VC tokens for 90 days
+- Creates NFT booster via Metaplex
+- Controls staking period and token withdrawal
 
 #### 2.3 VG Staking Program
-- Блокировка VG токенов на период, зависящий от количества и NFT-бустера
-- Автокомпаундинг при стейке более 10,000 VG
-- Применение NFT-бустеров для сокращения периода
+- Locks VG tokens for a period depending on amount and NFT booster
+- Autocompounding for stakes over 10,000 VG
+- Applies NFT boosters to reduce period
 
 #### 2.4 NFT Fee Key Program
-- Создание NFT с определенным уровнем (Common, Rare, Epic, Legendary)
-- Расчет доли в пуле комиссий по формуле
-- Вывод накопленного вознаграждения
+- Creates NFT with a certain level (Common, Rare, Epic, Legendary)
+- Calculates share in the fee pool by formula
+- Withdraws accumulated rewards
 
 #### 2.5 Governance Program
-- Интеграция с Realms DAO
-- Создание и выполнение предложений
-- Голосование и обновление параметров экосистемы
+- Integrates with Realms DAO
+- Creates and executes proposals
+- Voting and updating ecosystem parameters
 
 ### 3. External Integrations
 
 #### 3.1 Raydium Integration
-- Создание пулов ликвидности VC/SOL
-- Обмен VC на SOL
-- Добавление ликвидности и создание LP токенов
+- Creates VC/SOL liquidity pools
+- Swaps VC for SOL
+- Adds liquidity and creates LP tokens
 
 #### 3.2 Metaplex Integration
-- Создание NFT-бустеров
-- Создание NFT Fee Key
-- Обновление метаданных NFT
+- Creates NFT boosters
+- Creates NFT Fee Key
+- Updates NFT metadata
 
 #### 3.3 Realms Integration
-- Создание и управление DAO
-- Предложения и голосования
-- Выполнение одобренных предложений
+- Creates and manages DAO
+- Proposals and voting
+- Executes approved proposals
 
-## Взаимодействие компонентов
+## Component Interactions
 
-### Механизм "Burn and Earn"
+### "Burn and Earn" Mechanism
 ```
-[Пользователь] → [VC токены] → [LP Formation Program] → [LP токены] → [Permanent Lock]
+[User] → [VC tokens] → [LP Formation Program] → [LP tokens] → [Permanent Lock]
                                       ↓
-                              [Raydium Exchange] → [VG токены + NFT Fee Key] → [Пользователь]
+                              [Raydium Exchange] → [VG tokens + NFT Fee Key] → [User]
 ```
 
-### Стейкинг VC токенов
+### VC Token Staking
 ```
-[Пользователь] → [VC токены] → [VC Staking Program] → [NFT-бустер] → [Пользователь]
+[User] → [VC tokens] → [VC Staking Program] → [NFT booster] → [User]
                                       ↓
                                [Metaplex NFT]
 ```
 
-### Стейкинг VG токенов
+### VG Token Staking
 ```
-[Пользователь] → [VG токены + NFT-бустер] → [VG Staking Program]
+[User] → [VG tokens + NFT booster] → [VG Staking Program]
                                                   ↓
-                          [Реинвестирование 70%] ← + → [Вывод 30%] → [Пользователь]
+                          [Reinvest 70%] ← + → [Withdraw 30%] → [User]
 ```
 
-## Технический стек
-- Блокчейн: Solana
-- Язык программирования: Rust
-- Фреймворк: Anchor
-- Токен-стандарт: SPL Token
-- NFT-стандарт: Metaplex NFT Standard
+## Tech Stack
+- Blockchain: Solana
+- Programming language: Rust
+- Framework: Anchor
+- Token standard: SPL Token
+- NFT standard: Metaplex NFT Standard
 - AMM: Raydium
 - Governance: Realms DAO
 
-## Требования к безопасности
-1. **Безопасное хранение данных**:
-   - Использование PDA для хранения данных
-   - Многоуровневая проверка подписей транзакций
+## Security Requirements
+1. **Secure data storage**:
+   - Use PDA for data storage
+   - Multi-level transaction signature checks
 
-2. **Защита от атак**:
-   - Защита от reentrancy атак
-   - Проверка входных данных и лимитов
-   - Защита от манипуляций с ценами токенов
+2. **Attack protection**:
+   - Reentrancy attack protection
+   - Input and limit validation
+   - Token price manipulation protection
 
-3. **Оптимизация ресурсов**:
-   - Минимизация количества инструкций в транзакциях
-   - Оптимизация сериализации/десериализации
-   - Эффективное использование хранилища аккаунтов
+3. **Resource optimization**:
+   - Minimize number of instructions per transaction
+   - Optimize serialization/deserialization
+   - Efficient account storage usage
 
-## Дальнейшие материалы
+## Further Materials
 
-- [Токены экосистемы](./02-tokens.md)
-- [Механизм "Burn and Earn"](./03-burn-and-earn.md)
-- [Структуры данных](./specs/data-structures.md)
-- [План реализации](./10-implementation-plan.md) 
+- [Ecosystem Tokens](./02-tokens.md)
+- ["Burn and Earn" Mechanism](./03-burn-and-earn.md)
+- [Data Structures](./specs/data-structures.md)
+- [Implementation Plan](./10-implementation-plan.md) 

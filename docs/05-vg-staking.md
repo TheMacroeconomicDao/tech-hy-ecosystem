@@ -1,212 +1,212 @@
-# Стейкинг VG токенов
+# VG Token Staking
 
-## Обзор стейкинга VG токенов
+## Overview of VG Token Staking
 
-Стейкинг VG токенов - это ключевой механизм участия в управлении экосистемой TECH HY, обеспечивающий доступ к различным уровням DAO. Период и условия стейкинга зависят от количества VG токенов и наличия NFT-бустеров из коллекции "Investor's Hand".
+VG token staking is a key mechanism for participating in the governance of the TECH HY ecosystem, providing access to various DAO levels. The staking period and conditions depend on the amount of VG tokens and the presence of NFT boosters from the "Investor's Hand" collection.
 
-## Уровни стейкинга и DAO (тиры)
+## Staking Levels and DAO Tiers
 
-Экосистема TECH HY предусматривает прогрессивную, многоуровневую структуру участия в DAO, основанную на количестве застейканных VG токенов и длительности стейкинга:
+The TECH HY ecosystem provides a progressive, multi-level DAO participation structure based on the amount of staked VG tokens and the staking duration:
 
-| Уровень         | Требования                       | Период стейкинга |
-|-----------------|----------------------------------|------------------|
-| Starter         | до 100 VG                        | 7 дней           |
-| Community Member| 100-500 VG                       | 14 дней          |
-| Contributor     | 500-1500 VG                      | 30 дней          |
-| Founder         | 1500-4000 VG                     | 60 дней          |
-| Expert          | 4000-25000 VG                    | 90 дней          |
-| Angel           | обладатель Angel Investor NFT    | Безлимитный      |
-| Investor        | 25000-50000 VG + Steel Hand NFT  | 365 дней         |
-| Launchpad Master| 50000-70000 VG + Titanium Hand   | 365 дней         |
-| Partner         | более 70000 VG + Diamond Hand    | 365 дней         |
+| Level           | Requirements                        | Staking Period |
+|-----------------|-------------------------------------|---------------|
+| Starter         | up to 100 VG                        | 7 days        |
+| Community Member| 100-500 VG                          | 14 days       |
+| Contributor     | 500-1500 VG                         | 30 days       |
+| Founder         | 1500-4000 VG                        | 60 days       |
+| Expert          | 4000-25000 VG                       | 90 days       |
+| Angel           | Angel Investor NFT holder           | Unlimited     |
+| Investor        | 25000-50000 VG + Steel Hand NFT     | 365 days      |
+| Launchpad Master| 50000-70000 VG + Titanium Hand      | 365 days      |
+| Partner         | over 70000 VG + Diamond Hand        | 365 days      |
 
-> Подробная информация о NFT-бустерах содержится в документах [NFT-коллекция "Investor's Hand"](./investors-hand-nft.md) и [Стейкинг VC токенов и NFT-бустеры](./04-vc-staking.md).
+> Detailed information about NFT boosters is provided in the documents [Investor's Hand NFT Collection](./investors-hand-nft.md) and [VC Token Staking and NFT Boosters](./04-vc-staking.md).
 
-### Особенности стейкинга различных уровней
+### Features of Different Staking Levels
 
-#### Starter и Community Member
-- Автоматический анстейкинг после завершения периода
-- Недоступен ранний анстейкинг
-- Базовые права в экосистеме
+#### Starter and Community Member
+- Automatic unstaking after the period ends
+- Early unstaking not available
+- Basic ecosystem rights
 
 #### Contributor
-- Автоматический анстейкинг после 30 дней
-- Возможность увеличивать размер стейка во время стейкинга
-- Дополнительные бонусы: право на аирдропы и вознаграждения за активность
-- Требования: верифицированный аккаунт X.com, подписка на @TECHHYVC, выполнение задач
+- Automatic unstaking after 30 days
+- Ability to increase stake during staking
+- Additional bonuses: right to airdrops and activity rewards
+- Requirements: verified X.com account, subscription to @TECHHYVC, task completion
 
 #### Founder
-- Период стейкинга: 60 дней
-- Доступен ранний анстейкинг
-- Право номинировать проекты для рассмотрения Инвестиционным комитетом
+- Staking period: 60 days
+- Early unstaking available
+- Right to nominate projects for the Investment Committee
 
 #### Expert
-- Период стейкинга: 90 дней
-- Ранний анстейкинг и повышение стейка
-- Возможность минтить NFT для TECH HY Expert Marketplace
+- Staking period: 90 days
+- Early unstaking and stake increase available
+- Ability to mint NFTs for TECH HY Expert Marketplace
 
-#### Высшие уровни (Investor, Launchpad Master, Partner)
-- Длительный период стейкинга (365 дней)
-- Необходимость владения соответствующими NFT из коллекции "Investor's Hand"
-- Автокомпаундинг (еженедельный)
-- Доступ к особым привилегиям и доходам экосистемы
+#### Higher Levels (Investor, Launchpad Master, Partner)
+- Long staking period (365 days)
+- Required NFT from the "Investor's Hand" collection
+- Weekly autocompounding
+- Access to special ecosystem privileges and income
 
 #### Angel Investor
-- Эксклюзивный статус с безлимитным периодом стейкинга
-- Ежедневный автокомпаундинг
-- Доступны все привилегии высших уровней
+- Exclusive status with unlimited staking period
+- Daily autocompounding
+- All privileges of higher levels available
 
-## Использование NFT-бустеров
+## Using NFT Boosters
 
-- **Применение NFT-бустеров из коллекции "Investor's Hand"**:
-  - Увеличивает эффективную долю пользователя при расчете вознаграждений
-  - Примеры расчета:
-    - Без NFT: стейк 100 VG → эффективная доля 100 VG
-    - С Paper Hand (1.1x): стейк 100 VG → эффективная доля 110 VG
-    - С Diamond Hand (2.0x): стейк 100 VG → эффективная доля 200 VG
-  
-- **Уровни NFT-бустеров**:
-  | Уровень NFT    | Множитель | Эффективная доля | Необходимые условия                   |
-  |----------------|-----------|------------------|---------------------------------------|
-  | Paper Hand     | 1.1x      | +10%             | Промо-акции, награды сообщества       |
-  | Wooden Hand    | 1.25x     | +25%             | Стейкинг 1 млн VC на 90 дней          |
-  | Steel Hand     | 1.5x      | +50%             | Специальные достижения, покупка       |
-  | Titanium Hand  | 1.75x     | +75%             | Выпуск для крупных инвесторов         |
-  | Diamond Hand   | 2.0x      | +100%            | Выпуск для партнеров проекта          |
-  | Angel Investor | 2.0x      | +100%            | Участие в пресейле от 50 SOL          |
+- **Applying NFT boosters from the "Investor's Hand" collection**:
+  - Increases the user's effective share when calculating rewards
+  - Calculation examples:
+    - Without NFT: stake 100 VG → effective share 100 VG
+    - With Paper Hand (1.1x): stake 100 VG → effective share 110 VG
+    - With Diamond Hand (2.0x): stake 100 VG → effective share 200 VG
 
-## Основные характеристики стейкинга VG
+- **NFT booster levels**:
+  | NFT Level      | Multiplier | Effective Share | Requirements                      |
+  |----------------|-----------|----------------|-----------------------------------|
+  | Paper Hand     | 1.1x      | +10%           | Promo, community rewards          |
+  | Wooden Hand    | 1.25x     | +25%           | Stake 1M VC for 90 days           |
+  | Steel Hand     | 1.5x      | +50%           | Special achievements, purchase    |
+  | Titanium Hand  | 1.75x     | +75%           | Issued to major investors         |
+  | Diamond Hand   | 2.0x      | +100%          | Issued to project partners        |
+  | Angel Investor | 2.0x      | +100%          | Presale participation ≥ 50 SOL    |
 
-- **Минимальное количество токенов для стейкинга**: 100 VG
-- **Налог на транзакции VG**: 10%
-- **Перераспределение налога**:
-  - 50% для держателей NFT Fee Key
-  - 50% для казны DAO
+## Main Characteristics of VG Staking
 
-## Процесс стейкинга VG токенов
+- **Minimum staking amount**: 100 VG
+- **VG transaction tax**: 10%
+- **Tax redistribution**:
+  - 50% to NFT Fee Key holders
+  - 50% to DAO treasury
 
-### Шаги процесса
+## VG Token Staking Process
 
-1. **Инициирование стейкинга**:
-   - Пользователь вызывает функцию стейкинга с указанием количества VG токенов и опционально NFT-бустера
-   - Проверяется наличие указанного количества VG токенов
-   - При наличии NFT-бустера проверяется его владение и статус
+### Process Steps
 
-2. **Определение периода стейкинга**:
-   - Базовый период определяется согласно таблице уровней DAO
-   - При наличии NFT-бустера активируется соответствующий бонус
-   - Необходимые NFT проверяются для высших уровней
+1. **Staking initiation**:
+   - User calls the staking function with the amount of VG tokens and optionally an NFT booster
+   - Checks for sufficient VG token balance
+   - If NFT booster is present, ownership and status are checked
 
-3. **Блокировка токенов**:
-   - VG токены переводятся в хранилище (VG Staking Vault)
-   - Токены блокируются на определенный период
-   - Взимается налог 10%, который распределяется согласно правилам
+2. **Staking period determination**:
+   - Base period is determined according to the DAO level table
+   - If NFT booster is present, the corresponding bonus is activated
+   - Required NFTs are checked for higher levels
 
-4. **Определение условий анстейкинга**:
-   - Для низших уровней настраивается автоматический анстейкинг
-   - Для высших уровней (Founder и выше) доступен ранний анстейкинг
-   - Для уровней Investor и выше настраивается автокомпаундинг
+3. **Token locking**:
+   - VG tokens are transferred to the vault (VG Staking Vault)
+   - Tokens are locked for the specified period
+   - 10% tax is charged and distributed according to the rules
 
-## Автоматическое реинвестирование
+4. **Unstaking conditions determination**:
+   - For lower levels, automatic unstaking is set
+   - For higher levels (Founder and above), early unstaking is available
+   - For Investor and above, autocompounding is set
 
-- **Автоматическое реинвестирование при стейкинге более 10,000 VG**:
-  - 100% токенов реинвестируются автоматически
-  - Доступно досрочное снятие стейка или его части
+## Automatic Reinvestment
 
-## Техническая реализация
+- **Automatic reinvestment for staking over 10,000 VG**:
+  - 100% of tokens are automatically reinvested
+  - Early withdrawal of the stake or part of it is available
 
-### Структуры данных
+## Technical Implementation
 
-В системе используются следующие основные структуры данных:
+### Data Structures
 
-#### Аккаунт стейкинга VG токенов
-Хранит информацию о конкретном стейкинге, включая:
-- Владелец
-- Заблокированная сумма
-- Временная метка начала стейкинга
-- Временная метка окончания блокировки
-- Флаг наличия NFT-бустера
-- Адрес NFT-бустера
-- Флаг автоматического реинвестирования
-- Сумма реинвестирования
-- Сумма вывода
-- Флаг разблокировки
-- Бамп для PDA
+The system uses the following main data structures:
 
-#### Аккаунт статистики стейкинга VG токенов
-Содержит общую статистику стейкинга VG токенов:
-- Общая сумма застейканных токенов
-- Общее количество стейкеров
-- Количество стейкингов с NFT-бустерами
-- Количество автоматических реинвестирований
-- Бамп для PDA
+#### VG Token Staking Account
+Stores info about a specific staking, including:
+- Owner
+- Locked amount
+- Staking start timestamp
+- Lock end timestamp
+- NFT booster flag
+- NFT booster address
+- Autoreinvestment flag
+- Reinvestment amount
+- Withdrawal amount
+- Unlock flag
+- PDA bump
 
-### Определение периода стейкинга по тиру с учетом NFT-бустера
+#### VG Token Staking Statistics Account
+Contains overall VG staking stats:
+- Total staked tokens
+- Total number of stakers
+- Number of stakings with NFT boosters
+- Number of automatic reinvestments
+- PDA bump
 
-Алгоритм определения периода стейкинга включает:
-- Расчет базового периода в зависимости от количества VG токенов
-- Проверку на Angel NFT для безлимитного периода
-- Применение мультипликатора доходности в зависимости от уровня NFT-бустера
-- Обеспечение минимального периода стейкинга
+### Determining Staking Period by Tier with NFT Booster
 
-### Функция стейкинга VG токенов с применением NFT-бустера
+The staking period algorithm includes:
+- Calculating the base period depending on the amount of VG tokens
+- Checking for Angel NFT for unlimited period
+- Applying the yield multiplier depending on NFT booster level
+- Ensuring the minimum staking period
 
-Основные этапы процесса стейкинга:
-- Проверка минимального количества токенов
-- Проверка баланса VG токенов с учетом налога
-- Применение NFT-бустера (если указан)
-- Определение периода стейкинга
-- Проверка на автоматическое реинвестирование
-- Перевод VG токенов в хранилище с учетом налога
-- Распределение налога
-- Инициализация аккаунта стейкинга
-- Обновление статистики
+### VG Token Staking Function with NFT Booster
 
-### Функция вывода VG токенов и деактивации NFT-бустера
+Main process steps:
+- Check minimum token amount
+- Check VG token balance considering tax
+- Apply NFT booster (if specified)
+- Determine staking period
+- Check for automatic reinvestment
+- Transfer VG tokens to the vault considering tax
+- Distribute tax
+- Initialize staking account
+- Update statistics
 
-Основные этапы процесса вывода токенов:
-- Проверка владельца аккаунта стейкинга
-- Проверка окончания периода стейкинга
-- Деактивация NFT-бустера (если был использован)
-- Определение суммы для вывода
-- Перевод VG токенов обратно пользователю с учетом налога
-- Автоматическое реинвестирование (если активировано)
-- Обновление статуса аккаунта стейкинга
-- Обновление статистики
+### VG Token Withdrawal and NFT Booster Deactivation Function
 
-## Распределение налога
+Main process steps:
+- Check staking account owner
+- Check staking period end
+- Deactivate NFT booster (if used)
+- Determine withdrawal amount
+- Transfer VG tokens back to user considering tax
+- Automatic reinvestment (if activated)
+- Update staking account status
+- Update statistics
 
-Налог в размере 10%, взимаемый при операциях с VG токенами, распределяется следующим образом:
-- 50% для держателей NFT Fee Key
-- 50% для казны DAO
+## Tax Distribution
 
-Распределение осуществляется автоматически при каждой операции стейкинга или вывода VG токенов.
+The 10% tax charged on VG token operations is distributed as follows:
+- 50% to NFT Fee Key holders
+- 50% to DAO treasury
 
-## Расчет доходности и вознаграждения
+Distribution is automatic for each staking or withdrawal operation.
 
-Доходность стейкинга VG токенов определяется несколькими факторами:
-- Базовая доходность, определяемая общими параметрами программы стейкинга
-- Мультипликатор от NFT-бустера (от 1.1x до 2.0x)
-- Уровень DAO и связанные с ним привилегии
-- Автоматическое реинвестирование для высоких уровней
+## Yield and Reward Calculation
 
-## Взаимодействие с NFT-коллекцией "Investor's Hand"
+VG staking yield is determined by several factors:
+- Base yield set by the staking program parameters
+- NFT booster multiplier (from 1.1x to 2.0x)
+- DAO level and related privileges
+- Automatic reinvestment for higher levels
 
-Взаимодействие с NFT-коллекцией обеспечивается через следующие механизмы:
-- Применение NFT-бустера при стейкинге VG
-- Деактивация NFT-бустера при выводе токенов
-- Проверка необходимого уровня NFT для высших уровней DAO
+## Interaction with the "Investor's Hand" NFT Collection
 
-## Заключение
+Interaction with the NFT collection is provided through the following mechanisms:
+- Applying NFT booster during VG staking
+- Deactivating NFT booster upon token withdrawal
+- Checking required NFT level for higher DAO tiers
 
-Система стейкинга VG токенов является фундаментальным компонентом экосистемы TECH HY, обеспечивающим:
-- Многоуровневую структуру участия в DAO
-- Интеграцию с NFT-коллекцией "Investor's Hand"
-- Различные механизмы стимулирования долгосрочного хранения токенов
-- Автоматическое распределение налога для поддержания экономики токенов
+## Conclusion
 
-Дополнительная информация об интеграции с другими компонентами экосистемы представлена в следующих документах:
-- [Формула расчета периода стейкинга VG токенов](./specs/vg-staking-formula.md)
-- [NFT-коллекция "Investor's Hand"](./investors-hand-nft.md)
-- [Интеграция NFT-коллекции "Investor's Hand"](./specs/investors-hand-integration.md)
-- [Governance и DAO](./07-governance.md) 
+The VG token staking system is a fundamental component of the TECH HY ecosystem, providing:
+- Multi-level DAO participation structure
+- Integration with the "Investor's Hand" NFT collection
+- Various mechanisms to incentivize long-term token holding
+- Automatic tax distribution to support tokenomics
+
+Additional information on integration with other ecosystem components is provided in the following documents:
+- [VG Staking Period Calculation Formula](./specs/vg-staking-formula.md)
+- [Investor's Hand NFT Collection](./investors-hand-nft.md)
+- [Investor's Hand NFT Collection Integration](./specs/investors-hand-integration.md)
+- [Governance and DAO](./07-governance.md) 

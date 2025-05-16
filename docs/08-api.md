@@ -1,142 +1,79 @@
-# API и интерфейсы
+# API Documentation
 
-## Обзор
+## Overview
 
-Данный документ описывает API и интерфейсы смарт-контрактов экосистемы VC/VG токенов на Solana. API предоставляет набор функций для взаимодействия с различными компонентами экосистемы, включая токены, механизм "Burn and Earn", стейкинг, NFT Fee Key и DAO.
+This document describes the main API endpoints for interacting with the TECH HY ecosystem, including token operations, staking, NFT management, and DAO governance.
 
-## API основных контрактов
+## Authentication
 
-### VC Token API
+- Most endpoints require wallet signature authentication (Solana wallet)
+- Some endpoints are public (e.g., fetching token stats)
 
-#### Инструкции
+## Endpoints
 
-| Функция | Описание | Параметры |
-|---------|----------|-----------|
-| `initialize` | Инициализация токена VC | `name`: Название токена<br>`symbol`: Символ токена<br>`decimals`: Количество десятичных знаков |
-| `mint_to` | Выпуск новых VC токенов | `amount`: Количество токенов для выпуска |
-| `transfer` | Перевод VC токенов без налога | `amount`: Количество токенов для перевода |
-| `burn` | Сжигание VC токенов | `amount`: Количество токенов для сжигания |
-| `approve` | Авторизация третьей стороны для использования токенов | `amount`: Количество токенов для авторизации |
-| `revoke` | Отзыв авторизации | - |
+### 1. Token Operations
 
-### VG Token API
+- `GET /api/tokens` — List all ecosystem tokens and their parameters
+- `GET /api/tokens/:symbol` — Get detailed info about a specific token
+- `POST /api/tokens/transfer` — Transfer tokens between wallets (requires signature)
 
-#### Инструкции
+### 2. Staking
 
-| Функция | Описание | Параметры |
-|---------|----------|-----------|
-| `initialize` | Инициализация токена VG с налогом | `name`: Название токена<br>`symbol`: Символ токена<br>`decimals`: Количество десятичных знаков<br>`tax_rate`: Налоговая ставка (в %) |
-| `mint_to` | Выпуск новых VG токенов | `amount`: Количество токенов для выпуска |
-| `transfer` | Перевод VG токенов с учетом налога | `amount`: Количество токенов для перевода |
-| `update_tax_parameters` | Обновление параметров налогообложения | `new_parameters`: Новые параметры налога |
-| `distribute_tax` | Распределение собранного налога | `tax_amount`: Количество токенов для распределения |
+- `GET /api/staking/vc` — Get VC staking stats and user positions
+- `POST /api/staking/vc` — Stake VC tokens (requires signature)
+- `GET /api/staking/vg` — Get VG staking stats and user positions
+- `POST /api/staking/vg` — Stake VG tokens (requires signature)
+- `POST /api/staking/unstake` — Unstake tokens (requires signature)
 
-### Burn and Earn API
+### 3. NFT Management
 
-#### Инструкции
+- `GET /api/nfts` — List all NFTs in the user's wallet
+- `GET /api/nfts/:id` — Get NFT metadata and status
+- `POST /api/nfts/apply-booster` — Apply NFT booster to staking (requires signature)
+- `POST /api/nfts/upgrade` — Upgrade NFT level (requires signature)
 
-| Функция | Описание | Параметры |
-|---------|----------|-----------|
-| `convert_vc_to_lp_and_lock` | Конвертация VC в LP токены с постоянной блокировкой | `vc_amount`: Количество VC токенов для конвертации |
-| `calculate_expected_vg` | Расчет ожидаемого количества VG токенов | `vc_amount`: Количество VC токенов |
+### 4. DAO Governance
 
-### VC Staking API
+- `GET /api/dao/proposals` — List all active proposals
+- `GET /api/dao/proposals/:id` — Get proposal details
+- `POST /api/dao/proposals` — Submit a new proposal (requires signature)
+- `POST /api/dao/vote` — Vote on a proposal (requires signature)
 
-#### Инструкции
+### 5. Analytics and Stats
 
-| Функция | Описание | Параметры |
-|---------|----------|-----------|
-| `stake_vc` | Стейкинг 1 млн VC токенов и создание NFT-бустера | - |
-| `unstake_vc` | Вывод VC токенов после окончания периода стейкинга | - |
-| `get_nft_booster_info` | Получение информации о NFT-бустере | `nft_mint`: Адрес NFT |
+- `GET /api/stats/tokens` — Get token supply, holders, and transaction stats
+- `GET /api/stats/staking` — Get staking stats for VC and VG
+- `GET /api/stats/nfts` — Get NFT distribution and usage stats
 
-### VG Staking API
+## WebSocket Events
 
-#### Инструкции
+- `ws://api.tech-hy.com/events` — Real-time updates for:
+  - Token transfers
+  - Staking events
+  - NFT upgrades
+  - DAO proposals and votes
 
-| Функция | Описание | Параметры |
-|---------|----------|-----------|
-| `stake_vg` | Стейкинг VG токенов с опциональным NFT-бустером | `amount`: Количество VG токенов<br>`nft_booster`: Опциональный адрес NFT-бустера |
-| `unstake_vg` | Вывод VG токенов после окончания периода стейкинга | - |
-| `calculate_staking_period` | Расчет периода стейкинга | `amount`: Количество VG токенов<br>`has_nft_booster`: Наличие NFT-бустера |
-| `apply_nft_booster` | Применение NFT-бустера к существующему стейкингу | `vg_staking_account`: Адрес аккаунта стейкинга VG |
+## Error Handling
 
-### NFT Fee Key API
+- All endpoints return standard HTTP status codes
+- Error responses include a JSON object with `error` and `message` fields
 
-#### Инструкции
+## Example Request
 
-| Функция | Описание | Параметры |
-|---------|----------|-----------|
-| `create_fee_key` | Создание NFT Fee Key | `locked_lp_amount`: Количество заблокированных LP токенов |
-| `claim_fee_rewards` | Сбор накопленного вознаграждения | - |
-| `update_fee_shares` | Обновление долей в пуле комиссий | - |
+```http
+POST /api/staking/vg
+Content-Type: application/json
+Authorization: Bearer <wallet-signature>
 
-### DAO API
+{
+  "amount": 1000,
+  "nft_booster_id": "nft123"
+}
+```
 
-#### Инструкции
+## Related Documents
 
-| Функция | Описание | Параметры |
-|---------|----------|-----------|
-| `create_dao_realm` | Создание DAO через Realms | `name`: Название DAO<br>`min_voting_tokens`: Минимальное количество токенов для голосования<br>`min_proposal_tokens`: Минимальное количество токенов для создания предложения |
-| `create_proposal` | Создание предложения для голосования | `name`: Название предложения<br>`description`: Описание предложения<br>`proposal_type`: Тип предложения<br>`parameters`: Параметры предложения |
-| `cast_vote` | Голосование за или против предложения | `vote`: Голос (0 - против, 1 - за) |
-| `execute_proposal` | Выполнение принятого предложения | - |
-| `fund_treasury` | Пополнение казны DAO | `amount`: Количество токенов |
-| `spend_treasury_funds` | Использование средств казны | `amount`: Количество токенов<br>`recipient`: Получатель<br>`purpose`: Цель расходования |
-
-## Типы данных API
-
-### Основные типы
-
-- **ProposalStatus**: Статус предложения (Draft, Voting, Succeeded, Failed, Executing, Executed, Cancelled)
-- **ProposalParameter**: Параметр предложения (name, value_type, value)
-- **NFTBoosterInfo**: Информация о NFT-бустере (owner, boost_multiplier, status, vg_staking_account)
-- **TaxParametersArgs**: Параметры налогообложения (tax_rate, fee_distribution_percentage, buyback_percentage, dao_percentage)
-- **EmergencyActionParameter**: Параметр экстренного действия (name, value_type, value)
-
-## API для клиентов (JavaScript/TypeScript)
-
-### Инициализация клиента
-
-Для работы с контрактами экосистемы VC/VG токенов клиенты могут использовать JavaScript/TypeScript API, который взаимодействует с соответствующими программами на Solana. Клиентский API включает инициализацию соединения с Solana, инициализацию провайдера и программ для каждого компонента экосистемы.
-
-## Обработка ошибок
-
-### Коды ошибок
-
-- **InsufficientVcBalance**: Недостаточный баланс VC токенов
-- **InsufficientVgBalance**: Недостаточный баланс VG токенов
-- **StakingPeriodNotEnded**: Период стейкинга не закончился
-- **AlreadyUnstaked**: Уже выведены токены
-- **NotAuthorized**: Не авторизован
-- **BoosterNotActive**: Бустер не активен
-- **BoosterAlreadyUsed**: Бустер уже использован
-- **BoosterAccountNotProvided**: Аккаунт бустера не предоставлен
-- **InvalidBoosterAccount**: Недействительный аккаунт бустера
-- **ProposalNotSucceeded**: Предложение не принято
-- **ProposalAlreadyExecuted**: Предложение уже выполнено
-- **UnknownProposalType**: Неизвестный тип предложения
-- **UnknownActionType**: Неизвестный тип действия
-- **InsufficientSignatures**: Недостаточно подписей
-- **TaxRateTooHigh**: Слишком высокая налоговая ставка
-
-## События (Events)
-
-- **VcTokenTransferred**: Перевод VC токенов (from, to, amount)
-- **VgTokenTransferred**: Перевод VG токенов (from, to, amount, tax_amount)
-- **LpTokensLocked**: Блокировка LP токенов (user, lp_amount, vg_amount, fee_key_mint)
-- **VcStaked**: Стейкинг VC токенов (user, amount, nft_mint, unlock_timestamp)
-- **VgStaked**: Стейкинг VG токенов (user, amount, has_nft_booster, unlock_timestamp, is_auto_reinvestment)
-- **FeeRewardsClaimed**: Сбор вознаграждений за комиссии (user, fee_key_mint, amount)
-- **ProposalCreated**: Создание предложения (proposer, proposal, name, proposal_type)
-- **ProposalExecuted**: Выполнение предложения (proposal, executor, executed_at)
-
-## Мониторинг событий
-
-Клиенты могут подписываться на события, которые эмитируются смарт-контрактами экосистемы, для получения уведомлений о различных действиях, происходящих в системе. Это позволяет реагировать на изменения в реальном времени и обновлять пользовательский интерфейс соответствующим образом.
-
-## Заключение
-
-API и интерфейсы экосистемы VC/VG токенов предоставляют полный набор функций для взаимодействия со всеми компонентами системы. Разработчики могут использовать эти API для интеграции экосистемы в свои приложения или для разработки новых сервисов на базе экосистемы.
-
-Подробная документация по каждому API, включая структуры данных, параметры и ошибки, а также примеры использования, делает процесс разработки более эффективным и позволяет избежать ошибок. 
+- [VC Token Staking and NFT Boosters](./04-vc-staking.md)
+- [VG Token Staking](./05-vg-staking.md)
+- [Investor's Hand NFT Collection](./04.5-investors-hand-nft.md.md)
+- [Governance and DAO](./07-governance.md) 

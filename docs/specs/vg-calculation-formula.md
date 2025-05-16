@@ -1,52 +1,52 @@
-# Формула расчета VG токенов
+# VG Token Calculation Formula
 
-## Обзор
+## Overview
 
-Данный документ описывает формулу для расчета количества VG токенов, выдаваемых пользователю при блокировке LP токенов в механизме "Burn and Earn". Формула разработана таким образом, чтобы стимулировать пользователей блокировать большие объемы LP токенов.
+This document describes the formula for calculating the number of VG tokens issued to a user when locking LP tokens in the "Burn and Earn" mechanism. The formula is designed to incentivize users to lock larger amounts of LP tokens.
 
-## Базовая формула
+## Base Formula
 
-Количество VG токенов, выдаваемых пользователю за блокировку LP токенов, рассчитывается по следующей формуле:
+The number of VG tokens issued to a user for locking LP tokens is calculated as follows:
 
 ```
 VG = LP * C * (1 + B * log10(LP/LP_min))
 ```
 
-Где:
-- `VG` - количество выдаваемых VG токенов
-- `LP` - количество заблокированных LP токенов
-- `C` - базовый коэффициент конверсии (10)
-- `B` - бонусный коэффициент (0.2)
-- `LP_min` - минимальное количество LP токенов для получения бонуса (1)
+Where:
+- `VG` - number of VG tokens issued
+- `LP` - amount of locked LP tokens
+- `C` - base conversion coefficient (10)
+- `B` - bonus coefficient (0.2)
+- `LP_min` - minimum LP tokens to receive a bonus (1)
 
-## Объяснение компонентов формулы
+## Explanation of Formula Components
 
-### Базовый коэффициент конверсии (C)
+### Base Conversion Coefficient (C)
 
-Базовый коэффициент конверсии определяет начальное соотношение между LP токенами и VG токенами. По умолчанию установлен равным 10, что означает, что за каждый заблокированный LP токен пользователь получает как минимум 10 VG токенов.
+The base conversion coefficient determines the initial ratio between LP tokens and VG tokens. By default, it is set to 10, meaning that for each locked LP token, the user receives at least 10 VG tokens.
 
-### Бонусный коэффициент (B)
+### Bonus Coefficient (B)
 
-Бонусный коэффициент определяет степень влияния размера блокировки на количество выдаваемых VG токенов. По умолчанию установлен равным 0.2, что обеспечивает умеренный бонус для крупных блокировок.
+The bonus coefficient determines the degree to which the lock size affects the number of VG tokens issued. By default, it is set to 0.2, providing a moderate bonus for larger locks.
 
-### Логарифмический множитель
+### Logarithmic Multiplier
 
-Использование логарифма в формуле (`log10(LP/LP_min)`) обеспечивает нелинейное увеличение количества выдаваемых VG токенов при увеличении количества заблокированных LP токенов. Это стимулирует пользователей блокировать большие суммы, но при этом не создает чрезмерного преимущества для очень крупных блокировок.
+The use of a logarithm in the formula (`log10(LP/LP_min)`) provides a nonlinear increase in the number of VG tokens issued as the amount of locked LP tokens increases. This encourages users to lock larger amounts, but does not create excessive advantage for very large locks.
 
-Минимальное количество LP токенов для получения бонуса (`LP_min`) установлено равным 1, что означает, что бонус начинает действовать практически сразу.
+The minimum LP token amount for a bonus (`LP_min`) is set to 1, so the bonus applies almost immediately.
 
-## Примеры расчета
+## Calculation Examples
 
-### Пример 1: Небольшая блокировка LP токенов
+### Example 1: Small LP Token Lock
 
 ```
-Входные данные:
-- Количество LP токенов (LP): 10
-- Базовый коэффициент конверсии (C): 10
-- Бонусный коэффициент (B): 0.2
-- Минимальное количество LP токенов (LP_min): 1
+Input:
+- LP tokens (LP): 10
+- Base conversion coefficient (C): 10
+- Bonus coefficient (B): 0.2
+- Minimum LP tokens (LP_min): 1
 
-Расчет:
+Calculation:
 VG = 10 * 10 * (1 + 0.2 * log10(10/1))
 VG = 10 * 10 * (1 + 0.2 * log10(10))
 VG = 10 * 10 * (1 + 0.2 * 1)
@@ -54,16 +54,16 @@ VG = 10 * 10 * 1.2
 VG = 120
 ```
 
-### Пример 2: Средняя блокировка LP токенов
+### Example 2: Medium LP Token Lock
 
 ```
-Входные данные:
-- Количество LP токенов (LP): 1,000
-- Базовый коэффициент конверсии (C): 10
-- Бонусный коэффициент (B): 0.2
-- Минимальное количество LP токенов (LP_min): 1
+Input:
+- LP tokens (LP): 1,000
+- Base conversion coefficient (C): 10
+- Bonus coefficient (B): 0.2
+- Minimum LP tokens (LP_min): 1
 
-Расчет:
+Calculation:
 VG = 1,000 * 10 * (1 + 0.2 * log10(1,000/1))
 VG = 1,000 * 10 * (1 + 0.2 * log10(1,000))
 VG = 1,000 * 10 * (1 + 0.2 * 3)
@@ -72,16 +72,16 @@ VG = 1,000 * 10 * 1.6
 VG = 16,000
 ```
 
-### Пример 3: Крупная блокировка LP токенов
+### Example 3: Large LP Token Lock
 
 ```
-Входные данные:
-- Количество LP токенов (LP): 100,000
-- Базовый коэффициент конверсии (C): 10
-- Бонусный коэффициент (B): 0.2
-- Минимальное количество LP токенов (LP_min): 1
+Input:
+- LP tokens (LP): 100,000
+- Base conversion coefficient (C): 10
+- Bonus coefficient (B): 0.2
+- Minimum LP tokens (LP_min): 1
 
-Расчет:
+Calculation:
 VG = 100,000 * 10 * (1 + 0.2 * log10(100,000/1))
 VG = 100,000 * 10 * (1 + 0.2 * log10(100,000))
 VG = 100,000 * 10 * (1 + 0.2 * 5)
@@ -90,15 +90,15 @@ VG = 100,000 * 10 * 2
 VG = 2,000,000
 ```
 
-## График зависимости
+## Dependency Graph
 
-Для наглядного представления зависимости количества VG токенов от количества заблокированных LP токенов ниже приведен график:
+To visually represent the dependency of the number of VG tokens on the amount of locked LP tokens, see the graph below:
 
 ```
       |
       |                                            *
   VG  |                                      *
-токены|                                 *
+tokens|                                 *
       |                            *
       |                       *
       |                  *
@@ -107,27 +107,27 @@ VG = 2,000,000
       |    *
       |* *
       +-------------------------------------------
-                     LP токены
+                     LP tokens
 ```
 
-## Управление параметрами формулы через DAO
+## Formula Parameter Management via DAO
 
-Параметры формулы (базовый коэффициент конверсии и бонусный коэффициент) могут быть изменены через DAO. Это позволяет сообществу настраивать экономику токенов в зависимости от рыночных условий и целей развития экосистемы.
+The formula parameters (base conversion coefficient and bonus coefficient) can be changed via DAO. This allows the community to adjust token economics according to market conditions and ecosystem development goals.
 
-## Соображения по безопасности и эффективности
+## Security and Efficiency Considerations
 
-1. **Обработка переполнения**:
-   - При работе с большими числами необходимо обрабатывать возможное переполнение
-   - Функция расчета должна возвращать ошибку при переполнении
+1. **Overflow Handling**:
+   - When working with large numbers, overflow must be handled
+   - The calculation function should return an error on overflow
 
-2. **Округление**:
-   - Округление результата до целого числа выполняется с помощью метода `round()`
-   - Это обеспечивает справедливое распределение VG токенов
+2. **Rounding**:
+   - The result is rounded to the nearest integer using the `round()` method
+   - This ensures fair VG token distribution
 
-3. **Вычислительная эффективность**:
-   - Логарифмическая операция требует вычислительных ресурсов
-   - Необходимо оптимизировать код для минимизации использования вычислительных единиц (Compute Units)
+3. **Computational Efficiency**:
+   - The logarithmic operation requires computational resources
+   - Code should be optimized to minimize Compute Unit usage
 
-4. **Предотвращение манипуляций**:
-   - Параметры формулы должны быть защищены от несанкционированного изменения
-   - Только DAO может менять эти параметры через голосование 
+4. **Manipulation Prevention**:
+   - Formula parameters must be protected from unauthorized changes
+   - Only the DAO can change these parameters via voting 

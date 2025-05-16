@@ -1,0 +1,25 @@
+[features]
+seeds = true
+skip-lint = false
+
+[programs.localnet]
+vc_token = "11111111111111111111111111111111"
+vg_token = "22222222222222222222222222222222"
+staking = "33333333333333333333333333333333"
+
+[registry]
+url = "https://api.apr.dev"
+
+[provider]
+cluster = "Localnet"
+wallet = "~/.config/solana/id.json"
+
+[scripts]
+test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
+
+[workspace]
+members = [
+  "programs/vc-token",
+  "programs/vg-token",
+  "programs/staking"
+] 

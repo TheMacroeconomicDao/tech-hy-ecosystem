@@ -301,4 +301,67 @@
 
 Внедрение технических мер безопасности, таких как безопасные математические операции, атомарные транзакции, проверка авторизации и защита от манипуляций, позволит предотвратить наиболее распространенные атаки на смарт-контракты.
 
-Непрерывный мониторинг активности в смарт-контрактах и готовность к оперативному реагированию на инциденты обеспечат защиту системы после запуска в основной сети. 
+Непрерывный мониторинг активности в смарт-контрактах и готовность к оперативному реагированию на инциденты обеспечат защиту системы после запуска в основной сети.
+
+## Key Security Principles
+
+- **Strict access control**: Only authorized users and contracts can perform sensitive operations
+- **Input validation**: All user inputs are validated to prevent attacks and data corruption
+- **Signature verification**: All transactions require cryptographic signatures
+- **On-chain auditability**: All actions are recorded on-chain and can be audited by anyone
+- **No upgradeable contracts**: All core contracts are immutable after deployment
+
+## Smart Contract Security
+
+- All contracts are written in Rust using the Anchor framework
+- Code is reviewed and audited before deployment
+- Automated tests cover all critical paths and edge cases
+- Reentrancy, overflow, and underflow protections are implemented
+- Only verified libraries and up-to-date dependencies are used
+
+## Token Security
+
+- SPL token standards are strictly followed
+- Mint and freeze authorities are managed via secure PDAs
+- Token supply and distribution are transparent and auditable
+- Tax and fee mechanisms are enforced by smart contracts
+
+## NFT Security
+
+- NFT minting and transfers require owner signatures
+- NFT metadata is validated and stored securely
+- Only one NFT booster can be used per staking account
+- NFT state is tracked to prevent double use
+
+## Staking and Vault Security
+
+- All staked tokens are held in secure vault accounts (PDAs)
+- Withdrawal is only possible after the staking period ends
+- Early withdrawal is restricted to certain DAO levels
+- Automatic reinvestment is handled by smart contracts
+
+## DAO and Governance Security
+
+- All proposals and votes are conducted on-chain
+- Only eligible members can submit proposals and vote
+- Quorum and voting periods are enforced by smart contracts
+- Treasury funds are managed by multi-signature wallets
+
+## Incident Response
+
+- Emergency pause functions are available for critical contracts
+- Incident reports are published transparently
+- Bug bounty program encourages responsible disclosure
+
+## User Recommendations
+
+- Always verify contract addresses and URLs
+- Use hardware wallets for large transactions
+- Never share private keys or seed phrases
+- Report suspicious activity to the project team
+
+## Related Documents
+
+- [VG Token Staking](./05-vg-staking.md)
+- [Investor's Hand NFT Collection](./04.5-investors-hand-nft.md.md)
+- [Governance and DAO](./07-governance.md) 

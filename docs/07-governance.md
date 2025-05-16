@@ -1,15 +1,57 @@
-# Governance и DAO
+# Governance and DAO
 
-## Обзор
+## Overview
 
-Система управления экосистемой VC/VG токенов построена на базе децентрализованной автономной организации (DAO), которая позволяет держателям VG токенов участвовать в процессе принятия решений по развитию экосистемы. DAO использует Realms - протокол управления на Solana, который обеспечивает безопасное и эффективное голосование по предложениям.
+The TECH HY ecosystem uses a decentralized governance model (DAO) based on the Realms protocol on Solana. This ensures transparent, community-driven decision-making and the ability to implement changes through on-chain voting.
 
-VG Token является ключевым компонентом для участия в TECH HY DAO и позволяет:
-- Получать пассивный доход через стейкинг от доходов DAO
-- Участвовать в голосованиях комитета по инвестициям
-- Получать коммьюнити-дропы и бустеры
-- Получить доступ к эксклюзивным мероприятиям сообщества
-- Разблокировать многоуровневую систему преимуществ через 9 уровней DAO
+## DAO Structure
+
+The DAO consists of several levels, each with its own rights and responsibilities:
+
+| Level             | Requirements                                 | Rights and Privileges                       |
+|-------------------|----------------------------------------------|---------------------------------------------|
+| Starter           | up to 100 VG                                 | Basic voting rights                         |
+| Community Member  | 100-500 VG                                   | Propose minor changes, vote                 |
+| Contributor       | 500-1500 VG                                  | Propose new features, participate in airdrops|
+| Founder           | 1500-4000 VG                                 | Nominate projects, participate in committees |
+| Expert            | 4000-25000 VG                                | Mint NFTs, access to Expert Marketplace      |
+| Investor          | 25000-50000 VG + Steel Hand NFT              | Access to Investment Committee, autocompounding |
+| Launchpad Master  | 50000-70000 VG + Titanium Hand NFT           | Launchpad voting, advanced privileges        |
+| Partner           | over 70000 VG + Diamond Hand NFT             | Strategic decisions, partner privileges      |
+| Angel             | Angel Investor NFT                           | Unlimited privileges, daily autocompounding  |
+
+## Voting Process
+
+- All proposals and votes are conducted on-chain via the Realms protocol
+- Each DAO member's voting power is proportional to their staked VG tokens and NFT booster level
+- Proposals can be submitted by Contributors and above
+- Voting periods and quorum requirements are set by the DAO
+
+## Proposal Types
+
+- Protocol upgrades
+- Treasury management
+- New product launches
+- Partnership approvals
+- Community initiatives
+
+## Security and Transparency
+
+- All actions are recorded on-chain and are publicly auditable
+- Only eligible members can submit proposals and vote
+- Smart contracts enforce all rules and prevent unauthorized actions
+
+## Integration with Other Components
+
+- DAO levels are determined by the amount of staked VG tokens and the presence of required NFTs
+- NFT boosters from the "Investor's Hand" collection grant access to higher DAO levels
+- DAO decisions can trigger changes in staking, tokenomics, and ecosystem development
+
+## Related Documents
+
+- [VG Token Staking](./05-vg-staking.md)
+- [Investor's Hand NFT Collection](./04.5-investors-hand-nft.md.md)
+- [NFT Fee Key](./06-nft-fee-key.md)
 
 ## Основные характеристики
 

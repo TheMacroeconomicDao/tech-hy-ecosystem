@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  anchor:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/workspaces/tech_hy_contracts
+      - node_modules:/workspaces/tech_hy_contracts/node_modules
+      - target:/workspaces/tech_hy_contracts/target
+      - ~/.config/solana:/home/solana/.config/solana
+    ports:
+      - "8899:8899"  # Solana validator port
+      - "8900:8900"  # Solana RPC port
+    command: bash -c "solana-test-validator --no-bpf-jit & sleep 5 && anchor build && anchor deploy && anchor test"
+    environment:
+      - ANCHOR_PROVIDER_URL=http://localhost:8899
+    stdin_open: true
+    tty: true
+
+  # Сервис для интерактивной работы с Anchor без автоматического запуска тестов
+  anchor-shell:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/workspaces/tech_hy_contracts
+      - node_modules:/workspaces/tech_hy_contracts/node_modules
+      - target:/workspaces/tech_hy_contracts/target
+      - ~/.config/solana:/home/solana/.config/solana
+    command: bash
+    stdin_open: true
+    tty: true
+
+volumes:
+  node_modules:
+  target: 

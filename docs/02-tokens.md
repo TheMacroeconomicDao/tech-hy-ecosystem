@@ -1,74 +1,71 @@
-# Токены экосистемы
+# Ecosystem Tokens
 
-## Обзор токенов
+## Token Overview
 
-Экосистема VC/VG состоит из трех основных типов токенов:
+The VC/VG ecosystem consists of three main types of tokens:
 
-1. **VC Token** - основной токен экосистемы без налога (0%)
-2. **VG Token** - governance токен с налогом 10%
-3. **LP Token** - токен ликвидности для пары VC/SOL
+1. **VC Token** – the main ecosystem token with zero tax (0%)
+2. **VG Token** – governance token with a 10% tax
+3. **LP Token** – liquidity token for the VC/SOL pair
 
-Каждый токен имеет свою уникальную роль в экосистеме и обеспечивает определенную функциональность. В этом документе детально описаны характеристики каждого токена, их эмиссия, распределение и использование.
+Each token has its unique role in the ecosystem and provides specific functionality. This document details the characteristics, emission, distribution, and usage of each token.
 
 ## VC Token
 
-VC Token - основной токен экосистемы, который используется для создания LP токенов, стейкинга для получения NFT-бустеров и оплаты услуг в экосистеме TECH HY.
+VC Token is the main token of the ecosystem, used for creating LP tokens, staking to receive NFT boosters, and paying for services in the TECH HY ecosystem.
 
-### Характеристики
+### Characteristics
 
-- **Тикер**: VC
-- **Тип**: SPL Token
-- **Блокчейн**: Solana
-- **Десятичные знаки**: 9
-- **Налог**: 0%
-- **Общая эмиссия**: 5,000,000,000 VC
+- **Ticker**: VC
+- **Type**: SPL Token
+- **Blockchain**: Solana
+- **Decimals**: 9
+- **Tax**: 0%
+- **Total Supply**: 5,000,000,000 VC
 
-
-### Технические параметры
+### Technical Parameters
 
 - **No Mint**
-- **Freeze authority**: Отсутствует после инициализации
-- **Метаданные токена**:
-  - **Имя**: TECH HY Venture Club Token
-  - **Символ**: VC
-  - **URI метаданных**: https://techhy.me/metadata/vc-token.json
-  - **Изображение**: https://techhy.me/images/vc-logo.png
+- **Freeze authority**: None after initialization
+- **Token metadata**:
+  - **Name**: TECH HY Venture Club Token
+  - **Symbol**: VC
+  - **Metadata URI**: https://techhy.me/metadata/vc-token.json
+  - **Image**: https://techhy.me/images/vc-logo.png
 
+### Usage
 
+1. **Creating LP tokens**:
+   - Adding VC/SOL liquidity via the "Burn and Earn" mechanism
+   - Staking 1M tokens for 90 days to receive an NFT booster
 
-### Использование
+2. **Financial instruments**:
+   - Nominal value 1 VC = $1 for paying for services in the ecosystem
+   - Pay up to 50% of TECH HY services with VC (percentage depends on DAO level)
+   - Used as collateral for TECH HY Venture Club Fund
+   - Used as collateral for Success Fee Deposit
 
-1. **Создание LP токенов**:
-   - Добавление ликвидности VC/SOL через механизм "Burn and Earn"
-   - Стейкинг 1 млн токенов на 90 дней для получения NFT-бустера
+3. **Access to exclusive features**:
+   - Spend 1,000,000 VC to get lifetime access to TECH HY Investors Private Club
+   - Receive cashback in VC for purchasing services in the B2B Marketplace
+   - Participate in LP SOL-VC farming on DEX platforms
 
-2. **Финансовые инструменты**:
-   - Номинальная стоимость 1 VC = $1 для оплаты услуг в экосистеме
-   - Оплата до 50% услуг TECH HY через VC (процент зависит от уровня DAO)
-   - Использование в качестве обеспечения для TECH HY Venture Club Fund
-   - Использование как залог для Success Fee Deposit
+### Implementation
 
-3. **Доступ к эксклюзивным возможностям**:
-   - Возможность потратить 1,000,000 VC для получения пожизненного доступа к TECH HY Investors Private Club
-   - Получение кэшбека в VC за покупку услуг в B2B Marketplace
-   - Участие в фарминге LP SOL-VC на DEX платформах
+VC Token is implemented as a standard SPL token with no modifications to transaction logic. Main functions include:
 
-### Реализация
+- Token initialization with specified parameters
+- Standard transfer operations with no additional fees
+- Interaction with other ecosystem components via CPI (Cross-Program Invocation)
 
-VC Token реализован как стандартный SPL токен без модификаций логики транзакций. Основные функции включают:
-
-- Инициализацию токена с заданными параметрами
-- Стандартные операции перевода без дополнительных комиссий
-- Взаимодействие с другими компонентами экосистемы через CPI (Cross-Program Invocation)
-
-#### Программный интерфейс (API)
+#### Program Interface (API)
 
 ```rust
-// Основные инструкции
+// Main instructions
 pub enum VCTokenInstruction {
-    /// Инициализация токена
+    /// Token initialization
     Initialize,
-    /// Перевод токенов с одного аккаунта на другой
+    /// Transfer tokens from one account to another
     Transfer { amount: u64 },
 }
 
@@ -80,243 +77,243 @@ pub enum AdminOperationType {
 
 ## VG Token
 
-VG Token - governance токен с налогом 10% на транзакции, который используется для управления экосистемой через DAO. VG нельзя купить напрямую, его можно только получить через механизмы экосистемы.
+VG Token is a governance token with a 10% transaction tax, used for ecosystem governance via DAO. VG cannot be bought directly; it can only be obtained through ecosystem mechanisms.
 
-### Характеристики
+### Characteristics
 
-- **Тикер**: VG
-- **Тип**: Модифицированный SPL Token (SPL22)
-- **Блокчейн**: Solana
-- **Десятичные знаки**: 9
-- **Налог**: 10% от суммы транзакции
-- **Общая эмиссия**: 1,000,000,000 VG
-- **Токены на продажу**: 0% (нельзя купить напрямую)
-- **Распределение налога**:
-  - 50% держателям NFT Fee Key
-  - 50% казна DAO
+- **Ticker**: VG
+- **Type**: Modified SPL Token (SPL22)
+- **Blockchain**: Solana
+- **Decimals**: 9
+- **Tax**: 10% of transaction amount
+- **Total Supply**: 1,000,000,000 VG
+- **Tokens for sale**: 0% (cannot be bought directly)
+- **Tax distribution**:
+  - 50% to NFT Fee Key holders
+  - 50% to DAO treasury
 
-### Технические параметры
+### Technical Parameters
 
-- **Mint authority**: Отсутствует (токены создаются в полном объеме при инициализации, минт запрещен)
-- **не продаётся и не покупается получается через вечную блокировку LP токенов VC/SOL и распределяется программой Burn and Earn из начального пула по средствам вечной блокировки LP токенов VC/SOL**
-- **Freeze authority**: Отсутствует (заморозка токенов или счетов запрещена)
-- **Метаданные токена**:
-  - **Имя**: TECH HY Venture Gift Token
-  - **Символ**: VG
-  - **URI метаданных**: https://techhy.me/metadata/vg-token.json
-  - **Изображение**: https://techhy.me/images/vg-logo.png
+- **Mint authority**: None (tokens are pre-minted at initialization, minting is disabled)
+- **Not for sale or purchase, only obtainable via permanent lock of VC/SOL LP tokens and distributed by the Burn and Earn program from the initial pool via permanent lock of VC/SOL LP tokens**
+- **Freeze authority**: None (freezing tokens or accounts is disabled)
+- **Token metadata**:
+  - **Name**: TECH HY Venture Gift Token
+  - **Symbol**: VG
+  - **Metadata URI**: https://techhy.me/metadata/vg-token.json
+  - **Image**: https://techhy.me/images/vg-logo.png
 
-### Структура аккаунтов для налога
+### Tax Account Structure
 
-Для управления налогом используются следующие аккаунты:
+To manage the tax, the following accounts are used:
 
-1. **TaxConfigAccount (PDA)** - хранит параметры налога:
+1. **TaxConfigAccount (PDA)** – stores tax parameters:
    ```rust
    pub struct TaxConfig {
-       pub tax_rate: u16,          // 10% = 1000 (база 10000)
-       pub dao_share: u16,         // 50% = 5000 (база 10000)
-       pub nft_holders_share: u16, // 50% = 5000 (база 10000)
-       pub dao_treasury: Pubkey,   // Адрес казны DAO
-       pub authority: Pubkey,      // Адрес мультисига DAO
+       pub tax_rate: u16,          // 10% = 1000 (base 10000)
+       pub dao_share: u16,         // 50% = 5000 (base 10000)
+       pub nft_holders_share: u16, // 50% = 5000 (base 10000)
+       pub dao_treasury: Pubkey,   // DAO treasury address
+       pub authority: Pubkey,      // DAO multisig address
    }
    ```
 
-2. **NFTHoldersPool (PDA)** - аккаунт для временного хранения налогов для NFT холдеров:
+2. **NFTHoldersPool (PDA)** – temporary storage for taxes for NFT holders:
    ```rust
    pub struct NFTHoldersPool {
-       pub total_collected: u64,     // Общая сумма собранных налогов
-       pub last_distribution: i64,   // Время последнего распределения
-       pub distribution_period: i64, // Период распределения (в секундах)
+       pub total_collected: u64,     // Total tax collected
+       pub last_distribution: i64,   // Last distribution time
+       pub distribution_period: i64, // Distribution period (in seconds)
    }
    ```
 
-3. **NFTHolderInfo (PDA для каждого NFT)** - аккаунт с информацией о доле NFT:
+3. **NFTHolderInfo (PDA for each NFT)** – stores info about NFT share:
    ```rust
    pub struct NFTHolderInfo {
-       pub nft_mint: Pubkey,         // Адрес минта NFT
-       pub owner: Pubkey,            // Владелец NFT
-       pub tier_multiplier: u16,     // Множитель уровня NFT (база 1000)
-       pub locked_lp_amount: u64,    // Количество заблокированных LP
-       pub share_percentage: u16,    // Процент от общего пула (база 10000)
-       pub last_claimed: i64,        // Время последнего получения вознаграждения
+       pub nft_mint: Pubkey,         // NFT mint address
+       pub owner: Pubkey,            // NFT owner
+       pub tier_multiplier: u16,     // NFT tier multiplier (base 1000)
+       pub locked_lp_amount: u64,    // Amount of locked LP
+       pub share_percentage: u16,    // Share of total pool (base 10000)
+       pub last_claimed: i64,        // Last reward claim time
    }
    ```
 
-### Техническая реализация налога
+### Tax Implementation
 
-Налог на транзакции VG токенов реализуется через перехват стандартных SPL инструкций:
+VG token transaction tax is implemented by intercepting standard SPL instructions:
 
-1. **Метод реализации**: Custom program wrapper (CPI к SPL Token Program)
-   
-2. **Процесс взимания налога**:
+1. **Implementation method**: Custom program wrapper (CPI to SPL Token Program)
+
+2. **Tax collection process**:
    ```rust
-   // Псевдокод
+   // Pseudocode
    fn process_transfer(source, destination, amount) {
-       // Расчет налога
+       // Calculate tax
        let tax_amount = amount * tax_rate / 10000;
        let user_amount = amount - tax_amount;
        
-       // Расчет долей
+       // Calculate shares
        let dao_amount = tax_amount * dao_share / 10000;
        let nft_amount = tax_amount - dao_amount;
        
-       // Перевод основной суммы
+       // Transfer main amount
        token_program::transfer(source, destination, user_amount);
        
-       // Перевод налога
+       // Transfer tax
        token_program::transfer(source, dao_treasury, dao_amount);
        token_program::transfer(source, nft_holders_pool, nft_amount);
        
-       // Обновление данных о собранном налоге
+       // Update tax pool data
        update_nft_holders_pool(nft_amount);
    }
    ```
 
-### Программный интерфейс (API)
+### Program Interface (API)
 
 ```rust
-// Основные инструкции
+// Main instructions
 pub enum VGTokenInstruction {
-    /// Инициализация конфигурации налога
+    /// Initialize tax config
     InitializeTaxConfig {
         tax_rate: u16,
         dao_share: u16,
         nft_holders_share: u16,
     },
-    /// Обновление параметров налога (только через DAO)
+    /// Update tax parameters (DAO only)
     UpdateTaxConfig {
         tax_rate: u16,
         dao_share: u16,
         nft_holders_share: u16,
     },
-    /// Перевод токенов с взиманием налога
+    /// Transfer tokens with tax
     Transfer { amount: u64 },
-    /// Распределение налогов между держателями NFT
+    /// Distribute tax among NFT holders
     DistributeNFTHoldersRewards,
-    /// Получение вознаграждения держателем NFT
+    /// Claim NFT holder reward
     ClaimNFTHolderReward { nft_mint: Pubkey },
 }
 ```
 
-### Использование
+### Usage
 
-1. **Стейкинг VG токенов**:
-   - Блокировка на период, зависящий от количества токенов
-   - Применение NFT-бустеров для улучшения условий стейкинга
-   - Автоматическое реинвестирование при большом размере стейка
-   - Получение пассивного дохода от:
-     - 50% доходов DAO
-     - 10% комиссии с каждой транзакции VG
-     - Пула вознаграждений за стейкинг VC
-     - Торговых комиссий от Raydium (программа Burn & Earn)
+1. **VG token staking**:
+   - Lock for a period depending on token amount
+   - Apply NFT boosters to improve staking conditions
+   - Automatic reinvestment for large stakes
+   - Receive passive income from:
+     - 50% of DAO income
+     - 10% fee from every VG transaction
+     - VC staking reward pool
+     - Trading fees from Raydium (Burn & Earn program)
 
-2. **Управление экосистемой (DAO)**:
-   - Голосование по предложениям
-   - Принятие решений о развитии экосистемы
-   - Управление параметрами смарт-контрактов
-   - Участие в комитете по инвестициям (для определенных уровней)
+2. **Ecosystem governance (DAO)**:
+   - Vote on proposals
+   - Make decisions on ecosystem development
+   - Manage smart contract parameters
+   - Participate in investment committee (for certain levels)
 
-3. **Доступ к привилегиям**:
-   - Доступ к особым уровням DAO от Starter до Partner (в зависимости от суммы)
-   - Получение дополнительных дропов и бустеров
-   - Доступ к эксклюзивным мероприятиям сообщества
+3. **Access to privileges**:
+   - Access to special DAO levels from Starter to Partner (depending on amount)
+   - Receive additional drops and boosters
+   - Access to exclusive community events
 
-### Реализация
+### Implementation
 
-VG Token реализован как модифицированный SPL токен с дополнительной логикой для взимания и распределения налога. Ключевые аспекты реализации:
+VG Token is implemented as a modified SPL token with additional logic for tax collection and distribution. Key aspects:
 
-- Инициализация с указанием налоговой ставки и параметров распределения
-- Модифицированная функция перевода, взимающая налог
-- Механизм распределения налога между получателями
-- Интеграция с казной DAO и системой обратного выкупа токенов
+- Initialization with tax rate and distribution parameters
+- Modified transfer function that collects tax
+- Mechanism for distributing tax among recipients
+- Integration with DAO treasury and buyback system
 
 ## LP Token
 
-LP Token - токен ликвидности для пары VC/SOL, создаваемый через Raydium и используемый в механизме "Burn and Earn".
+LP Token is the liquidity token for the VC/SOL pair, created via Raydium and used in the "Burn and Earn" mechanism.
 
-### Характеристики
+### Characteristics
 
-- **Тип**: Стандартный LP токен Raydium
-- **Пара**: VC/SOL
-- **Использование**: Постоянная блокировка без возможности вывода
+- **Type**: Standard Raydium LP token
+- **Pair**: VC/SOL
+- **Usage**: Permanent lock, no withdrawal possible
 
-### Техническая реализация
+### Technical Implementation
 
-- **PermanentLockVault (PDA)** - аккаунт для хранения заблокированных LP токенов:
+- **PermanentLockVault (PDA)** – account for storing locked LP tokens:
   ```rust
   pub struct PermanentLockVault {
-      pub total_locked_lp: u64,            // Общее количество заблокированных LP
-      pub total_weighted_locked_lp: u64,    // Взвешенная сумма LP (с учетом множителей NFT)
-      pub lp_mint: Pubkey,                  // Адрес минта LP токена
-      pub authority: Pubkey,                // Authority (PDA программы)
+      pub total_locked_lp: u64,            // Total locked LP
+      pub total_weighted_locked_lp: u64,   // Weighted LP sum (with NFT multipliers)
+      pub lp_mint: Pubkey,                 // LP token mint address
+      pub authority: Pubkey,               // Program authority (PDA)
   }
   ```
 
-- **UserLockInfo (PDA для каждого пользователя)** - аккаунт с информацией о блокировке:
+- **UserLockInfo (PDA for each user)** – stores lock info:
   ```rust
   pub struct UserLockInfo {
-      pub user: Pubkey,              // Адрес пользователя
-      pub locked_lp_amount: u64,     // Количество заблокированных LP
-      pub lock_timestamp: i64,       // Время блокировки
-      pub vg_received: u64,          // Количество полученных VG
-      pub nft_mint: Option<Pubkey>,  // Адрес выпущенного NFT (если есть)
+      pub user: Pubkey,              // User address
+      pub locked_lp_amount: u64,     // Amount of locked LP
+      pub lock_timestamp: i64,       // Lock time
+      pub vg_received: u64,          // Amount of VG received
+      pub nft_mint: Option<Pubkey>,  // Mint address of issued NFT (if any)
   }
   ```
 
-### Реализация
+### Implementation
 
-LP токены создаются через интеграцию с протоколом Raydium и блокируются в специальном хранилище. Процесс включает:
+LP tokens are created via Raydium integration and locked in a special vault. The process includes:
 
-- Создание через интеграцию с Raydium
-- Блокировка в PermanentLockVault (PDA)
-- Минтинг VG токенов пропорционально заблокированным LP
-- Создание NFT Fee Key для получения части налоговых сборов
+- Creation via Raydium integration
+- Locking in PermanentLockVault (PDA)
+- Minting VG tokens proportional to locked LP
+- Creating NFT Fee Key for receiving part of tax revenue
 
-### Программный интерфейс (API)
+### Program Interface (API)
 
 ```rust
-// Основные инструкции
+// Main instructions
 pub enum LPTokenInstruction {
-    /// Инициализация хранилища для блокировки LP токенов
+    /// Initialize vault for locking LP tokens
     InitializeLockVault { 
         lp_mint: Pubkey 
     },
-    /// Блокировка LP токенов и получение VG + NFT
+    /// Lock LP tokens and receive VG + NFT
     LockLPTokens { 
         amount: u64 
     },
-    /// Получение информации о блокировке
+    /// Get lock info
     GetUserLockInfo { 
         user: Pubkey 
     },
 }
 ```
 
-## Взаимодействие токенов в экосистеме
+## Token Interactions in the Ecosystem
 
-### Циркуляция VC токенов
+### VC Token Circulation
 
-1. **VC токены**:
-   - Свободная передача без налога
-   - Добавление ликвидности для создания LP токенов (механизм Burn and Earn)
-   - Стейкинг для NFT-бустеров
+1. **VC tokens**:
+   - Free transfer with no tax
+   - Add liquidity to create LP tokens (Burn and Earn mechanism)
+   - Stake for NFT boosters
 
-### Циркуляция VG токенов
+### VG Token Circulation
 
-1. **VG токены**:
-   - Создание при блокировке LP
-   - Стейкинг для управления экосистемой
-   - Налог 10% на все транзакции
+1. **VG tokens**:
+   - Created when locking LP
+   - Staked for ecosystem governance
+   - 10% tax on all transactions
 
-### Циркуляция LP токенов
+### LP Token Circulation
 
-1. **LP токены**:
-   - Создание из пары VC/SOL
-   - Постоянная блокировка
-   - Генерация VG и NFT Fee Key
+1. **LP tokens**:
+   - Created from VC/SOL pair
+   - Permanently locked
+   - Generate VG and NFT Fee Key
 
-## Дальнейшие материалы
+## Further Materials
 
-- [Архитектура системы](./01-system-architecture.md)
-- [Механизм "Burn and Earn"](./03-burn-and-earn.md)
-- [Формула расчета VG токенов](./specs/vg-calculation-formula.md) 
+- [System Architecture](./01-system-architecture.md)
+- ["Burn and Earn" Mechanism](./03-burn-and-earn.md)
+- [VG Token Calculation Formula](./specs/vg-calculation-formula.md) 

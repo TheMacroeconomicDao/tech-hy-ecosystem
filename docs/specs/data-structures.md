@@ -1,223 +1,222 @@
-# Структуры данных
+# Data Structures
 
-В этом документе описаны основные структуры данных, используемые в смарт-контрактах экосистемы VC/VG токенов.
+This document describes the main data structures used in the smart contracts of the VC/VG token ecosystem.
 
-## Токены
+## Tokens
 
-### Метаданные токена
+### Token Metadata
 
-Структура для хранения метаданных токена, включая:
-- Имя токена
-- Символ
-- Количество десятичных знаков
-- Адрес минта
-- Адрес управляющего
-- Адрес авторитета заморозки
-- Ставка налога (только для VG токена)
+Structure for storing token metadata, including:
+- Token name
+- Symbol
+- Number of decimals
+- Mint address
+- Authority address
+- Freeze authority address
+- Tax rate (VG token only)
 
-### Параметры налогообложения
+### Tax Parameters
 
-Структура для хранения параметров налогообложения:
-- Налоговая ставка
-- Процент распределения комиссий
-- Процент байбэка
-- Процент отчислений в DAO
-- Адрес управляющего
-- Бамп
+Structure for storing tax parameters:
+- Tax rate
+- Fee distribution percentage
+- Buyback percentage
+- DAO allocation percentage
+- Authority address
+- Bump
 
-### Статистика распределения налога
+### Tax Distribution Statistics
 
-Структура для хранения статистики распределения налога:
-- Общая сумма собранного налога
-- Общая сумма распределения комиссий
-- Общая сумма байбэка
-- Общая сумма отчислений в DAO
-- Бамп
+Structure for storing tax distribution statistics:
+- Total tax collected
+- Total fees distributed
+- Total buyback amount
+- Total DAO allocation
+- Bump
 
-## Механизм "Burn and Earn"
+## "Burn and Earn" Mechanism
 
-### Хранилище с постоянной блокировкой LP токенов
+### Permanent LP Token Lock Vault
 
-Структура для хранения информации о хранилище с постоянной блокировкой LP токенов:
-- Адрес управляющего
-- Адрес минта LP токенов
-- Адрес токен-аккаунта LP
-- Общая заблокированная сумма
-- Количество блокировок
-- Бамп
+Structure for storing information about the permanent LP token lock vault:
+- Authority address
+- LP token mint address
+- LP token account address
+- Total locked amount
+- Number of locks
+- Bump
 
-### Информация о блокировке LP токенов пользователем
+### User LP Token Lock Info
 
-Структура для хранения информации о блокировке LP токенов пользователем:
-- Адрес пользователя
-- Заблокированная сумма
-- Временная метка блокировки
-- Количество полученных VG токенов
-- Минт ключа комиссий
-- Бамп
+Structure for storing information about a user's LP token lock:
+- User address
+- Locked amount
+- Lock timestamp
+- Amount of VG tokens received
+- Fee key mint
+- Bump
 
-### Статистика механизма "Burn and Earn"
+### "Burn and Earn" Statistics
 
-Структура для хранения статистики механизма "Burn and Earn":
-- Общее количество конвертированных VC
-- Общее количество заблокированных LP
-- Общее количество отчеканенных VG
-- Общее количество созданных ключей комиссий
-- Общее количество транзакций
-- Бамп
+Structure for storing "Burn and Earn" statistics:
+- Total VC converted
+- Total LP locked
+- Total VG minted
+- Total fee keys created
+- Total transactions
+- Bump
 
 ## NFT Fee Key
 
-### Аккаунт NFT Fee Key
+### NFT Fee Key Account
 
-Структура для хранения информации об аккаунте NFT Fee Key:
-- Адрес владельца
-- Заблокированная сумма LP токенов
-- Временная метка блокировки
-- Процент доли комиссий
-- Уровень (1 - Common, 2 - Rare, 3 - Epic, 4 - Legendary)
-- Временная метка последнего требования
-- Общая сумма полученных комиссий
-- Бамп
+Structure for storing NFT Fee Key account info:
+- Owner address
+- Locked LP token amount
+- Lock timestamp
+- Fee share percentage
+- Level (1 - Common, 2 - Rare, 3 - Epic, 4 - Legendary)
+- Last claim timestamp
+- Total fees received
+- Bump
 
-### Хранилище для распределения комиссий
+### Fee Distribution Vault
 
-Структура для хранения информации о хранилище для распределения комиссий:
-- Адрес управляющего
-- Адрес токен-аккаунта
-- Общая сумма собранных комиссий
-- Общая сумма распределенных комиссий
-- Временная метка последнего распределения
-- Бамп
+Structure for storing fee distribution vault info:
+- Authority address
+- Token account address
+- Total fees collected
+- Total fees distributed
+- Last distribution timestamp
+- Bump
 
-## Стейкинг VC токенов
+## VC Token Staking
 
-### Аккаунт стейкинга VC токенов
+### VC Staking Account
 
-Структура для хранения информации об аккаунте стейкинга VC токенов:
-- Адрес владельца
-- Сумма стейкинга
-- Временная метка стейкинга
-- Временная метка разблокировки
-- Минт NFT
-- Флаг разблокировки
-- Бамп
+Structure for storing VC staking account info:
+- Owner address
+- Staked amount
+- Staking timestamp
+- Unlock timestamp
+- NFT mint
+- Unlock flag
+- Bump
 
-### Аккаунт NFT-бустера
+### NFT Booster Account
 
-Структура для хранения информации об аккаунте NFT-бустера:
-- Адрес владельца
-- Адрес аккаунта стейкинга VC
-- Множитель буста
-- Статус (1 - Активный, 2 - Использованный, 3 - Истекший)
-- Адрес аккаунта стейкинга VG
-- Бамп
+Structure for storing NFT booster account info:
+- Owner address
+- VC staking account address
+- Booster multiplier
+- Status (1 - Active, 2 - Used, 3 - Expired)
+- VG staking account address
+- Bump
 
-### Хранилище для стейкинга VC токенов
+### VC Staking Vault
 
-Структура для хранения информации о хранилище для стейкинга VC токенов:
-- Адрес управляющего
-- Адрес токен-аккаунта
-- Общая сумма стейкинга
-- Общее количество стейкеров
-- Бамп
+Structure for storing VC staking vault info:
+- Authority address
+- Token account address
+- Total staked amount
+- Total stakers
+- Bump
 
-## Стейкинг VG токенов
+## VG Token Staking
 
-### Аккаунт стейкинга VG токенов
+### VG Staking Account
 
-Структура для хранения информации об аккаунте стейкинга VG токенов:
-- Адрес владельца
-- Сумма стейкинга
-- Временная метка стейкинга
-- Временная метка разблокировки
-- Флаг наличия NFT-бустера
-- Адрес NFT-бустера
-- Флаг автоматического реинвестирования
-- Сумма реинвестирования
-- Сумма вывода
-- Флаг разблокировки
-- Бамп
+Structure for storing VG staking account info:
+- Owner address
+- Staked amount
+- Staking timestamp
+- Unlock timestamp
+- NFT booster flag
+- NFT booster address
+- Auto-compounding flag
+- Compounded amount
+- Withdrawn amount
+- Unlock flag
+- Bump
 
-### Статистика стейкинга VG токенов
+### VG Staking Statistics
 
-Структура для хранения статистики стейкинга VG токенов:
-- Общая сумма стейкинга
-- Общее количество стейкеров
-- Общее количество с бустерами
-- Общее количество автоматических реинвестирований
-- Бамп
+Structure for storing VG staking statistics:
+- Total staked amount
+- Total stakers
+- Total with boosters
+- Total auto-compoundings
+- Bump
 
-### Хранилище для стейкинга VG токенов
+### VG Staking Vault
 
-Структура для хранения информации о хранилище для стейкинга VG токенов:
-- Адрес управляющего
-- Адрес токен-аккаунта
-- Общая сумма стейкинга
-- Бамп
+Structure for storing VG staking vault info:
+- Authority address
+- Token account address
+- Total staked amount
+- Bump
 
-## Governance и DAO
+## Governance and DAO
 
-### Параметры управления через DAO
+### DAO Governance Parameters
 
-Структура для хранения параметров управления через DAO:
-- Адрес реалма
-- Адрес управления
+Structure for storing DAO governance parameters:
+- Realm address
+- Governance address
 
-- Параметры стейкинга:
-  - Минимальная сумма стейкинга
-  - Базовый период стейкинга
-  - Порог автоматического реинвестирования
-  - Процент реинвестирования
+- Staking parameters:
+  - Minimum staking amount
+  - Base staking period
+  - Auto-compounding threshold
+  - Compounding percentage
 
-- Параметры налогообложения:
-  - Налоговая ставка
-  - Процент распределения комиссий
-  - Процент байбэка
-  - Процент отчислений в DAO
+- Tax parameters:
+  - Tax rate
+  - Fee distribution percentage
+  - Buyback percentage
+  - DAO allocation percentage
 
-- Параметры механизма "Burn and Earn":
-  - Коэффициент конверсии LP в VG
-  - Бонусный коэффициент
+- "Burn and Earn" parameters:
+  - LP to VG conversion coefficient
+  - Bonus coefficient
 
-- Адрес управляющего
-- Бамп
+- Authority address
+- Bump
 
-### Хранилище для казны DAO
+### DAO Treasury Vault
 
-Структура для хранения информации о хранилище для казны DAO:
-- Адрес управляющего
-- Адрес токен-аккаунта
-- Общая полученная сумма
-- Общая потраченная сумма
-- Бамп
+Structure for storing DAO treasury vault info:
+- Authority address
+- Token account address
+- Total received amount
+- Total spent amount
+- Bump
 
-## Аккаунты для интеграции с внешними сервисами
+## External Service Integration Accounts
 
-### Интеграция с Raydium
+### Raydium Integration
 
-Структура для хранения информации об интеграции с Raydium:
-- Идентификатор AMM
-- Адрес токен-аккаунта монеты пула
-- Адрес токен-аккаунта ПК пула
-- Минт LP
-- Адрес управляющего
-- Бамп
+Structure for storing Raydium integration info:
+- AMM identifier
+- Pool coin token account address
+- Pool PC token account address
+- LP mint
+- Authority address
+- Bump
 
-### Интеграция с Metaplex
+### Metaplex Integration
 
-Структура для хранения информации об интеграции с Metaplex:
-- Адрес программы метаданных
-- Адрес программы метаданных токена
-- Адрес авторитета минта
-- Адрес управляющего
-- Бамп
+Structure for storing Metaplex integration info:
+- Metadata program address
+- Token metadata program address
+- Authority address
+- Bump
 
-### Интеграция с Realms
+### Realms Integration
 
-Структура для хранения информации об интеграции с Realms:
-- Адрес реалма
-- Адрес управления
-- Адрес программы управления
-- Адрес управляющего
-- Бамп 
+Structure for storing Realms integration info:
+- Realm address
+- Governance address
+- Governance program address
+- Authority address
+- Bump 

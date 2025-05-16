@@ -1,60 +1,60 @@
-# Механизм "Burn and Earn"
+# Burn and Earn Mechanism
 
-Механизм "Burn and Earn" - ключевой компонент для обеспечения постоянного роста ликвидности пула SOL-VC и распределения VG токенов в экосистеме TECH HY.
+The "Burn and Earn" mechanism is a key component for ensuring the constant growth of the SOL-VC liquidity pool and the distribution of VG tokens in the TECH HY ecosystem.
 
-## Процесс конвертации
-1. **Подготовка активов**:
-   - Пользователь должен иметь X токенов VC и Y SOL в соответствующей пропорции
-   - Пропорция определяется текущим курсом в пуле ликвидности Raydium
+## Conversion Process
+1. **Asset Preparation**:
+   - The user must have X VC tokens and Y SOL in the required proportion
+   - The proportion is determined by the current rate in the Raydium liquidity pool
 
-2. **Формирование LP токена**:
-   - Пользователь добавляет оба актива (VC и SOL) в пул Raydium
-   - В результате получает Z LP токенов, представляющих долю в пуле
-   - Количество LP токенов зависит от размера вклада и текущей ликвидности
+2. **LP Token Formation**:
+   - The user adds both assets (VC and SOL) to the Raydium pool
+   - As a result, receives Z LP tokens representing a share in the pool
+   - The number of LP tokens depends on the contribution size and current liquidity
 
-3. **Блокировка LP токенов**:
-   - LP токены переводятся в PermanentLockVault (PDA)
-   - Блокировка необратима и постоянна
-   - 50% привлеченных средств от пресейла также блокируются в LP SOL-VC
+3. **LP Token Locking**:
+   - LP tokens are transferred to the PermanentLockVault (PDA)
+   - The lock is irreversible and permanent
+   - 50% of the funds raised from the presale are also locked in LP SOL-VC
 
-4. **Эмиссия VG токенов**:
-   - Пользователь получает VG токены по формуле ниже
+4. **VG Token Issuance**:
+   - The user receives VG tokens according to the formula below
 
-5. **Создание NFT Fee Key**:
-   - Выпуск NFT с правом на доход от комиссий
+5. **NFT Fee Key Creation**:
+   - An NFT is issued with the right to receive a share of the fees
 
-## Формула расчета VG токенов
+## VG Token Calculation Formula
 ```
 VG = LP * C * (1 + B * log10(LP/LP_min))
 ```
-Где:
-- `LP` - количество заблокированных LP токенов
-- `C` - базовый коэффициент (10)
-- `B` - бонусный коэффициент (0.2)
-- `LP_min` - минимальное количество LP (1)
+Where:
+- `LP` – number of locked LP tokens
+- `C` – base coefficient (10)
+- `B` – bonus coefficient (0.2)
+- `LP_min` – minimum LP amount (1)
 
 ## PermanentLockVault
-- Создается как PDA с известными seed-значениями
-- Отсутствует возможность подписи транзакций на вывод
-- Для каждого пользователя сохраняется UserLockInfo с данными о блокировке
+- Created as a PDA with known seed values
+- No ability to sign withdrawal transactions
+- For each user, UserLockInfo is stored with lock data
 
 ## NFT Fee Key
-| Уровень | Количество LP | Множитель |
-|---------|---------------|-----------|
-| Common  | < 1,000       | 1.0x      |
-| Rare    | 1,000-10,000  | 1.2x      |
-| Epic    | 10,000-100,000| 1.5x      |
-| Legendary| > 100,000     | 2.0x      |
+| Level     | LP Amount      | Multiplier |
+|-----------|---------------|------------|
+| Common    | < 1,000       | 1.0x       |
+| Rare      | 1,000-10,000  | 1.2x       |
+| Epic      | 10,000-100,000| 1.5x       |
+| Legendary | > 100,000     | 2.0x       |
 
-Доля в комиссиях: `share_percentage = (user_locked_lp * tier_multiplier) / total_weighted_locked_lp * 100%`
+Share in fees: `share_percentage = (user_locked_lp * tier_multiplier) / total_weighted_locked_lp * 100%`
 
 ## Raydium Integration
-- Использование Raydium SDK для создания ликвидности
-- Параметр `slippage_tolerance` для защиты от проскальзывания цены
-- Атомарная транзакция для всех операций
-- Интеграция с токенами VC и SOL для создания пула ликвидности
+- Use Raydium SDK to create liquidity
+- `slippage_tolerance` parameter to protect against price slippage
+- Atomic transaction for all operations
+- Integration with VC and SOL tokens to create the liquidity pool
 
-## Обработка ошибок
-1. **Недостаточный баланс**: Проверка наличия достаточного количества VC и SOL
-2. **Проскальзывание цены**: Проверка параметра `slippage_tolerance`, отмена при превышении
-3. **Ограничение размера**: Лимиты на максимальный размер транзакции 
+## Error Handling
+1. **Insufficient balance**: Check for sufficient VC and SOL
+2. **Price slippage**: Check `slippage_tolerance` parameter, cancel if exceeded
+3. **Transaction size limit**: Limits on maximum transaction size 
